@@ -1,0 +1,182 @@
+Quero que você desenvolva uma plataforma web completa de demonstração (não é sistema real, é apenas para vender o serviço) voltada para salões de beleza.
+Ela deve ser moderna, visualmente bonita e totalmente focada na visão do salão, não do cliente.
+
+A plataforma deve mostrar claramente como a tecnologia pode melhorar o dia a dia do dono do salão.
+
+Objetivo da plataforma
+
+Impressionar donos de salões através de:
+
+um painel elegante
+
+dados fictícios realistas
+
+funcionalidades simuladas
+
+experiência premium
+
+Não precisa ter backend real — apenas parecer real.
+
+📌 FUNCIONALIDADES QUE DEVEM SER CRIADAS
+1. Dashboard Principal (com dados simulados)
+
+Crie um painel bonito com cards e gráficos mostrando:
+
+Clientes atendidos hoje
+
+Agendamentos do dia
+
+Serviços mais solicitados
+
+Taxa de ocupação dos profissionais
+
+Tempo médio de espera
+
+Ticket médio (simulado)
+
+Use números fictícios, mas plausíveis.
+
+2. Agenda Inteligente (Calendário)
+
+Crie uma agenda com:
+
+horários ocupados
+
+horários disponíveis
+
+agendamentos simulados
+
+opção “Adicionar agendamento” (somente ilustrativa)
+
+Interface deve ser limpa, moderna e responsiva.
+
+3. Profissionais do Salão
+
+Crie perfis fictícios para 4–6 profissionais, incluindo:
+
+Nome
+
+Especialidade (corte, coloração, manicure etc.)
+
+Status atual (Disponível / Atendendo / Ocupado)
+
+Tempo médio por serviço
+
+Foto do profissional (pode ser avatar ou imagem AI)
+
+O dono deve visualizar facilmente quem está livre ou ocupado.
+
+4. Catálogo de Serviços
+
+Lista com serviços comuns de salão:
+
+Corte feminino
+
+Corte masculino
+
+Manicure
+
+Pedicure
+
+Escova
+
+Hidratação
+
+Coloração
+
+Design de sobrancelhas
+
+Cada serviço deve exibir:
+
+preço
+
+duração média
+
+categoria
+
+profissionais aptos a realizar
+
+5. Fila de Atendimentos (tipo workflow)
+
+Mostre clientes fictícios com:
+
+Nome
+
+Serviço solicitado
+
+Profissional
+
+Status:
+
+Aguardando
+
+Em atendimento
+
+Finalizado
+
+Use cores e animações para tornar mais atraente.
+
+6. Simulação de Integração com Chatbot
+
+Crie um painel lateral mostrando mensagens simuladas como:
+
+“Novo pedido de agendamento recebido.”
+
+“Cliente escolheu: Corte feminino + Hidratação.”
+
+“Horário desejado: 15h.”
+
+Não precisa funcionar — só demonstrar.
+
+7. Painel de Marketing Automático (simulado)
+
+Crie uma área simulando automações:
+
+mensagem de aniversário
+
+lembrete de agendamento
+
+recuperação de clientes inativos
+
+promoção da semana
+
+mensagem pós-atendimento
+
+Mostre como seria um fluxo, mas sem funcionalidade real.
+
+🎨 REQUISITOS DE DESIGN
+
+Estética premium, moderna e feminina.
+
+Cores: rosa claro, roxo pastel, bege, dourado suave.
+
+Ícones delicados e animações suaves.
+
+Visual de “software profissional” mesmo sendo só front-end.
+
+🧩 SAÍDA ESPERADA
+
+Entregar:
+
+Código completo do front-end
+
+Componentes organizados
+
+Estrutura limpa e responsiva
+
+Explicação do que cada parte faz
+
+Interface fluida e profissional
+
+🎯 FINALIDADE
+
+Esse sistema é apenas uma DEMO DE VENDAS, por isso:
+
+Use dados fictícios
+
+Foco no visual e na experiência
+
+Nada precisa ser funcional no backend
+
+A prioridade é fazer o dono do salão pensar:
+“Uau, eu quero algo assim no meu negócio.”
