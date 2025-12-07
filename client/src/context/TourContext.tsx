@@ -50,6 +50,7 @@ const TOUR_STEPS: TourStep[] = [
 interface TourContextType {
   isWelcomeOpen: boolean;
   closeWelcome: () => void;
+  openWelcome: () => void;
   startTour: () => void;
   isTourActive: boolean;
   currentStepIndex: number;
@@ -67,15 +68,18 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
 
   useEffect(() => {
-    // Show welcome modal on first visit (simulated by checking if it's the dashboard)
-    if (location === '/dashboard' && !localStorage.getItem('tour_completed')) {
+    // Show welcome modal when on dashboard
+    if (location === '/dashboard') {
        setIsWelcomeOpen(true);
     }
   }, [location]);
 
   const closeWelcome = () => {
     setIsWelcomeOpen(false);
-    localStorage.setItem('tour_completed', 'true');
+  };
+
+  const openWelcome = () => {
+    setIsWelcomeOpen(true);
   };
 
   const startTour = () => {
@@ -97,7 +101,6 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const stopTour = () => {
     setIsTourActive(false);
     setCurrentStepIndex(0);
-    localStorage.setItem('tour_completed', 'true');
   };
 
   const currentStep = isTourActive ? TOUR_STEPS[currentStepIndex] : null;
@@ -106,6 +109,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     <TourContext.Provider value={{
       isWelcomeOpen,
       closeWelcome,
+      openWelcome,
       startTour,
       isTourActive,
       currentStepIndex,
