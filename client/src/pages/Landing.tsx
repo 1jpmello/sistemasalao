@@ -10,9 +10,12 @@ import {
   Clock, 
   ShieldCheck,
   Sparkles,
-  Menu
+  Menu,
+  Zap,
+  BarChart3,
+  Smartphone
 } from "lucide-react";
-import salonLogo from "@assets/ef8f913501c4d7f06c503a056efcd95e_1765133100746.jpg";
+import andromedaLogo from "@/assets/andromeda_logo.png";
 import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import stylist2 from "@assets/generated_images/portrait_of_a_male_hair_stylist.png";
@@ -20,205 +23,218 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-background font-sans selection:bg-primary/20">
+    <div className="min-h-screen bg-[#0B0F19] font-sans selection:bg-cyan-500/30 text-slate-100">
       {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-white/20">
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full overflow-hidden shadow-lg shadow-primary/20 border-2 border-primary/10">
-               <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
+      <nav className="fixed w-full z-50 bg-[#0B0F19]/80 backdrop-blur-md border-b border-white/5">
+        <div className="container mx-auto px-6 h-24 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl overflow-hidden shadow-lg shadow-cyan-500/20 border border-white/10 p-1 bg-gradient-to-br from-slate-800 to-slate-950">
+               <img src={andromedaLogo} alt="Andromeda Solutions" className="h-full w-full object-contain" />
             </div>
-            <span className="text-2xl font-serif font-bold tracking-tight">
-              GestãoBelleza
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold tracking-tight text-white leading-none">
+                ANDROMEDA
+              </span>
+              <span className="text-xs font-medium text-cyan-400 tracking-[0.2em] uppercase">
+                Solutions
+              </span>
+            </div>
           </div>
           
           <div className="hidden md:flex items-center gap-8">
-            <a href="#funcionalidades" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Funcionalidades</a>
-            <a href="#depoimentos" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Depoimentos</a>
+            <a href="#funcionalidades" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">Soluções</a>
+            <a href="#depoimentos" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">Cases de Sucesso</a>
             <Link href="/dashboard">
-              <Button className="rounded-full px-6 bg-foreground text-background hover:bg-foreground/90">
-                Acessar Sistema
+              <Button className="rounded-full px-8 bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 border-none shadow-lg shadow-cyan-900/20 transition-all hover:scale-105">
+                Acessar Plataforma
               </Button>
             </Link>
           </div>
           
-          <Button variant="ghost" size="icon" className="md:hidden">
+          <Button variant="ghost" size="icon" className="md:hidden text-white">
             <Menu className="h-6 w-6" />
           </Button>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+      <section className="relative pt-40 pb-20 lg:pt-52 lg:pb-32 overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+          <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[10%] left-[-10%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px]" />
+          <div className="absolute top-[20%] left-[20%] w-[300px] h-[300px] bg-cyan-500/10 rounded-full blur-[80px]" />
+        </div>
+
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
             <div className="space-y-8 animate-in slide-in-from-left duration-700 fade-in">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                </span>
-                A revolução que seu salão esperava
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/30 text-cyan-300 text-sm font-medium border border-cyan-500/20 backdrop-blur-sm">
+                <Zap className="h-3 w-3 fill-cyan-300" />
+                Tecnologia de ponta para salões de beleza
               </div>
               
-              <h1 className="text-5xl lg:text-7xl font-serif font-bold leading-[1.1] text-foreground">
-                Domine a gestão do seu salão e <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">multiplique seus lucros</span>.
+              <h1 className="text-5xl lg:text-7xl font-sans font-bold leading-[1.1] text-white tracking-tight">
+                O futuro da gestão <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">
+                  está na sua mão.
+                </span>
               </h1>
               
-              <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
-                Diga adeus às planilhas e agendas de papel. Tenha controle total, fidelize clientes e veja seu negócio crescer com a plataforma feita para quem ama beleza e organização.
+              <p className="text-xl text-slate-400 leading-relaxed max-w-xl">
+                A <strong>Andromeda Solutions</strong> traz a inteligência que faltava para o seu negócio de beleza. Automatize, fidelize e lucre mais com nossa plataforma premium.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link href="/dashboard">
-                  <Button size="lg" className="h-14 px-8 rounded-full text-lg shadow-xl shadow-primary/25 bg-primary hover:bg-primary/90 hover:scale-105 transition-all duration-300">
-                    Começar Teste Grátis
+                  <Button size="lg" className="h-16 px-10 rounded-full text-lg shadow-2xl shadow-cyan-500/20 bg-white text-slate-950 hover:bg-cyan-50 hover:scale-105 transition-all duration-300 font-bold">
+                    Começar Agora
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="h-14 px-8 rounded-full text-lg border-2 hover:bg-muted/50">
-                  Ver Funcionalidades
+                <Button variant="outline" size="lg" className="h-16 px-8 rounded-full text-lg border-white/10 text-white hover:bg-white/5 hover:border-white/20 backdrop-blur-sm">
+                  Conhecer a Tecnologia
                 </Button>
               </div>
 
-              <div className="pt-8 flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex -space-x-3">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className="h-10 w-10 rounded-full border-2 border-white bg-gray-200 overflow-hidden">
-                      <img src={`https://i.pravatar.cc/100?img=${i+20}`} alt="User" />
-                    </div>
-                  ))}
+              <div className="pt-8 flex items-center gap-6 text-sm text-slate-400 border-t border-white/5 mt-8">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-5 w-5 text-cyan-400" />
+                  <span>Dados Criptografados</span>
                 </div>
-                <div>
-                  <div className="flex items-center gap-1 text-amber-500">
-                    <Star className="h-4 w-4 fill-current" />
-                    <Star className="h-4 w-4 fill-current" />
-                    <Star className="h-4 w-4 fill-current" />
-                    <Star className="h-4 w-4 fill-current" />
-                    <Star className="h-4 w-4 fill-current" />
-                  </div>
-                  <p>Usado por +500 salões no Brasil</p>
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-purple-400" />
+                  <span>IA Integrada</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Smartphone className="h-5 w-5 text-blue-400" />
+                  <span>App Mobile</span>
                 </div>
               </div>
             </div>
 
             <div className="relative animate-in slide-in-from-right duration-1000 fade-in delay-200">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-white/50 ring-1 ring-black/5 aspect-[4/3] rotate-2 hover:rotate-0 transition-transform duration-500">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-cyan-900/20 border border-white/10 bg-slate-900/50 backdrop-blur-xl aspect-[4/3] group">
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                
                 <img 
                   src={heroImage} 
                   alt="Dashboard Preview" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
                 />
                 
-                {/* Floating Cards */}
-                <div className="absolute top-8 right-8 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg border border-white/50 animate-bounce duration-[3000ms]">
-                   <div className="flex items-center gap-3">
-                     <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                {/* Tech Overlay Lines */}
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay" />
+
+                {/* Floating Cards - Tech Style */}
+                <div className="absolute top-8 right-8 bg-[#0B0F19]/90 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-cyan-500/30 animate-bounce duration-[3000ms]">
+                   <div className="flex items-center gap-4">
+                     <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center text-white shadow-lg shadow-green-900/50">
                        <TrendingUp className="h-6 w-6" />
                      </div>
                      <div>
-                       <p className="text-xs text-muted-foreground font-medium">Faturamento Hoje</p>
-                       <p className="text-lg font-bold text-foreground">R$ 2.450,00</p>
+                       <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Faturamento Hoje</p>
+                       <p className="text-xl font-bold text-white">R$ 2.450,00</p>
                      </div>
                    </div>
                 </div>
 
-                <div className="absolute bottom-8 left-8 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg border border-white/50">
-                   <div className="flex items-center gap-3">
-                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <div className="absolute bottom-8 left-8 bg-[#0B0F19]/90 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-purple-500/30">
+                   <div className="flex items-center gap-4">
+                     <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-900/50">
                        <Calendar className="h-6 w-6" />
                      </div>
                      <div>
-                       <p className="text-xs text-muted-foreground font-medium">Próximo Agendamento</p>
-                       <p className="text-sm font-bold text-foreground">Ana Julia - Corte (15:00)</p>
+                       <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Próximo Cliente</p>
+                       <p className="text-sm font-bold text-white">Ana Julia - Corte (15:00)</p>
                      </div>
                    </div>
                 </div>
               </div>
-              
-              {/* Decorative Blur */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary to-purple-600 opacity-20 blur-3xl -z-10 rounded-full" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-muted/30 border-y border-border/50">
+      {/* Stats Section - Tech Style */}
+      <section className="py-20 border-y border-white/5 bg-[#0D121F]">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-12 text-center">
-             <div className="space-y-2">
-               <h3 className="text-5xl font-serif font-bold text-primary">+30%</h3>
-               <p className="text-lg font-medium text-foreground">Faturamento no 1º mês</p>
-               <p className="text-sm text-muted-foreground">Média dos nossos clientes</p>
+             <div className="space-y-2 p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-colors duration-300">
+               <h3 className="text-5xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">+30%</h3>
+               <p className="text-lg font-medium text-white">Faturamento</p>
+               <p className="text-sm text-slate-400">Crescimento médio no 1º mês</p>
              </div>
-             <div className="space-y-2">
-               <h3 className="text-5xl font-serif font-bold text-purple-600">-40%</h3>
-               <p className="text-lg font-medium text-foreground">Redução de Faltas</p>
-               <p className="text-sm text-muted-foreground">Com lembretes automáticos</p>
+             <div className="space-y-2 p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-purple-500/30 transition-colors duration-300">
+               <h3 className="text-5xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">-40%</h3>
+               <p className="text-lg font-medium text-white">Faltas</p>
+               <p className="text-sm text-slate-400">Com IA de confirmação</p>
              </div>
-             <div className="space-y-2">
-               <h3 className="text-5xl font-serif font-bold text-emerald-600">100%</h3>
-               <p className="text-lg font-medium text-foreground">Controle Financeiro</p>
-               <p className="text-sm text-muted-foreground">Sem planilhas complicadas</p>
+             <div className="space-y-2 p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-emerald-500/30 transition-colors duration-300">
+               <h3 className="text-5xl font-sans font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">100%</h3>
+               <p className="text-lg font-medium text-white">Controle</p>
+               <p className="text-sm text-slate-400">Financeiro automatizado</p>
              </div>
           </div>
         </div>
       </section>
 
-      {/* How it Works */}
-      <section id="funcionalidades" className="py-24">
+      {/* How it Works - Dark Mode */}
+      <section id="funcionalidades" className="py-24 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-900/10 rounded-full blur-[100px] -z-10" />
+        
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-4xl font-serif font-bold mb-6">Como o GestãoBelleza revoluciona seu salão</h2>
-            <p className="text-xl text-muted-foreground">
-              Simplificamos tudo para que você tenha mais tempo para brilhar. Tecnologia de ponta, fácil de usar.
+            <span className="text-cyan-400 font-bold tracking-wider text-sm uppercase mb-4 block">Ecossistema Andromeda</span>
+            <h2 className="text-4xl lg:text-5xl font-sans font-bold mb-6 text-white">Tecnologia que transforma</h2>
+            <p className="text-xl text-slate-400">
+              Simplificamos a complexidade da gestão com soluções elegantes e poderosas.
             </p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-8 relative">
-            <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-border to-transparent -z-10" />
+            <div className="hidden md:block absolute top-12 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent -z-10" />
             
             {[
               { 
                 icon: Calendar, 
-                title: "1. Agendamento", 
-                desc: "Cliente agenda online ou você cadastra em segundos." 
+                title: "Smart Booking", 
+                desc: "Agendamento inteligente que maximiza sua ocupação." 
               },
               { 
                 icon: MessageSquare, 
-                title: "2. Confirmação", 
-                desc: "Robô envia lembrete automático via WhatsApp." 
+                title: "Auto Confirm", 
+                desc: "IA que conversa e confirma com seus clientes." 
               },
               { 
-                icon: Sparkles, 
-                title: "3. Atendimento", 
-                desc: "Profissional recebe ficha completa e histórico." 
+                icon: BarChart3, 
+                title: "Business Intel", 
+                desc: "Dashboards dignos de grandes empresas." 
               },
               { 
-                icon: TrendingUp, 
-                title: "4. Fidelização", 
-                desc: "Sistema convida cliente para voltar em 30 dias." 
+                icon: Smartphone, 
+                title: "Mobile First", 
+                desc: "Gestão completa na palma da sua mão." 
               }
             ].map((step, i) => (
-              <div key={i} className="relative bg-background pt-4 text-center group">
-                 <div className="h-16 w-16 mx-auto bg-white border-2 border-primary/20 rounded-2xl flex items-center justify-center text-primary shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div key={i} className="relative pt-4 text-center group">
+                 <div className="h-20 w-20 mx-auto bg-[#0B0F19] border border-cyan-500/30 rounded-2xl flex items-center justify-center text-cyan-400 shadow-[0_0_30px_-10px_rgba(34,211,238,0.3)] mb-6 group-hover:scale-110 group-hover:border-cyan-400 transition-all duration-300">
                    <step.icon className="h-8 w-8" />
                  </div>
-                 <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                 <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
+                 <h3 className="text-xl font-bold mb-3 text-white">{step.title}</h3>
+                 <p className="text-slate-400 leading-relaxed text-sm">{step.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section id="depoimentos" className="py-24 bg-sidebar">
+      {/* Testimonials - Tech Card Style */}
+      <section id="depoimentos" className="py-24 bg-[#0D121F] border-t border-white/5">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-serif font-bold mb-6">Quem usa, ama ❤️</h2>
+            <h2 className="text-4xl font-sans font-bold mb-6 text-white">Parceiros Andromeda</h2>
+            <p className="text-slate-400">Quem usa nossa tecnologia para liderar o mercado.</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -226,67 +242,94 @@ export default function Landing() {
               image={stylist1}
               name="Carla Mendes"
               salon="Studio Glow"
-              text="Eu perdia horas no WhatsApp confirmando clientes. O GestãoBelleza mudou minha vida, agora é tudo automático!"
+              text="A Andromeda trouxe uma visão de tecnologia que eu nunca vi no mercado de beleza. É outro nível."
             />
             <TestimonialCard 
               image={stylist2}
               name="Roberto Silva"
               salon="Barber King"
-              text="O controle financeiro é impecável. Sei exatamente quanto cada barbeiro produziu no dia. Profissionalizou meu negócio."
+              text="O financeiro bate centavo por centavo. A automação de mensagens é surreal de boa."
             />
             <TestimonialCard 
               image="https://i.pravatar.cc/150?img=32"
               name="Juliana Costa"
               salon="Esmalteria Chic"
-              text="A fila de espera virtual organizou meu salão. As clientes amam ver o status pelo celular."
+              text="Minha equipe se adaptou super rápido. Interface limpa, moderna e muito rápida."
             />
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+      {/* Final CTA - Andromeda Branding */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-[#0B0F19] z-0" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay" />
+        
+        {/* Glow effects */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[120px]" />
+
         <div className="container mx-auto px-6 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-8">
-            Pronto para o próximo nível?
+          <div className="inline-block mb-6 p-1 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600">
+             <div className="bg-[#0B0F19] rounded-full px-6 py-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 font-bold tracking-wider text-sm uppercase">
+                  Oferta de Lançamento
+                </span>
+             </div>
+          </div>
+          
+          <h2 className="text-4xl md:text-6xl font-sans font-bold mb-8 text-white tracking-tight">
+            Eleve o padrão do seu negócio.
           </h2>
-          <p className="text-xl text-primary-foreground/80 mb-12 max-w-2xl mx-auto">
-            Experimente a plataforma que está digitalizando os melhores salões do país. Sem cartão de crédito.
+          <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto">
+            Junte-se à elite dos salões que usam Andromeda Solutions. Teste grátis e sinta a diferença.
           </p>
+          
           <Link href="/dashboard">
-            <Button size="lg" className="h-16 px-10 rounded-full text-xl bg-white text-primary hover:bg-white/90 shadow-2xl hover:scale-105 transition-all">
-              Começar Demonstração Grátis
-              <ArrowRight className="ml-2 h-6 w-6" />
+            <Button size="lg" className="h-20 px-12 rounded-full text-xl bg-white text-slate-950 hover:bg-cyan-50 shadow-[0_0_50px_-10px_rgba(255,255,255,0.3)] hover:scale-105 transition-all font-bold">
+              Iniciar Demonstração
+              <ArrowRight className="ml-3 h-6 w-6" />
             </Button>
           </Link>
-          <p className="mt-6 text-sm opacity-60">
-            <ShieldCheck className="inline h-4 w-4 mr-1" />
-            Dados seguros e criptografados
-          </p>
+          
+          <div className="mt-12 flex items-center justify-center gap-8 opacity-60">
+             <div className="flex items-center gap-2">
+               <ShieldCheck className="h-5 w-5 text-cyan-400" />
+               <span className="text-sm text-slate-400">Segurança Enterprise</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Zap className="h-5 w-5 text-yellow-400" />
+               <span className="text-sm text-slate-400">Setup Instantâneo</span>
+             </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-background border-t">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-3">
-             <div className="h-8 w-8 rounded-full overflow-hidden border border-primary/20">
-              <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
+      <footer className="py-12 bg-[#05080F] border-t border-white/5">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-4">
+             <div className="h-10 w-10 rounded-lg overflow-hidden border border-white/10 p-1 bg-slate-900">
+              <img src={andromedaLogo} alt="Logo" className="h-full w-full object-contain" />
             </div>
-            <span className="text-xl font-serif font-bold">GestãoBelleza</span>
+            <div className="flex flex-col">
+              <span className="text-lg font-bold text-white leading-none">ANDROMEDA</span>
+              <span className="text-[10px] text-cyan-400 tracking-[0.2em] uppercase">Solutions</span>
+            </div>
           </div>
-          <div className="flex flex-col items-center gap-1 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Desenvolvido por</p>
-            <span className="text-sm font-bold text-gray-700">Andromeda Solutions</span>
+          
+          <div className="text-center md:text-right">
+             <p className="text-slate-500 text-sm mb-2">
+               Tecnologia desenvolvida para o futuro da beleza.
+             </p>
+             <p className="text-slate-600 text-xs">
+               © 2024 Andromeda Solutions. Todos os direitos reservados.
+             </p>
           </div>
-          <p className="text-sm text-muted-foreground">
-            © 2024 GestãoBelleza. Todos os direitos reservados.
-          </p>
+          
           <div className="flex gap-6">
-            <a href="#" className="text-muted-foreground hover:text-foreground">Instagram</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground">LinkedIn</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground">Contato</a>
+            <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Instagram</a>
+            <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">LinkedIn</a>
+            <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors">Suporte</a>
           </div>
         </div>
       </footer>
@@ -296,21 +339,21 @@ export default function Landing() {
 
 function TestimonialCard({ image, name, salon, text }: any) {
   return (
-    <div className="bg-background p-8 rounded-2xl shadow-sm border border-border/50 hover:shadow-md transition-all">
+    <div className="bg-white/5 p-8 rounded-2xl shadow-none border border-white/5 hover:border-cyan-500/30 hover:bg-white/10 transition-all duration-300 group">
       <div className="flex items-center gap-4 mb-6">
-        <Avatar className="h-14 w-14 border-2 border-primary/20">
+        <Avatar className="h-14 w-14 border-2 border-cyan-500/20 group-hover:border-cyan-500 transition-colors">
           <AvatarImage src={image} />
           <AvatarFallback>{name[0]}</AvatarFallback>
         </Avatar>
         <div>
-          <p className="font-bold text-lg">{name}</p>
-          <p className="text-sm text-primary font-medium">{salon}</p>
+          <p className="font-bold text-lg text-white">{name}</p>
+          <p className="text-sm text-cyan-400 font-medium">{salon}</p>
         </div>
       </div>
-      <div className="flex gap-1 text-amber-500 mb-4">
+      <div className="flex gap-1 text-cyan-500 mb-4 opacity-80">
         {[1,2,3,4,5].map(i => <Star key={i} className="h-4 w-4 fill-current" />)}
       </div>
-      <p className="text-muted-foreground leading-relaxed italic">"{text}"</p>
+      <p className="text-slate-300 leading-relaxed italic">"{text}"</p>
     </div>
   );
 }
