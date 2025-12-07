@@ -61,12 +61,51 @@ export const staff = [
 ];
 
 export const services = [
-  { id: 1, name: "Corte Feminino Premium", price: 120, duration: 60, category: "Cabelo" },
-  { id: 2, name: "Coloração Global", price: 250, duration: 120, category: "Cabelo" },
-  { id: 3, name: "Manicure Gel", price: 85, duration: 90, category: "Unhas" },
-  { id: 4, name: "Design de Sobrancelhas", price: 45, duration: 30, category: "Estética" },
-  { id: 5, name: "Hidratação Profunda", price: 150, duration: 45, category: "Cabelo" },
-  { id: 6, name: "Corte Masculino", price: 60, duration: 40, category: "Cabelo" },
+  // Unhas
+  { id: 101, name: "Manicure", price: 35, duration: 40, category: "Unhas" },
+  { id: 102, name: "Pedicure", price: 40, duration: 50, category: "Unhas" },
+  { id: 103, name: "Combo Mão + Pé", price: 70, duration: 90, category: "Unhas" },
+  { id: 104, name: "Alongamento Gel", price: 150, duration: 120, category: "Unhas" },
+  { id: 105, name: "Alongamento Fibra de Vidro", price: 180, duration: 150, category: "Unhas" },
+  { id: 106, name: "Manutenção de Alongamento", price: 90, duration: 90, category: "Unhas" },
+  { id: 107, name: "Blindagem", price: 60, duration: 60, category: "Unhas" },
+  { id: 108, name: "Spa dos Pés", price: 80, duration: 60, category: "Unhas" },
+  { id: 109, name: "Spa das Mãos", price: 50, duration: 40, category: "Unhas" },
+  { id: 110, name: "Unha Decorada", price: 15, duration: 15, category: "Unhas" },
+  { id: 111, name: "Remoção de Gel", price: 40, duration: 40, category: "Unhas" },
+
+  // Sobrancelhas + Estética Facial
+  { id: 201, name: "Design de Sobrancelha", price: 45, duration: 30, category: "Estética" },
+  { id: 202, name: "Design com Henna", price: 55, duration: 40, category: "Estética" },
+  { id: 203, name: "Design com Tintura", price: 60, duration: 40, category: "Estética" },
+  { id: 204, name: "Brow Lamination", price: 120, duration: 60, category: "Estética" },
+  { id: 205, name: "Limpeza de Sobrancelha Masculina", price: 30, duration: 20, category: "Estética" },
+  { id: 206, name: "Microblading", price: 450, duration: 180, category: "Estética" },
+  { id: 207, name: "Micropigmentação", price: 400, duration: 180, category: "Estética" },
+  { id: 208, name: "Revisão de Micropigmentação", price: 150, duration: 90, category: "Estética" },
+  { id: 209, name: "Reforço de Micropigmentação", price: 200, duration: 120, category: "Estética" },
+  { id: 210, name: "Retoque de Henna", price: 35, duration: 30, category: "Estética" },
+  { id: 211, name: "Retoque de Tintura", price: 40, duration: 30, category: "Estética" },
+
+  // Cabelo – Feminino
+  { id: 301, name: "Corte Feminino", price: 80, duration: 60, category: "Cabelo" },
+  { id: 302, name: "Escova", price: 50, duration: 40, category: "Cabelo" },
+  { id: 303, name: "Hidratação", price: 90, duration: 45, category: "Cabelo" },
+  { id: 304, name: "Nutrição", price: 100, duration: 50, category: "Cabelo" },
+  { id: 305, name: "Reconstrução Capilar", price: 150, duration: 60, category: "Cabelo" },
+  { id: 306, name: "Botox Capilar", price: 180, duration: 90, category: "Cabelo" },
+  { id: 307, name: "Progressiva", price: 250, duration: 180, category: "Cabelo" },
+  { id: 308, name: "Selagem", price: 200, duration: 150, category: "Cabelo" },
+  { id: 309, name: "Luzes", price: 300, duration: 240, category: "Cabelo" },
+  { id: 310, name: "Mechas", price: 350, duration: 240, category: "Cabelo" },
+  { id: 311, name: "Balayage", price: 380, duration: 240, category: "Cabelo" },
+  { id: 312, name: "Tonalização", price: 120, duration: 60, category: "Cabelo" },
+  { id: 313, name: "Tintura Completa", price: 180, duration: 90, category: "Cabelo" },
+  { id: 314, name: "Raiz (Coloração)", price: 100, duration: 60, category: "Cabelo" },
+  { id: 315, name: "Matização", price: 80, duration: 45, category: "Cabelo" },
+  { id: 316, name: "Penteado", price: 150, duration: 90, category: "Cabelo" },
+  { id: 317, name: "Tratamento Anti-quebra", price: 130, duration: 60, category: "Cabelo" },
+  { id: 318, name: "Tratamento Anti-frizz", price: 140, duration: 60, category: "Cabelo" },
 ];
 
 export const appointments = [
