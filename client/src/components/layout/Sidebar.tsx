@@ -82,13 +82,6 @@ export function Sidebar() {
           Sistema
         </div>
         
-        <Link href="/mini-site">
-           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer">
-            <Smartphone className="h-4 w-4 text-muted-foreground" />
-            Mini Site (Demo)
-          </a>
-        </Link>
-        
         <button 
           onClick={openWelcome}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer w-full text-left"
@@ -114,8 +107,8 @@ export function Sidebar() {
       <div className="p-4 border-t border-sidebar-border/50 space-y-4">
         <div className="bg-sidebar-accent/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-8 w-8 rounded-full overflow-hidden border border-primary/20">
-              <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
+            <div className="h-8 w-8 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
+              <Users className="h-4 w-4 text-slate-500" />
             </div>
             <div>
               <p className="text-sm font-medium">Seu Salão</p>

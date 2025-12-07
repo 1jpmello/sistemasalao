@@ -4,9 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { MessageCircle, Mail, Gift, CalendarClock, Zap, PlayCircle, PauseCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { MessageCircle, Mail, Gift, CalendarClock, Zap, PlayCircle, PauseCircle, Lock } from "lucide-react";
+import { useState } from "react";
 
 export default function Marketing() {
+  const [showProModal, setShowProModal] = useState(false);
+
+  const handleProAction = () => {
+    setShowProModal(true);
+  };
+
   return (
     <Layout>
       <div className="space-y-8">
@@ -15,10 +23,49 @@ export default function Marketing() {
             <h2 className="text-3xl font-serif font-bold">Marketing Automático</h2>
             <p className="text-muted-foreground">Engaje seus clientes e aumente a retenção automaticamente.</p>
           </div>
-          <Button className="bg-primary text-white shadow-lg shadow-primary/20">
+          <Button 
+            className="bg-primary text-white shadow-lg shadow-primary/20"
+            onClick={handleProAction}
+          >
             + Nova Automação
           </Button>
         </div>
+
+        <Dialog open={showProModal} onOpenChange={setShowProModal}>
+          <DialogContent className="sm:max-w-md text-center">
+             <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <Lock className="h-6 w-6 text-primary" />
+             </div>
+             <DialogHeader>
+               <DialogTitle className="text-xl text-center">🚀 Área exclusiva para clientes ativos</DialogTitle>
+             </DialogHeader>
+             
+             <div className="py-4 text-sm text-muted-foreground space-y-4 text-left">
+               <p>
+                 Automações são a parte mais poderosa do sistema — elas aumentam vendas, reduzem o tempo de atendimento e fidelizam clientes automaticamente.
+               </p>
+               <p className="font-medium text-foreground">
+                 Para continuar, você precisa ativar sua conta profissional.
+               </p>
+               
+               <div className="bg-muted/30 p-4 rounded-lg space-y-2">
+                 <p className="font-medium text-foreground mb-2">Ao ativar, você destrava:</p>
+                 <div className="flex items-center gap-2"><span>🔥</span> Automações completas de WhatsApp</div>
+                 <div className="flex items-center gap-2"><span>🔥</span> Agendamentos inteligentes</div>
+                 <div className="flex items-center gap-2"><span>🔥</span> Campanhas de recuperação de clientes</div>
+                 <div className="flex items-center gap-2"><span>🔥</span> Suporte personalizado</div>
+               </div>
+               
+               <p className="text-center font-medium text-primary">Ative agora e tenha acesso imediato.</p>
+             </div>
+
+             <DialogFooter className="sm:justify-center">
+               <Button className="w-full sm:w-auto px-8" onClick={() => setShowProModal(false)}>
+                 Ativar Conta Profissional
+               </Button>
+             </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Visual Flow Simulation - The "Wow" Factor */}
@@ -105,7 +152,7 @@ export default function Marketing() {
                   </div>
                   <div className="mt-4 flex items-center justify-between">
                     <span className="text-xs font-medium px-2 py-1 bg-muted rounded-md">243 disparos</span>
-                    <Button variant="ghost" size="sm" className="h-6 text-xs">Editar</Button>
+                    <Button variant="ghost" size="sm" className="h-6 text-xs" onClick={handleProAction}>Editar</Button>
                   </div>
                 </CardContent>
               </Card>
