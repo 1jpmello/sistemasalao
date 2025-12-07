@@ -1,0 +1,136 @@
+You are updating the front-end of my beauty salon demo platform.  
+Do NOT add real authentication, database, or backend logic.  
+Everything should be FRONT-END ONLY: simulated, visually functional, and made to impress.
+
+Your task now is to implement ALL premium-lock situations using professional, centered modals 
+that block the action and encourage the user to upgrade.
+
+Every time the user clicks a restricted feature, show the correct modal.
+
+IMPORTANT:
+- The modals must be beautiful, persuasive, centered, and use icons.
+- No real billing or login required. It’s ONLY a visual demo.
+- All features blocked should still look clickable, but trigger the modal.
+- Add subtle fade overlay behind the modal.
+
+Implement a modal style system that I can easily reuse for all premium blocks.
+
+-----------------------------------
+🟣 BLOCK THESE FEATURES AND SHOW MODALS:
+-----------------------------------
+
+1. Exporting reports (PDF, Excel, sales metrics)
+2. Advanced calendar (multiple professionals, blocking times, special hours)
+3. Marketing automations (create/edit campaigns)
+4. CRM advanced (adding more clients, editing client cards)
+5. Adding or editing services beyond the demo default
+6. Finance section advanced features (cashflow, expenses, revenue breakdown)
+7. Sending automatic notifications (reminders, post-service messages)
+8. Dashboard advanced analytics (conversion rate, top services, staff comparison)
+9. Priority support button
+
+All these actions must trigger their corresponding modal.
+
+-----------------------------------
+🟣 USE THESE EXACT PERSUASIVE MODAL TEXTS:
+-----------------------------------
+
+⚠️ Exportação (Relatórios)
+Title: "Exportação disponível apenas para clientes"
+Body:
+"Ative seu acesso profissional e libere relatórios completos de atendimento, faturamento e desempenho da equipe."
+Checklist:
+- 📊 Relatórios profissionais
+- 🧾 Exportação PDF e Excel
+- 📈 Métricas completas
+CTA: "Quero liberar relatórios"
+
+⚠️ Agenda Avançada
+Title: "Agenda avançada é exclusiva para clientes"
+Body:
+"Desbloqueie horários por profissional, bloqueios personalizados e gestão completa da agenda."
+Checklist:
+- 📅 Agenda por profissional
+- 🕒 Horários especiais
+- 🔔 Notificações automáticas
+CTA: "Ativar agenda completa"
+
+⚠️ Automações e Marketing
+Title: "Automações premium disponíveis no plano profissional"
+Body:
+"Crie fluxos automáticos para atrair, recuperar e fidelizar clientes."
+Checklist:
+- 🔁 Recuperação automática
+- 💬 Mensagens no WhatsApp
+- ⭐ Pós-atendimento inteligente
+CTA: "Quero ativar automações"
+
+⚠️ CRM Avançado
+Title: "CRM completo disponível apenas para clientes"
+Body:
+"Gerencie históricos, preferências e informações completas dos clientes."
+Checklist:
+- 📚 Histórico do cliente
+- 📌 Informações detalhadas
+- 📞 Contato rápido
+CTA: "Liberar CRM completo"
+
+⚠️ Catálogo de Serviços
+Title: "Catálogo Personalizado é exclusivo para clientes"
+Body:
+"Personalize serviços, preços, fotos e categorias sem limites."
+Checklist:
+- ✍️ Editar serviços
+- 🖼️ Adicionar fotos
+- 🔗 Integração com WhatsApp
+CTA: "Desbloquear catálogo completo"
+
+⚠️ Financeiro Avançado
+Title: "Financeiro avançado disponível apenas no plano profissional"
+Body:
+"Tenha controle total de faturamento, despesas e lucros."
+Checklist:
+- 💸 Controle de caixa
+- 📉 Despesas
+- 📊 Indicadores inteligentes
+CTA: "Liberar financeiro completo"
+
+⚠️ Notificações Automáticas
+Title: "Notificações automáticas são exclusivas"
+Body:
+"Envie lembretes, confirmações e mensagens pós-atendimento automaticamente."
+Checklist:
+- 🔔 Lembretes automáticos
+- 🤝 Boas-vindas
+- ⭐ Avaliações automáticas
+CTA: "Desbloquear notificações"
+
+⚠️ Dashboard Completo
+Title: "Dashboard completo disponível no plano profissional"
+Body:
+"Acompanhe métricas reais do seu salão e tome decisões inteligentes."
+Checklist:
+- 📅 Atendimentos por profissional
+- 💸 Faturamento por serviço
+- 👥 Clientes recorrentes
+CTA: "Liberar dashboard"
+
+⚠️ Suporte Premium
+Title: "Suporte Premium disponível para clientes"
+Body:
+"Tenha atendimento rápido, ajustes e personalizações."
+CTA: "Quero suporte premium"
+
+-----------------------------------
+🟣 ADDITIONAL FRONT-END REQUIREMENTS:
+-----------------------------------
+- Add hover cursor and subtle glow on locked features.
+- Use soft animations (fade in/out for the modal).
+- Keep spacing, fonts, and colors consistent.
+- Modals should auto-adjust for mobile view.
+- Use a reusable Modal() component.
+
+-----------------------------------
+Now implement all these premium locks + modals visually in the existing interface.
+Keep everything consistent with the current system's design.
+No backend integration is needed.

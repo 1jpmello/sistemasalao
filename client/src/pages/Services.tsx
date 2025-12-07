@@ -5,12 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Search, Filter, Edit, Trash2, Plus, Image as ImageIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { PremiumModal } from "@/components/ui/premium-modal";
+import { useState } from "react";
 import haircutImg from "@assets/generated_images/close_up_of_a_premium_haircut_texture.png";
 import manicureImg from "@assets/generated_images/close_up_of_artistic_manicure.png";
 import facialImg from "@assets/generated_images/spa_facial_treatment_setup.png";
 import barberImg from "@assets/generated_images/barber_shop_tools_detail.png";
 
 export default function Services() {
+  const [catalogModal, setCatalogModal] = useState(false);
+
   // Add images based on category
   const visualServices = services.map((s) => {
     let image = haircutImg;
@@ -36,12 +40,28 @@ export default function Services() {
   return (
     <Layout>
       <div className="space-y-8 pb-12">
+        <PremiumModal
+          open={catalogModal}
+          onOpenChange={setCatalogModal}
+          title="Catálogo Personalizado é exclusivo para clientes"
+          body="Personalize serviços, preços, fotos e categorias sem limites."
+          checklist={[
+            "✍️ Editar serviços",
+            "🖼️ Adicionar fotos",
+            "🔗 Integração com WhatsApp"
+          ]}
+          cta="Desbloquear catálogo completo"
+        />
+
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-3xl font-serif font-bold">Catálogo Visual</h2>
             <p className="text-muted-foreground">Feito para cabeleireiras, lash designers e designers de sobrancelha.</p>
           </div>
-          <Button className="bg-primary text-white shadow-lg shadow-primary/20">
+          <Button 
+            className="bg-primary text-white shadow-lg shadow-primary/20"
+            onClick={() => setCatalogModal(true)}
+          >
             <Plus className="h-4 w-4 mr-2" />
             Novo Serviço
           </Button>
@@ -68,7 +88,11 @@ export default function Services() {
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {groupedServices[category].map((service) => (
-                  <Card key={service.id} className="border-none shadow-sm hover:shadow-lg transition-all duration-300 glass-card group overflow-hidden">
+                  <Card 
+                    key={service.id} 
+                    className="border-none shadow-sm hover:shadow-lg transition-all duration-300 glass-card group overflow-hidden cursor-pointer"
+                    onClick={() => setCatalogModal(true)}
+                  >
                     <div className="relative h-48 overflow-hidden">
                       <img 
                         src={service.image} 
@@ -99,11 +123,11 @@ export default function Services() {
                       </div>
 
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="flex-1 hover:bg-primary hover:text-white transition-colors">
+                        <Button variant="outline" size="sm" className="flex-1 hover:bg-primary hover:text-white transition-colors" onClick={(e) => {e.stopPropagation(); setCatalogModal(true);}}>
                           <Edit className="h-3 w-3 mr-2" />
                           Editar
                         </Button>
-                        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive">
+                        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive" onClick={(e) => {e.stopPropagation(); setCatalogModal(true);}}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -121,7 +145,10 @@ export default function Services() {
                  <div className="h-px flex-1 bg-border/60"></div>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <button className="border-2 border-dashed border-muted hover:border-primary/50 hover:bg-primary/5 rounded-xl flex flex-col items-center justify-center gap-4 h-[340px] transition-all group w-full">
+                <button 
+                  className="border-2 border-dashed border-muted hover:border-primary/50 hover:bg-primary/5 rounded-xl flex flex-col items-center justify-center gap-4 h-[340px] transition-all group w-full"
+                  onClick={() => setCatalogModal(true)}
+                >
                   <div className="h-16 w-16 rounded-full bg-muted group-hover:bg-primary/10 flex items-center justify-center transition-colors">
                     <ImageIcon className="h-8 w-8 text-muted-foreground group-hover:text-primary" />
                   </div>

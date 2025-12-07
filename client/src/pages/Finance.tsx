@@ -1,6 +1,8 @@
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PremiumModal } from "@/components/ui/premium-modal";
+import { useState } from "react";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -23,20 +25,49 @@ const data = [
 ];
 
 export default function Finance() {
+  const [financeModal, setFinanceModal] = useState(false);
+  const [reportModal, setReportModal] = useState(false);
+
   return (
     <Layout>
       <div className="space-y-8">
+        <PremiumModal
+          open={financeModal}
+          onOpenChange={setFinanceModal}
+          title="Financeiro avançado disponível apenas no plano profissional"
+          body="Tenha controle total de faturamento, despesas e lucros."
+          checklist={[
+            "💸 Controle de caixa",
+            "📉 Despesas",
+            "📊 Indicadores inteligentes"
+          ]}
+          cta="Liberar financeiro completo"
+        />
+
+        <PremiumModal
+          open={reportModal}
+          onOpenChange={setReportModal}
+          title="Exportação disponível apenas para clientes"
+          body="Ative seu acesso profissional e libere relatórios completos de atendimento, faturamento e desempenho da equipe."
+          checklist={[
+            "📊 Relatórios profissionais",
+            "🧾 Exportação PDF e Excel",
+            "📈 Métricas completas"
+          ]}
+          cta="Quero liberar relatórios"
+        />
+
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-3xl font-serif font-bold">Financeiro</h2>
             <p className="text-muted-foreground">Veja o faturamento do dia e serviços mais vendidos.</p>
           </div>
           <div className="flex gap-2">
-             <Button variant="outline" className="gap-2">
+             <Button variant="outline" className="gap-2" onClick={() => setFinanceModal(true)}>
                <Calendar className="h-4 w-4" />
                Esta Semana
              </Button>
-             <Button variant="outline" className="gap-2">
+             <Button variant="outline" className="gap-2" onClick={() => setReportModal(true)}>
                <Download className="h-4 w-4" />
                Relatório
              </Button>
@@ -44,8 +75,8 @@ export default function Finance() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card className="border-none shadow-sm glass-card bg-emerald-500/5 border-emerald-200">
+        <div className="grid gap-6 md:grid-cols-3 cursor-pointer" onClick={() => setFinanceModal(true)}>
+          <Card className="border-none shadow-sm glass-card bg-emerald-500/5 border-emerald-200 hover:shadow-md transition-all">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
@@ -59,7 +90,7 @@ export default function Finance() {
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-sm glass-card bg-rose-500/5 border-rose-200">
+          <Card className="border-none shadow-sm glass-card bg-rose-500/5 border-rose-200 hover:shadow-md transition-all">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
@@ -73,7 +104,7 @@ export default function Finance() {
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-sm glass-card bg-primary/5 border-primary/20">
+          <Card className="border-none shadow-sm glass-card bg-primary/5 border-primary/20 hover:shadow-md transition-all">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -89,8 +120,11 @@ export default function Finance() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid lg:grid-cols-3 gap-8">
-           <Card className="lg:col-span-2 border-none shadow-sm glass-card">
+        <div className="grid lg:grid-cols-3 gap-8 cursor-pointer" onClick={() => setFinanceModal(true)}>
+           <Card className="lg:col-span-2 border-none shadow-sm glass-card hover:shadow-md transition-all relative">
+            <div className="absolute inset-0 z-10 bg-white/5 backdrop-blur-[1px] rounded-xl flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+               <Button variant="secondary" className="shadow-lg">Ver detalhes completos</Button>
+            </div>
             <CardHeader>
               <CardTitle>Faturamento Semanal</CardTitle>
               <CardDescription>Visão clara dos seus melhores dias.</CardDescription>

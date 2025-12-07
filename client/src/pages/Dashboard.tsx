@@ -1,6 +1,8 @@
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PremiumModal } from "@/components/ui/premium-modal";
+import { useState } from "react";
 import { 
   Users, 
   Calendar, 
@@ -26,9 +28,38 @@ const chartData = [
 ];
 
 export default function Dashboard() {
+  const [reportModal, setReportModal] = useState(false);
+  const [dashboardModal, setDashboardModal] = useState(false);
+
   return (
     <Layout>
       <div className="space-y-8">
+        <PremiumModal
+          open={reportModal}
+          onOpenChange={setReportModal}
+          title="Exportação disponível apenas para clientes"
+          body="Ative seu acesso profissional e libere relatórios completos de atendimento, faturamento e desempenho da equipe."
+          checklist={[
+            "📊 Relatórios profissionais",
+            "🧾 Exportação PDF e Excel",
+            "📈 Métricas completas"
+          ]}
+          cta="Quero liberar relatórios"
+        />
+
+        <PremiumModal
+          open={dashboardModal}
+          onOpenChange={setDashboardModal}
+          title="Dashboard completo disponível no plano profissional"
+          body="Acompanhe métricas reais do seu salão e tome decisões inteligentes."
+          checklist={[
+            "📅 Atendimentos por profissional",
+            "💸 Faturamento por serviço",
+            "👥 Clientes recorrentes"
+          ]}
+          cta="Liberar dashboard"
+        />
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -36,7 +67,7 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Controle total do seu salão em um lugar só.</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="bg-white">Exportar Relatório</Button>
+            <Button variant="outline" className="bg-white" onClick={() => setReportModal(true)}>Exportar Relatório</Button>
             <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20">
               + Novo Agendamento
             </Button>
@@ -44,7 +75,7 @@ export default function Dashboard() {
         </div>
 
         {/* KPI Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 cursor-pointer" onClick={() => setDashboardModal(true)}>
           <KpiCard 
             title="Clientes Hoje" 
             value={stats.clientsToday} 
@@ -82,12 +113,15 @@ export default function Dashboard() {
         {/* Main Content Split */}
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Chart Section */}
-          <Card className="lg:col-span-2 border-none shadow-sm glass-card">
+          <Card className="lg:col-span-2 border-none shadow-sm glass-card cursor-pointer hover:shadow-md transition-all" onClick={() => setDashboardModal(true)}>
             <CardHeader>
               <CardTitle>Fluxo de Atendimentos</CardTitle>
               <CardDescription>Movimento de clientes por horário</CardDescription>
             </CardHeader>
-            <CardContent className="h-[300px]">
+            <CardContent className="h-[300px] relative">
+              <div className="absolute inset-0 z-10 bg-white/5 backdrop-blur-[1px] rounded-b-xl flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                 <Button variant="secondary" className="shadow-lg">Ver detalhes completos</Button>
+              </div>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <defs>

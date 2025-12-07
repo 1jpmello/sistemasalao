@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { MessageCircle, Mail, Gift, CalendarClock, Zap, PlayCircle, PauseCircle, Lock } from "lucide-react";
+import { PremiumModal } from "@/components/ui/premium-modal";
+import { MessageCircle, Mail, Gift, CalendarClock, Zap, PlayCircle, PauseCircle } from "lucide-react";
 import { useState } from "react";
 
 export default function Marketing() {
@@ -31,41 +31,18 @@ export default function Marketing() {
           </Button>
         </div>
 
-        <Dialog open={showProModal} onOpenChange={setShowProModal}>
-          <DialogContent className="sm:max-w-md text-center">
-             <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Lock className="h-6 w-6 text-primary" />
-             </div>
-             <DialogHeader>
-               <DialogTitle className="text-xl text-center">🚀 Área exclusiva para clientes ativos</DialogTitle>
-             </DialogHeader>
-             
-             <div className="py-4 text-sm text-muted-foreground space-y-4 text-left">
-               <p>
-                 Automações são a parte mais poderosa do sistema — elas aumentam vendas, reduzem o tempo de atendimento e fidelizam clientes automaticamente.
-               </p>
-               <p className="font-medium text-foreground">
-                 Para continuar, você precisa ativar sua conta profissional.
-               </p>
-               
-               <div className="bg-muted/30 p-4 rounded-lg space-y-2">
-                 <p className="font-medium text-foreground mb-2">Ao ativar, você destrava:</p>
-                 <div className="flex items-center gap-2"><span>🔥</span> Automações completas de WhatsApp</div>
-                 <div className="flex items-center gap-2"><span>🔥</span> Agendamentos inteligentes</div>
-                 <div className="flex items-center gap-2"><span>🔥</span> Campanhas de recuperação de clientes</div>
-                 <div className="flex items-center gap-2"><span>🔥</span> Suporte personalizado</div>
-               </div>
-               
-               <p className="text-center font-medium text-primary">Ative agora e tenha acesso imediato.</p>
-             </div>
-
-             <DialogFooter className="sm:justify-center">
-               <Button className="w-full sm:w-auto px-8" onClick={() => setShowProModal(false)}>
-                 Ativar Conta Profissional
-               </Button>
-             </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <PremiumModal
+          open={showProModal}
+          onOpenChange={setShowProModal}
+          title="Automações premium disponíveis no plano profissional"
+          body="Crie fluxos automáticos para atrair, recuperar e fidelizar clientes."
+          checklist={[
+            "🔁 Recuperação automática",
+            "💬 Mensagens no WhatsApp",
+            "⭐ Pós-atendimento inteligente"
+          ]}
+          cta="Quero ativar automações"
+        />
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Visual Flow Simulation - The "Wow" Factor */}

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { PremiumModal } from "@/components/ui/premium-modal";
+import { useState } from "react";
 import { Search, Phone, Mail, Calendar, Clock, Star, MoreHorizontal } from "lucide-react";
 
 const clients = [
@@ -15,15 +17,33 @@ const clients = [
 ];
 
 export default function Clients() {
+  const [crmModal, setCrmModal] = useState(false);
+
   return (
     <Layout>
       <div className="space-y-8">
+        <PremiumModal
+          open={crmModal}
+          onOpenChange={setCrmModal}
+          title="CRM completo disponível apenas para clientes"
+          body="Gerencie históricos, preferências e informações completas dos clientes."
+          checklist={[
+            "📚 Histórico do cliente",
+            "📌 Informações detalhadas",
+            "📞 Contato rápido"
+          ]}
+          cta="Liberar CRM completo"
+        />
+
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-3xl font-serif font-bold">Histórico de Clientes</h2>
             <p className="text-muted-foreground">Acompanhe informações e histórico de cada cliente.</p>
           </div>
-          <Button className="bg-primary text-white shadow-lg shadow-primary/20">
+          <Button 
+            className="bg-primary text-white shadow-lg shadow-primary/20"
+            onClick={() => setCrmModal(true)}
+          >
             + Novo Cliente
           </Button>
         </div>
@@ -35,7 +55,7 @@ export default function Clients() {
 
         <div className="grid gap-4">
           {clients.map((client) => (
-            <Card key={client.id} className="border-none shadow-sm hover:shadow-md transition-all glass-card group">
+            <Card key={client.id} className="border-none shadow-sm hover:shadow-md transition-all glass-card group cursor-pointer" onClick={() => setCrmModal(true)}>
               <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                 <Avatar className="h-14 w-14 ring-2 ring-white shadow-sm">
                   <AvatarImage src={client.img} />
@@ -68,10 +88,10 @@ export default function Clients() {
                   </div>
                   
                   <div className="flex gap-2">
-                     <Button variant="ghost" size="icon" className="h-9 w-9 bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700 rounded-full">
+                     <Button variant="ghost" size="icon" className="h-9 w-9 bg-green-50 text-green-600 hover:bg-green-100 hover:text-green-700 rounded-full" onClick={(e) => {e.stopPropagation(); setCrmModal(true);}}>
                        <Phone className="h-4 w-4" />
                      </Button>
-                     <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
+                     <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full" onClick={(e) => {e.stopPropagation(); setCrmModal(true);}}>
                        <MoreHorizontal className="h-4 w-4" />
                      </Button>
                   </div>

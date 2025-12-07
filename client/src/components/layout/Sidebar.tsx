@@ -14,11 +14,14 @@ import {
   Home,
   DollarSign,
   Smartphone,
-  HelpCircle
+  HelpCircle,
+  HeadphonesIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import salonLogo from "@assets/ef8f913501c4d7f06c503a056efcd95e_1765133100746.jpg";
 import { useTour } from "@/context/TourContext";
+import { useState } from "react";
+import { PremiumModal } from "@/components/ui/premium-modal";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", id: "nav-dashboard" },
@@ -34,9 +37,23 @@ const menuItems = [
 export function Sidebar() {
   const [location] = useLocation();
   const { openWelcome } = useTour();
+  const [supportModal, setSupportModal] = useState(false);
 
   return (
     <aside className="w-64 border-r bg-sidebar h-screen flex flex-col fixed left-0 top-0 z-30 hidden md:flex shadow-xl shadow-primary/5">
+      <PremiumModal
+        open={supportModal}
+        onOpenChange={setSupportModal}
+        title="Suporte Premium disponível para clientes"
+        body="Tenha atendimento rápido, ajustes e personalizações."
+        checklist={[
+          "🚀 Atendimento prioritário",
+          "🎨 Personalizações no sistema",
+          "📞 Contato direto via WhatsApp"
+        ]}
+        cta="Quero suporte premium"
+      />
+
       <div className="p-6 flex items-center gap-2 border-b border-sidebar-border/50">
         <Link href="/">
            <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/20 cursor-pointer">
@@ -88,6 +105,14 @@ export function Sidebar() {
         >
           <HelpCircle className="h-4 w-4 text-muted-foreground" />
           Ver Guia de Boas-vindas
+        </button>
+
+        <button 
+          onClick={() => setSupportModal(true)}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer w-full text-left"
+        >
+          <HeadphonesIcon className="h-4 w-4 text-muted-foreground" />
+          Suporte Premium
         </button>
         
         <Link href="/settings">
