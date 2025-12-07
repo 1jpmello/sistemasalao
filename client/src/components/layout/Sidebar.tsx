@@ -11,9 +11,12 @@ import {
   Settings,
   Sparkles,
   LogOut,
-  Home
+  Home,
+  DollarSign,
+  Smartphone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import andromedaLogo from "@assets/andromeda_png_1765131801860.jpg";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -21,6 +24,8 @@ const menuItems = [
   { icon: GitPullRequest, label: "Fluxo", href: "/queue" },
   { icon: Users, label: "Profissionais", href: "/team" },
   { icon: Scissors, label: "Serviços", href: "/services" },
+  { icon: DollarSign, label: "Financeiro", href: "/finance" },
+  { icon: Users, label: "Clientes", href: "/clients" },
   { icon: Megaphone, label: "Marketing", href: "/marketing" },
 ];
 
@@ -71,6 +76,14 @@ export function Sidebar() {
         <div className="mt-8 mb-4 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           Sistema
         </div>
+        
+        <Link href="/mini-site">
+           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer">
+            <Smartphone className="h-4 w-4 text-muted-foreground" />
+            Mini Site (Demo)
+          </a>
+        </Link>
+        
         <Link href="/settings">
            <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer">
             <Settings className="h-4 w-4 text-muted-foreground" />
@@ -85,8 +98,8 @@ export function Sidebar() {
         </Link>
       </nav>
 
-      <div className="p-4 border-t border-sidebar-border/50">
-        <div className="bg-sidebar-accent/50 rounded-xl p-4 mb-4">
+      <div className="p-4 border-t border-sidebar-border/50 space-y-4">
+        <div className="bg-sidebar-accent/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-purple-400" />
             <div>
@@ -95,10 +108,11 @@ export function Sidebar() {
             </div>
           </div>
         </div>
-        <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10">
-          <LogOut className="mr-2 h-4 w-4" />
-          Sair
-        </Button>
+        
+        <div className="flex items-center justify-center gap-2 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Desenvolvido por</p>
+          <img src={andromedaLogo} alt="Andromeda Solutions" className="h-6 w-auto mix-blend-multiply dark:mix-blend-normal" />
+        </div>
       </div>
     </aside>
   );

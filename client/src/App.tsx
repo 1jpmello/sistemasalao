@@ -11,6 +11,9 @@ import Services from "@/pages/Services";
 import Queue from "@/pages/Queue";
 import Marketing from "@/pages/Marketing";
 import Landing from "@/pages/Landing";
+import Finance from "@/pages/Finance";
+import Clients from "@/pages/Clients";
+import MiniSite from "@/pages/MiniSite";
 
 function Router() {
   return (
@@ -22,6 +25,9 @@ function Router() {
       <Route path="/services" component={Services} />
       <Route path="/queue" component={Queue} />
       <Route path="/marketing" component={Marketing} />
+      <Route path="/finance" component={Finance} />
+      <Route path="/clients" component={Clients} />
+      <Route path="/mini-site" component={MiniSite} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -151,6 +151,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </ScrollArea>
 
+          {/* Quick Actions */}
+          <div className="px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar">
+            <Button variant="outline" size="sm" className="rounded-full text-xs h-8 whitespace-nowrap bg-white" onClick={() => setMessages(prev => [...prev, {id: Date.now(), text: "Confirmar todos de amanhã", time: "Agora", sender: 'user'}])}>
+              ✅ Confirmar Agenda
+            </Button>
+            <Button variant="outline" size="sm" className="rounded-full text-xs h-8 whitespace-nowrap bg-white" onClick={() => setMessages(prev => [...prev, {id: Date.now(), text: "Enviar lembretes de falta", time: "Agora", sender: 'user'}])}>
+              📢 Lembretes
+            </Button>
+            <Button variant="outline" size="sm" className="rounded-full text-xs h-8 whitespace-nowrap bg-white" onClick={() => setMessages(prev => [...prev, {id: Date.now(), text: "Relatório do dia", time: "Agora", sender: 'user'}])}>
+              📊 Relatório
+            </Button>
+          </div>
+
           <div className="p-4 border-t bg-muted/20">
             <form className="flex gap-2" onSubmit={(e) => {
               e.preventDefault();
