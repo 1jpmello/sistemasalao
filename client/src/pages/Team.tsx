@@ -7,19 +7,38 @@ import { Star, Clock, MoreHorizontal, Calendar as CalendarIcon, X } from "lucide
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
+import { PremiumModal } from "@/components/ui/premium-modal";
+import { AiFooterDisclaimer, AiImageTooltip } from "@/components/ui/ai-disclaimer";
 
 export default function Team() {
   const [showAgenda, setShowAgenda] = useState<number | null>(null);
+  const [addProModal, setAddProModal] = useState(false);
 
   return (
     <Layout>
       <div className="space-y-8">
+        <PremiumModal 
+          open={addProModal} 
+          onOpenChange={setAddProModal}
+          title="Catálogo Personalizado é exclusivo para clientes"
+          body="Personalize serviços, preços, fotos e categorias sem limites."
+          checklist={[
+            "✍️ Editar serviços",
+            "🖼️ Adicionar fotos",
+            "🔗 Integração com WhatsApp"
+          ]}
+          cta="Quero personalizar minha equipe"
+        />
+
          <div className="flex justify-between items-center">
           <div>
             <h2 className="text-3xl font-serif font-bold">Profissionais</h2>
             <p className="text-muted-foreground">Organize sua equipe e seus horários com facilidade.</p>
           </div>
-          <Button className="bg-primary text-white shadow-lg shadow-primary/20">
+          <Button 
+            className="bg-primary text-white shadow-lg shadow-primary/20"
+            onClick={() => setAddProModal(true)}
+          >
             + Adicionar Profissional
           </Button>
         </div>
@@ -73,10 +92,12 @@ export default function Team() {
               <div className="h-24 bg-gradient-to-r from-pink-200 via-purple-200 to-indigo-200 opacity-50 group-hover:opacity-100 transition-opacity" />
               <CardContent className="relative pt-0 pb-6 px-6 text-center">
                 <div className="relative -top-12 mb-[-30px]">
-                   <Avatar className="h-24 w-24 ring-4 ring-white shadow-lg mx-auto">
-                    <AvatarImage src={person.avatar} className="object-cover" />
-                    <AvatarFallback>{person.name[0]}</AvatarFallback>
-                  </Avatar>
+                   <AiImageTooltip>
+                     <Avatar className="h-24 w-24 ring-4 ring-white shadow-lg mx-auto">
+                      <AvatarImage src={person.avatar} className="object-cover" />
+                      <AvatarFallback>{person.name[0]}</AvatarFallback>
+                    </Avatar>
+                   </AiImageTooltip>
                   <div className={`absolute bottom-1 right-[calc(50%-40px)] w-4 h-4 rounded-full border-2 border-white ${
                     person.status === 'Disponível' || person.status === 'Livre' ? 'bg-emerald-500' : 
                     person.status === 'Atendendo' ? 'bg-amber-500' : 'bg-rose-500'
@@ -105,14 +126,20 @@ export default function Team() {
                   )}
                 </div>
 
-                <div className="flex gap-2 justify-center">
+                <div className="flex gap-2 justify-center mb-4">
                   <Button variant="outline" className="w-full text-xs h-9" onClick={() => setShowAgenda(person.id)}>Ver Agenda</Button>
                   <Button variant="ghost" size="icon" className="h-9 w-9"><MoreHorizontal className="h-4 w-4" /></Button>
                 </div>
+
+                <p className="text-[10px] text-muted-foreground/60 border-t pt-2">
+                  Imagens ilustrativas. No sistema real, você poderá usar fotos reais da sua equipe.
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
+        
+        <AiFooterDisclaimer />
       </div>
     </Layout>
   );

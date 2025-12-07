@@ -7,6 +7,7 @@ import { Clock, Search, Filter, Edit, Trash2, Plus, Image as ImageIcon } from "l
 import { Input } from "@/components/ui/input";
 import { PremiumModal } from "@/components/ui/premium-modal";
 import { useState } from "react";
+import { AiFooterDisclaimer, AiImageTooltip } from "@/components/ui/ai-disclaimer";
 import haircutImg from "@assets/generated_images/close_up_of_a_premium_haircut_texture.png";
 import manicureImg from "@assets/generated_images/close_up_of_artistic_manicure.png";
 import facialImg from "@assets/generated_images/spa_facial_treatment_setup.png";
@@ -94,15 +95,17 @@ export default function Services() {
                     onClick={() => setCatalogModal(true)}
                   >
                     <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={service.image} 
-                        alt={service.name} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-sm font-bold text-gray-900 shadow-sm">
+                      <AiImageTooltip>
+                        <img 
+                          src={service.image} 
+                          alt={service.name} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </AiImageTooltip>
+                      <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-sm font-bold text-gray-900 shadow-sm pointer-events-none">
                         R$ {service.price},00
                       </div>
-                      <div className="absolute top-3 left-3">
+                      <div className="absolute top-3 left-3 pointer-events-none">
                          <Badge variant="secondary" className="bg-white/90 backdrop-blur text-xs font-normal shadow-sm">
                            {service.category}
                          </Badge>
@@ -160,6 +163,8 @@ export default function Services() {
               </div>
            </div>
         </div>
+        
+        <AiFooterDisclaimer />
       </div>
     </Layout>
   );

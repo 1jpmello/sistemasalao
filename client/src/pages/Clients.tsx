@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { PremiumModal } from "@/components/ui/premium-modal";
 import { useState } from "react";
 import { Search, Phone, Mail, Calendar, Clock, Star, MoreHorizontal } from "lucide-react";
+import { AiFooterDisclaimer, AiImageTooltip } from "@/components/ui/ai-disclaimer";
 
 const clients = [
   { id: 1, name: "Fernanda Lima", lastVisit: "02 Dez", totalVisits: 14, status: "Fiel", phone: "(11) 99999-9999", img: "https://i.pravatar.cc/150?img=1" },
@@ -57,10 +58,12 @@ export default function Clients() {
           {clients.map((client) => (
             <Card key={client.id} className="border-none shadow-sm hover:shadow-md transition-all glass-card group cursor-pointer" onClick={() => setCrmModal(true)}>
               <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-                <Avatar className="h-14 w-14 ring-2 ring-white shadow-sm">
-                  <AvatarImage src={client.img} />
-                  <AvatarFallback>{client.name[0]}</AvatarFallback>
-                </Avatar>
+                <AiImageTooltip>
+                  <Avatar className="h-14 w-14 ring-2 ring-white shadow-sm">
+                    <AvatarImage src={client.img} />
+                    <AvatarFallback>{client.name[0]}</AvatarFallback>
+                  </Avatar>
+                </AiImageTooltip>
                 
                 <div className="flex-1 text-center sm:text-left space-y-1">
                   <div className="flex items-center justify-center sm:justify-start gap-2">
@@ -100,6 +103,8 @@ export default function Clients() {
             </Card>
           ))}
         </div>
+
+        <AiFooterDisclaimer />
       </div>
     </Layout>
   );
