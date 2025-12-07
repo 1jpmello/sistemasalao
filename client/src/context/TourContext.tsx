@@ -68,14 +68,16 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
 
   useEffect(() => {
-    // Show welcome modal when on dashboard
-    if (location === '/dashboard') {
+    // Show welcome modal when on dashboard, but only if not seen before
+    const hasSeenTour = localStorage.getItem('hasSeenWelcomeTour');
+    if (location === '/dashboard' && !hasSeenTour) {
        setIsWelcomeOpen(true);
     }
   }, [location]);
 
   const closeWelcome = () => {
     setIsWelcomeOpen(false);
+    localStorage.setItem('hasSeenWelcomeTour', 'true');
   };
 
   const openWelcome = () => {
@@ -84,6 +86,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
 
   const startTour = () => {
     setIsWelcomeOpen(false);
+    localStorage.setItem('hasSeenWelcomeTour', 'true');
     setIsTourActive(true);
     setCurrentStepIndex(0);
     // Navigate to the first step's path if needed (though we start at dashboard usually)
