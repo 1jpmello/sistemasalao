@@ -12,7 +12,7 @@ import {
   Sparkles,
   Menu
 } from "lucide-react";
-import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
+import salonLogo from "@assets/ef8f913501c4d7f06c503a056efcd95e_1765133100746.jpg";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import stylist2 from "@assets/generated_images/portrait_of_a_male_hair_stylist.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,12 +23,12 @@ export default function Landing() {
       {/* Navigation */}
       <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-white/20">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20">
-              <Sparkles className="h-6 w-6" />
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full overflow-hidden shadow-lg shadow-primary/20 border-2 border-primary/10">
+               <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
             </div>
             <span className="text-2xl font-serif font-bold tracking-tight">
-              Belleza<span className="text-primary">Pro</span>
+              GestãoBelleza
             </span>
           </div>
           
@@ -58,26 +58,26 @@ export default function Landing() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                 </span>
-                Plataforma #1 para Salões Premium
+                A revolução que seu salão esperava
               </div>
               
               <h1 className="text-5xl lg:text-7xl font-serif font-bold leading-[1.1] text-foreground">
-                Transforme seu salão em uma <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">máquina de vendas</span>.
+                Domine a gestão do seu salão e <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">multiplique seus lucros</span>.
               </h1>
               
               <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
-                Controle total da agenda, equipe e financeiro. Fidelize clientes automaticamente e elimine os buracos na sua agenda.
+                Diga adeus às planilhas e agendas de papel. Tenha controle total, fidelize clientes e veja seu negócio crescer com a plataforma feita para quem ama beleza e organização.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link href="/dashboard">
                   <Button size="lg" className="h-14 px-8 rounded-full text-lg shadow-xl shadow-primary/25 bg-primary hover:bg-primary/90 hover:scale-105 transition-all duration-300">
-                    Ver Demonstração Agora
+                    Começar Teste Grátis
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
                 <Button variant="outline" size="lg" className="h-14 px-8 rounded-full text-lg border-2 hover:bg-muted/50">
-                  Falar com Consultor
+                  Ver Funcionalidades
                 </Button>
               </div>
 
@@ -170,9 +170,9 @@ export default function Landing() {
       <section id="funcionalidades" className="py-24">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-4xl font-serif font-bold mb-6">Como o BellezaPro revoluciona seu salão</h2>
+            <h2 className="text-4xl font-serif font-bold mb-6">Como o GestãoBelleza revoluciona seu salão</h2>
             <p className="text-xl text-muted-foreground">
-              Deixamos a parte chata com a tecnologia, para você focar no que ama: cuidar dos seus clientes.
+              Simplificamos tudo para que você tenha mais tempo para brilhar. Tecnologia de ponta, fácil de usar.
             </p>
           </div>
 
@@ -225,7 +225,7 @@ export default function Landing() {
               image={stylist1}
               name="Carla Mendes"
               salon="Studio Glow"
-              text="Eu perdia horas no WhatsApp confirmando clientes. O BellezaPro mudou minha vida, agora é tudo automático!"
+              text="Eu perdia horas no WhatsApp confirmando clientes. O GestãoBelleza mudou minha vida, agora é tudo automático!"
             />
             <TestimonialCard 
               image={stylist2}
@@ -269,18 +269,18 @@ export default function Landing() {
       {/* Footer */}
       <footer className="py-12 bg-background border-t">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
-              <Sparkles className="h-4 w-4" />
+          <div className="flex items-center gap-3">
+             <div className="h-8 w-8 rounded-full overflow-hidden border border-primary/20">
+              <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
             </div>
-            <span className="text-xl font-serif font-bold">BellezaPro</span>
+            <span className="text-xl font-serif font-bold">GestãoBelleza</span>
           </div>
           <div className="flex flex-col items-center gap-1 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
             <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Desenvolvido por</p>
             <span className="text-sm font-bold text-gray-700">Andromeda Solutions</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            © 2024 BellezaPro. Todos os direitos reservados.
+            © 2024 GestãoBelleza. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-muted-foreground hover:text-foreground">Instagram</a>

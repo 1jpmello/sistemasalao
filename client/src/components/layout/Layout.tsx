@@ -59,7 +59,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     but for mockup speed I'll rely on the hidden class in Sidebar being overridden or just standard nav */}
               </SheetContent>
             </Sheet>
-             <span className="font-serif font-bold text-lg">BellezaPro</span>
+             <span className="font-serif font-bold text-lg">GestãoBelleza</span>
           </div>
 
           <div className="hidden md:flex items-center gap-4 flex-1 max-w-md">

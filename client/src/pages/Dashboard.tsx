@@ -123,10 +123,10 @@ export default function Dashboard() {
             <CardContent>
               <div className="space-y-6">
                 {[
-                  { name: "Corte Feminino", count: 12, val: 70 },
-                  { name: "Manicure", count: 8, val: 50 },
-                  { name: "Hidratação", count: 6, val: 35 },
-                  { name: "Barba", count: 5, val: 30 },
+                  { name: "Alongamento Gel", count: 15, val: 85 },
+                  { name: "Mechas", count: 10, val: 65 },
+                  { name: "Microblading", count: 4, val: 40 },
+                  { name: "Spa dos Pés", count: 8, val: 30 },
                 ].map((item, i) => (
                   <div key={i} className="space-y-2">
                     <div className="flex justify-between text-sm font-medium">

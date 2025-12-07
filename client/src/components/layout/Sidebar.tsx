@@ -17,7 +17,7 @@ import {
   HelpCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import andromedaLogo from "@assets/andromeda_png_1765131801860.jpg";
+import salonLogo from "@assets/ef8f913501c4d7f06c503a056efcd95e_1765133100746.jpg";
 import { useTour } from "@/context/TourContext";
 
 const menuItems = [
@@ -39,13 +39,13 @@ export function Sidebar() {
     <aside className="w-64 border-r bg-sidebar h-screen flex flex-col fixed left-0 top-0 z-30 hidden md:flex shadow-xl shadow-primary/5">
       <div className="p-6 flex items-center gap-2 border-b border-sidebar-border/50">
         <Link href="/">
-           <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground cursor-pointer">
-            <Sparkles className="h-5 w-5" />
+           <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/20 cursor-pointer">
+            <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
            </div>
         </Link>
         <Link href="/">
           <h1 className="text-2xl font-serif font-bold text-sidebar-foreground tracking-tight cursor-pointer">
-            Belleza<span className="text-primary">Pro</span>
+            GestãoBelleza
           </h1>
         </Link>
       </div>
@@ -114,10 +114,12 @@ export function Sidebar() {
       <div className="p-4 border-t border-sidebar-border/50 space-y-4">
         <div className="bg-sidebar-accent/50 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-purple-400" />
+            <div className="h-8 w-8 rounded-full overflow-hidden border border-primary/20">
+              <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
+            </div>
             <div>
-              <p className="text-sm font-medium">Salão Deluxe</p>
-              <p className="text-xs text-muted-foreground">Plano Premium</p>
+              <p className="text-sm font-medium">Seu Salão</p>
+              <p className="text-xs text-muted-foreground">Plano teste</p>
             </div>
           </div>
         </div>
@@ -125,7 +127,6 @@ export function Sidebar() {
         <div className="flex flex-col items-center justify-center gap-1 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
           <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Desenvolvido por</p>
           <div className="flex items-center gap-2">
-             <img src={andromedaLogo} alt="Andromeda Solutions" className="h-6 w-auto mix-blend-multiply dark:mix-blend-normal" />
              <span className="text-xs font-bold text-gray-700">Andromeda Solutions</span>
           </div>
         </div>
