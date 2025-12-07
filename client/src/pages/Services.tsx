@@ -47,9 +47,9 @@ export default function Services() {
           title="Catálogo Personalizado é exclusivo para clientes"
           body="Personalize serviços, preços, fotos e categorias sem limites."
           checklist={[
-            "✍️ Editar serviços",
-            "🖼️ Adicionar fotos",
-            "🔗 Integração com WhatsApp"
+            "Editar serviços",
+            "Adicionar fotos",
+            "Integração com WhatsApp"
           ]}
           cta="Desbloquear catálogo completo"
         />

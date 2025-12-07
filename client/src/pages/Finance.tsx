@@ -41,9 +41,9 @@ export default function Finance() {
           title="Financeiro avançado disponível apenas no plano profissional"
           body="Tenha controle total de faturamento, despesas e lucros."
           checklist={[
-            "💸 Controle de caixa",
-            "📉 Despesas",
-            "📊 Indicadores inteligentes"
+            "Controle de caixa",
+            "Despesas",
+            "Indicadores inteligentes"
           ]}
           cta="Liberar financeiro completo"
         />
@@ -54,9 +54,9 @@ export default function Finance() {
           title="Exportação disponível apenas para clientes"
           body="Ative seu acesso profissional e libere relatórios completos de atendimento, faturamento e desempenho da equipe."
           checklist={[
-            "📊 Relatórios profissionais",
-            "🧾 Exportação PDF e Excel",
-            "📈 Métricas completas"
+            "Relatórios profissionais",
+            "Exportação PDF e Excel",
+            "Métricas completas"
           ]}
           cta="Quero liberar relatórios"
         />
@@ -67,9 +67,9 @@ export default function Finance() {
           title="Integração de Pagamentos Exclusiva"
           body="Conecte sua maquininha Stone, PagSeguro ou Mercado Pago e automatize sua baixa de pagamentos."
           checklist={[
-            "🔄 Sincronização automática",
-            "✨ Zero erros de caixa",
-            "💳 Taxas negociadas para parceiros"
+            "Sincronização automática",
+            "Zero erros de caixa",
+            "Taxas negociadas para parceiros"
           ]}
           cta="Quero integrar minha maquininha"
         />

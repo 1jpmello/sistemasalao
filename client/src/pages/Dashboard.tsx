@@ -40,9 +40,9 @@ export default function Dashboard() {
           title="Exportação disponível apenas para clientes"
           body="Ative seu acesso profissional e libere relatórios completos de atendimento, faturamento e desempenho da equipe."
           checklist={[
-            "📊 Relatórios profissionais",
-            "🧾 Exportação PDF e Excel",
-            "📈 Métricas completas"
+            "Relatórios profissionais",
+            "Exportação PDF e Excel",
+            "Métricas completas"
           ]}
           cta="Quero liberar relatórios"
         />
@@ -53,9 +53,9 @@ export default function Dashboard() {
           title="Dashboard completo disponível no plano profissional"
           body="Acompanhe métricas reais do seu salão e tome decisões inteligentes."
           checklist={[
-            "📅 Atendimentos por profissional",
-            "💸 Faturamento por serviço",
-            "👥 Clientes recorrentes"
+            "Atendimentos por profissional",
+            "Faturamento por serviço",
+            "Clientes recorrentes"
           ]}
           cta="Liberar dashboard"
         />

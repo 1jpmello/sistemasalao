@@ -29,9 +29,9 @@ export default function Clients() {
           title="CRM completo disponível apenas para clientes"
           body="Gerencie históricos, preferências e informações completas dos clientes."
           checklist={[
-            "📚 Histórico do cliente",
-            "📌 Informações detalhadas",
-            "📞 Contato rápido"
+            "Histórico do cliente",
+            "Informações detalhadas",
+            "Contato rápido"
           ]}
           cta="Liberar CRM completo"
         />
