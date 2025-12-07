@@ -13,7 +13,7 @@ export default function Team() {
          <div className="flex justify-between items-center">
           <div>
             <h2 className="text-3xl font-serif font-bold">Profissionais</h2>
-            <p className="text-muted-foreground">Gerencie sua equipe de especialistas.</p>
+            <p className="text-muted-foreground">Organize sua equipe e seus horários com facilidade.</p>
           </div>
           <Button className="bg-primary text-white shadow-lg shadow-primary/20">
             + Adicionar Profissional

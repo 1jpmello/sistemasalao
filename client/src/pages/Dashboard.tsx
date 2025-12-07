@@ -33,7 +33,7 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-3xl font-serif font-bold text-foreground">Visão Geral</h2>
-            <p className="text-muted-foreground">Bem-vindo de volta, aqui está o resumo de hoje.</p>
+            <p className="text-muted-foreground">Controle total do seu salão em um lugar só.</p>
           </div>
           <div className="flex gap-3">
             <Button variant="outline" className="bg-white">Exportar Relatório</Button>

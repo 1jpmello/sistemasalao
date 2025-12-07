@@ -19,14 +19,14 @@ import { Button } from "@/components/ui/button";
 import andromedaLogo from "@assets/andromeda_png_1765131801860.jpg";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-  { icon: Calendar, label: "Agenda", href: "/agenda" },
-  { icon: GitPullRequest, label: "Fluxo", href: "/queue" },
-  { icon: Users, label: "Profissionais", href: "/team" },
-  { icon: Scissors, label: "Serviços", href: "/services" },
-  { icon: DollarSign, label: "Financeiro", href: "/finance" },
-  { icon: Users, label: "Clientes", href: "/clients" },
-  { icon: Megaphone, label: "Marketing", href: "/marketing" },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", id: "nav-dashboard" },
+  { icon: Calendar, label: "Agenda", href: "/agenda", id: "nav-agenda" },
+  { icon: GitPullRequest, label: "Fluxo", href: "/queue", id: "nav-queue" },
+  { icon: Users, label: "Profissionais", href: "/team", id: "nav-team" },
+  { icon: Scissors, label: "Serviços", href: "/services", id: "nav-services" },
+  { icon: DollarSign, label: "Financeiro", href: "/finance", id: "nav-finance" },
+  { icon: Users, label: "Clientes", href: "/clients", id: "nav-clients" },
+  { icon: Megaphone, label: "Marketing", href: "/marketing", id: "nav-marketing" },
 ];
 
 export function Sidebar() {
@@ -55,7 +55,9 @@ export function Sidebar() {
           const isActive = location === item.href;
           return (
             <Link key={item.href} href={item.href}>
-               <a className={cn(
+               <a 
+                 id={item.id}
+                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group cursor-pointer",
                   isActive
                     ? "bg-sidebar-primary/10 text-sidebar-primary"
@@ -109,9 +111,12 @@ export function Sidebar() {
           </div>
         </div>
         
-        <div className="flex items-center justify-center gap-2 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
+        <div className="flex flex-col items-center justify-center gap-1 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
           <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Desenvolvido por</p>
-          <img src={andromedaLogo} alt="Andromeda Solutions" className="h-6 w-auto mix-blend-multiply dark:mix-blend-normal" />
+          <div className="flex items-center gap-2">
+             <img src={andromedaLogo} alt="Andromeda Solutions" className="h-6 w-auto mix-blend-multiply dark:mix-blend-normal" />
+             <span className="text-xs font-bold text-gray-700">Andromeda Solutions</span>
+          </div>
         </div>
       </div>
     </aside>

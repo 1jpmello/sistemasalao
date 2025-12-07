@@ -8,6 +8,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
+import { WelcomeModal } from "@/components/tour/WelcomeModal";
+import { TourOverlay } from "@/components/tour/TourOverlay";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -39,6 +41,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background font-sans">
+      <WelcomeModal />
+      <TourOverlay />
       <Sidebar />
       
       <main className="md:ml-64 min-h-screen flex flex-col transition-all duration-300">

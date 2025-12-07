@@ -275,6 +275,10 @@ export default function Landing() {
             </div>
             <span className="text-xl font-serif font-bold">BellezaPro</span>
           </div>
+          <div className="flex flex-col items-center gap-1 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Desenvolvido por</p>
+            <span className="text-sm font-bold text-gray-700">Andromeda Solutions</span>
+          </div>
           <p className="text-sm text-muted-foreground">
             © 2024 BellezaPro. Todos os direitos reservados.
           </p>

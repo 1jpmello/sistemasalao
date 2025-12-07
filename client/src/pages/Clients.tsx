@@ -21,7 +21,7 @@ export default function Clients() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-3xl font-serif font-bold">Histórico de Clientes</h2>
-            <p className="text-muted-foreground">Conheça quem frequenta seu salão.</p>
+            <p className="text-muted-foreground">Acompanhe informações e histórico de cada cliente.</p>
           </div>
           <Button className="bg-primary text-white shadow-lg shadow-primary/20">
             + Novo Cliente

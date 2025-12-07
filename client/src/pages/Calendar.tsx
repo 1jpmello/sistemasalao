@@ -14,7 +14,7 @@ export default function Agenda() {
         <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-3xl font-serif font-bold">Agenda Inteligente</h2>
-            <p className="text-muted-foreground">Gerencie os horários da sua equipe.</p>
+            <p className="text-muted-foreground">Agendamentos rápidos, organizados e sem erros.</p>
           </div>
           
           <div className="flex items-center gap-4">
