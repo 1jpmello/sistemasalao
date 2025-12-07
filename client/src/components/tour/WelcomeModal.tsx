@@ -7,8 +7,12 @@ export function WelcomeModal() {
   const { isWelcomeOpen, closeWelcome, startTour } = useTour();
 
   return (
-    <Dialog open={isWelcomeOpen} onOpenChange={(open) => !open && closeWelcome()}>
-      <DialogContent className="sm:max-w-md text-center">
+    <Dialog open={isWelcomeOpen} onOpenChange={() => {}}>
+      <DialogContent 
+        className="sm:max-w-md text-center" 
+        onPointerDownOutside={(e) => e.preventDefault()} 
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <div className="mx-auto h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
           <Sparkles className="h-6 w-6 text-primary" />
         </div>
@@ -21,7 +25,7 @@ export function WelcomeModal() {
         <DialogFooter className="sm:justify-center mt-6">
           <Button 
             size="lg" 
-            className="w-full sm:w-auto px-8 rounded-full shadow-lg shadow-primary/20" 
+            className="w-full sm:w-auto px-8 rounded-full shadow-lg shadow-primary/20 animate-pulse" 
             onClick={startTour}
           >
             Começar Tour
