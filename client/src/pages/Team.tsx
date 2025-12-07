@@ -3,10 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { staff } from "@/lib/mockData";
-import { Star, Clock, MoreHorizontal } from "lucide-react";
+import { Star, Clock, MoreHorizontal, Calendar as CalendarIcon, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
 
 export default function Team() {
+  const [showAgenda, setShowAgenda] = useState<number | null>(null);
+
   return (
     <Layout>
       <div className="space-y-8">
@@ -19,6 +23,49 @@ export default function Team() {
             + Adicionar Profissional
           </Button>
         </div>
+
+        <Dialog open={!!showAgenda} onOpenChange={(open) => !open && setShowAgenda(null)}>
+           <DialogContent className="max-w-3xl">
+             <DialogHeader>
+               <DialogTitle className="flex items-center gap-2">
+                  <CalendarIcon className="h-5 w-5 text-primary" />
+                  Agenda Semanal: {staff.find(s => s.id === showAgenda)?.name}
+               </DialogTitle>
+             </DialogHeader>
+             
+             <div className="mt-4">
+                <div className="grid grid-cols-6 gap-2 text-center text-sm font-medium text-muted-foreground mb-4">
+                   <div>Seg</div>
+                   <div>Ter</div>
+                   <div>Qua</div>
+                   <div>Qui</div>
+                   <div>Sex</div>
+                   <div>Sáb</div>
+                </div>
+                <div className="grid grid-cols-6 gap-2 h-[400px] overflow-y-auto">
+                   {[...Array(6)].map((_, dayIndex) => (
+                      <div key={dayIndex} className="space-y-2">
+                         {[9, 11, 14, 16].map((hour) => {
+                            // Randomize a bit
+                            const isBusy = (dayIndex + hour) % 3 === 0;
+                            if (!isBusy) return <div key={hour} className="h-16 rounded-md border border-dashed border-slate-200" />;
+                            
+                            return (
+                               <div key={hour} className="h-16 rounded-md bg-primary/10 border-l-4 border-primary p-1 text-[10px]">
+                                  <span className="font-bold block">{hour}:00</span>
+                                  <span className="text-muted-foreground">Cliente Demo</span>
+                               </div>
+                            );
+                         })}
+                      </div>
+                   ))}
+                </div>
+                <div className="flex justify-end mt-4">
+                   <Button variant="outline" onClick={() => setShowAgenda(null)}>Fechar</Button>
+                </div>
+             </div>
+           </DialogContent>
+        </Dialog>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {staff.map((person) => (
@@ -59,7 +106,7 @@ export default function Team() {
                 </div>
 
                 <div className="flex gap-2 justify-center">
-                  <Button variant="outline" className="w-full text-xs h-9">Ver Agenda</Button>
+                  <Button variant="outline" className="w-full text-xs h-9" onClick={() => setShowAgenda(person.id)}>Ver Agenda</Button>
                   <Button variant="ghost" size="icon" className="h-9 w-9"><MoreHorizontal className="h-4 w-4" /></Button>
                 </div>
               </CardContent>

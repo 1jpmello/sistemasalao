@@ -112,39 +112,50 @@ export default function Dashboard() {
 
         {/* Main Content Split */}
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Chart Section */}
+          {/* Appointments List (Replacing Chart) */}
           <Card className="lg:col-span-2 border-none shadow-sm glass-card cursor-pointer hover:shadow-md transition-all" onClick={() => setDashboardModal(true)}>
-            <CardHeader>
-              <CardTitle>Fluxo de Atendimentos</CardTitle>
-              <CardDescription>Movimento de clientes por horário</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[300px] relative">
-              <div className="absolute inset-0 z-10 bg-white/5 backdrop-blur-[1px] rounded-b-xl flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                 <Button variant="secondary" className="shadow-lg">Ver detalhes completos</Button>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Próximos Compromissos</CardTitle>
+                <CardDescription>Sua agenda para as próximas horas</CardDescription>
               </div>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id="colorClients" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{fill: 'hsl(var(--muted-foreground))'}} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: 'white', borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="clients" 
-                    stroke="hsl(var(--primary))" 
-                    strokeWidth={3}
-                    fillOpacity={1} 
-                    fill="url(#colorClients)" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <Button variant="ghost" size="icon">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {appointments.slice(0, 4).map((apt) => {
+                  const staffMember = staff.find(s => s.id === apt.staffId);
+                  return (
+                    <div key={apt.id} className="flex items-center justify-between p-3 hover:bg-muted/50 rounded-xl transition-colors border border-transparent hover:border-border/50">
+                      <div className="flex items-center gap-4">
+                        <div className="flex flex-col items-center justify-center h-12 w-12 rounded-xl bg-primary/10 text-primary font-bold">
+                          <span className="text-sm">{apt.time}</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-foreground">{apt.client}</p>
+                          <p className="text-sm text-muted-foreground">{apt.service} • com {staffMember?.name.split(' ')[0]}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <Badge variant="secondary" className={`
+                          ${apt.status === 'Concluído' ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}
+                          ${apt.status === 'Em andamento' ? 'bg-blue-100 text-blue-700 hover:bg-blue-100' : ''}
+                          ${apt.status === 'Aguardando' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100' : ''}
+                          ${apt.status === 'Agendado' ? 'bg-purple-100 text-purple-700 hover:bg-purple-100' : ''}
+                        `}>
+                          {apt.status}
+                        </Badge>
+                        <Avatar className="h-8 w-8 border-2 border-white shadow-sm">
+                          <AvatarImage src={staffMember?.avatar} />
+                          <AvatarFallback>{staffMember?.name[0]}</AvatarFallback>
+                        </Avatar>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </CardContent>
           </Card>
 
@@ -180,7 +191,8 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* Recent Appointments List */}
+        {/* Recent Appointments List (Removed - Merged into top section) */}
+        {/*
         <Card className="border-none shadow-sm glass-card">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
@@ -226,6 +238,7 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
+        */}
       </div>
     </Layout>
   );

@@ -143,9 +143,9 @@ export function Sidebar() {
         </div>
         
         <div className="flex flex-col items-center justify-center gap-1 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Desenvolvido por</p>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Atendimento e Vendas</p>
           <div className="flex items-center gap-2">
-             <span className="text-xs font-bold text-gray-700">Andromeda Solutions</span>
+             <span className="text-xs font-bold text-gray-700">11 95854-8349</span>
           </div>
         </div>
       </div>

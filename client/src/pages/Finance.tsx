@@ -119,6 +119,32 @@ export default function Finance() {
           </Card>
         </div>
 
+        {/* Maquininha Integration */}
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-6 text-white shadow-lg overflow-hidden relative">
+           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+             <div>
+               <div className="flex items-center gap-3 mb-2">
+                  <div className="h-10 w-10 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400">
+                     <CreditCard className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-bold">Integre sua Maquininha</h3>
+               </div>
+               <p className="text-slate-300 max-w-lg">
+                 Conecte sua maquininha de cartão para sincronizar vendas automaticamente e eliminar erros de caixa.
+               </p>
+             </div>
+             <div className="flex gap-3">
+                <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white">
+                   Ver Compatíveis
+                </Button>
+                <Button className="bg-green-500 hover:bg-green-600 text-white font-bold border-none shadow-lg shadow-green-500/20">
+                   Conectar Agora
+                </Button>
+             </div>
+           </div>
+        </div>
+
         {/* Charts Section */}
         <div className="grid lg:grid-cols-3 gap-8 cursor-pointer" onClick={() => setFinanceModal(true)}>
            <Card className="lg:col-span-2 border-none shadow-sm glass-card hover:shadow-md transition-all relative">
