@@ -15,10 +15,11 @@ import {
   DollarSign,
   Smartphone,
   HelpCircle,
-  HeadphonesIcon
+  HeadphonesIcon,
+  Crown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import salonLogo from "@assets/ef8f913501c4d7f06c503a056efcd95e_1765133100746.jpg";
+import andromedaLogo from "@/assets/andromeda_logo.png";
 import { useTour } from "@/context/TourContext";
 import { useState } from "react";
 import { PremiumModal } from "@/components/ui/premium-modal";
@@ -40,7 +41,7 @@ export function Sidebar() {
   const [supportModal, setSupportModal] = useState(false);
 
   return (
-    <aside className="w-64 border-r bg-sidebar h-screen flex flex-col fixed left-0 top-0 z-30 hidden md:flex shadow-xl shadow-primary/5">
+    <aside className="w-64 border-r bg-sidebar h-screen flex flex-col fixed left-0 top-0 z-30 hidden md:flex shadow-xl shadow-slate-200/50">
       <PremiumModal
         open={supportModal}
         onOpenChange={setSupportModal}
@@ -54,22 +55,23 @@ export function Sidebar() {
         cta="Quero suporte premium"
       />
 
-      <div className="p-6 flex items-center gap-2 border-b border-sidebar-border/50">
+      <div className="p-6 flex items-center gap-3 border-b border-sidebar-border/50 bg-[#0B0F19]">
         <Link href="/">
-           <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/20 cursor-pointer">
-            <img src={salonLogo} alt="Logo" className="h-full w-full object-cover" />
+           <div className="h-10 w-10 rounded-lg overflow-hidden border border-white/10 p-1 bg-gradient-to-br from-slate-800 to-slate-950 cursor-pointer hover:scale-105 transition-transform">
+            <img src={andromedaLogo} alt="Logo" className="h-full w-full object-contain" />
            </div>
         </Link>
         <Link href="/">
-          <h1 className="text-2xl font-serif font-bold text-sidebar-foreground tracking-tight cursor-pointer">
-            GestãoBelleza
-          </h1>
+          <div className="flex flex-col cursor-pointer">
+             <span className="text-lg font-bold text-white leading-none tracking-tight">ANDROMEDA</span>
+             <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Solutions</span>
+          </div>
         </Link>
       </div>
 
       <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto no-scrollbar">
-        <div className="mb-4 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Principal
+        <div className="mb-4 px-2 text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+          Gestão
         </div>
         {menuItems.map((item) => {
           const isActive = location === item.href;
@@ -80,13 +82,13 @@ export function Sidebar() {
                  className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group cursor-pointer",
                   isActive
-                    ? "bg-sidebar-primary/10 text-sidebar-primary"
-                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                    ? "bg-[#0B0F19] text-white shadow-md shadow-slate-900/10"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 )}>
                 <item.icon
                   className={cn(
                     "h-4 w-4 transition-colors",
-                    isActive ? "text-sidebar-primary" : "text-muted-foreground group-hover:text-sidebar-foreground"
+                    isActive ? "text-cyan-400" : "text-slate-400 group-hover:text-slate-600"
                   )}
                 />
                 {item.label}
@@ -95,57 +97,57 @@ export function Sidebar() {
           );
         })}
 
-        <div className="mt-8 mb-4 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Sistema
+        <div className="mt-8 mb-4 px-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
+          Suporte & Ajuda
         </div>
         
         <button 
           onClick={openWelcome}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer w-full text-left"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer w-full text-left"
         >
-          <HelpCircle className="h-4 w-4 text-muted-foreground" />
-          Ver Guia de Boas-vindas
+          <HelpCircle className="h-4 w-4 text-slate-400" />
+          Guia de Uso
         </button>
 
         <button 
           onClick={() => setSupportModal(true)}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer w-full text-left"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer w-full text-left"
         >
-          <HeadphonesIcon className="h-4 w-4 text-muted-foreground" />
-          Suporte Premium
+          <Crown className="h-4 w-4 text-amber-500" />
+          Suporte VIP
         </button>
         
         <Link href="/settings">
-           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer">
-            <Settings className="h-4 w-4 text-muted-foreground" />
+           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer">
+            <Settings className="h-4 w-4 text-slate-400" />
             Configurações
           </a>
         </Link>
         <Link href="/">
-           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all cursor-pointer">
-            <Home className="h-4 w-4 text-muted-foreground" />
+           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer">
+            <Home className="h-4 w-4 text-slate-400" />
             Voltar ao Site
           </a>
         </Link>
       </nav>
 
-      <div className="p-4 border-t border-sidebar-border/50 space-y-4">
-        <div className="bg-sidebar-accent/50 rounded-xl p-4">
+      <div className="p-4 border-t border-sidebar-border/50 space-y-4 bg-slate-50">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-8 w-8 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
+            <div className="h-8 w-8 rounded-full overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200">
               <Users className="h-4 w-4 text-slate-500" />
             </div>
             <div>
-              <p className="text-sm font-medium">Seu Salão</p>
-              <p className="text-xs text-muted-foreground">Plano teste</p>
+              <p className="text-sm font-bold text-slate-800">Seu Salão</p>
+              <p className="text-xs text-muted-foreground">Versão Demo</p>
             </div>
           </div>
         </div>
         
-        <div className="flex flex-col items-center justify-center gap-1 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Atendimento e Vendas</p>
+        <div className="flex flex-col items-center justify-center gap-1">
+          <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Fale Conosco</p>
           <div className="flex items-center gap-2">
-             <span className="text-xs font-bold text-gray-700">11 95854-8349</span>
+             <span className="text-xs font-bold text-slate-700 bg-slate-200 px-2 py-1 rounded">11 95854-8349</span>
           </div>
         </div>
       </div>
