@@ -13,6 +13,7 @@ import {
   Menu
 } from "lucide-react";
 import salonLogo from "@assets/ef8f913501c4d7f06c503a056efcd95e_1765133100746.jpg";
+import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import stylist2 from "@assets/generated_images/portrait_of_a_male_hair_stylist.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
