@@ -10,11 +10,13 @@ import Team from "@/pages/Team";
 import Services from "@/pages/Services";
 import Queue from "@/pages/Queue";
 import Marketing from "@/pages/Marketing";
+import Landing from "@/pages/Landing";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
+      <Route path="/" component={Landing} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route path="/agenda" component={Agenda} />
       <Route path="/team" component={Team} />
       <Route path="/services" component={Services} />
