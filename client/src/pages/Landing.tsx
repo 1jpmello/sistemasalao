@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo_new.png";
 import heroImage from "@assets/generated_images/premium_multi-device_mockup_of_salon_software_on_desktop_and_mobile_with_dark_tech_aesthetic.png";
+import desktopScreen from "@assets/capture_251209_000149_1765250244701.png";
+import mobileScreen from "@assets/capture_251209_001529_1765250246195.png";
 import demoCapture from "@assets/capture_251209_000149_1765249335459.png";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import stylist2 from "@assets/generated_images/portrait_of_a_male_hair_stylist.png";
@@ -144,17 +146,35 @@ export default function Landing() {
             </div>
 
             <div className="relative animate-in slide-in-from-right duration-1000 fade-in delay-200">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-cyan-900/20 border border-white/10 bg-slate-900/50 backdrop-blur-xl aspect-[4/3] group">
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="relative rounded-3xl overflow-visible aspect-[4/3] group">
                 
-                <img 
-                  src={heroImage} 
-                  alt="Dashboard Preview" 
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
-                />
+                {/* Desktop Monitor Frame */}
+                <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl shadow-cyan-900/40 border border-white/10 bg-slate-900 ring-1 ring-white/5 w-[90%] transform transition-transform duration-700 hover:scale-[1.01]">
+                   {/* Top Bar (Browser/App bar) */}
+                   <div className="h-6 bg-[#0B0F19] border-b border-white/5 flex items-center px-3 gap-1.5">
+                     <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                     <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                   </div>
+                   <img 
+                     src={desktopScreen} 
+                     alt="Dashboard Desktop" 
+                     className="w-full h-auto object-cover opacity-95 group-hover:opacity-100 transition-opacity"
+                   />
+                </div>
+
+                {/* Mobile Phone Frame */}
+                <div className="absolute -bottom-4 -right-2 w-[30%] z-20 rounded-[2rem] border-[6px] border-[#1a1a1a] bg-slate-950 shadow-2xl shadow-black/60 overflow-hidden transform translate-y-8 translate-x-4 hover:-translate-y-2 transition-transform duration-500">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-4 bg-[#1a1a1a] rounded-b-xl z-30" />
+                  <img 
+                    src={mobileScreen} 
+                    alt="Dashboard Mobile" 
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
                 
-                {/* Floating Cards */}
-                <div className="absolute top-8 right-8 bg-[#0B0F19]/90 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-cyan-500/30 animate-bounce duration-[3000ms]">
+                {/* Floating Cards - Repositioned */}
+                <div className="absolute top-12 -right-4 z-30 bg-[#0B0F19]/90 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-cyan-500/30 animate-bounce duration-[3000ms]">
                    <div className="flex items-center gap-4">
                      <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center text-white shadow-lg shadow-green-900/50">
                        <TrendingUp className="h-6 w-6" />
