@@ -36,12 +36,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { analytics } from "@/lib/analytics";
 
 export default function Landing() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      analytics.navigateSection(id);
     }
   };
 
@@ -89,7 +91,10 @@ export default function Landing() {
           {/* CTA Right */}
           <div className="hidden md:flex items-center gap-4">
             <Link href="/dashboard">
-              <Button className="h-12 px-8 rounded-full bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 text-white font-semibold tracking-wide hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.4)] hover:scale-105 transition-all duration-300 border border-white/10 relative overflow-hidden group">
+              <Button 
+                onClick={() => analytics.clickCTA('header', 'Experimentar Agora')}
+                className="h-12 px-8 rounded-full bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 text-white font-semibold tracking-wide hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.4)] hover:scale-105 transition-all duration-300 border border-white/10 relative overflow-hidden group"
+              >
                   <span className="relative z-10 flex items-center gap-2">
                     Experimentar Agora
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -132,7 +137,11 @@ export default function Landing() {
               
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link href="/dashboard">
-                  <Button size="lg" className="h-16 px-10 rounded-full text-lg shadow-2xl shadow-cyan-500/20 bg-white text-slate-950 hover:bg-cyan-50 hover:scale-105 transition-all duration-300 font-bold">
+                  <Button 
+                    size="lg" 
+                    onClick={() => analytics.clickCTA('hero', 'Testar demonstração agora')}
+                    className="h-16 px-10 rounded-full text-lg shadow-2xl shadow-cyan-500/20 bg-white text-slate-950 hover:bg-cyan-50 hover:scale-105 transition-all duration-300 font-bold"
+                  >
                     Testar demonstração agora
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
