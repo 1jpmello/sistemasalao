@@ -22,11 +22,24 @@ export function TourOverlay() {
 
   if (!isTourActive || !currentStep || !targetRect) return null;
 
-  // Calculate position (simplified: try to put it to the right, fallback to bottom)
+  // Calculate position with mobile support
+  const isMobile = window.innerWidth < 768;
   const top = targetRect.top + window.scrollY;
   const left = targetRect.right + 20; // 20px offset
   
-  // Basic boundary check could be added here, keeping it simple for now
+  const tooltipStyle = isMobile ? {
+    position: 'fixed' as const,
+    bottom: '20px',
+    left: '20px',
+    right: '20px',
+    top: 'auto',
+    width: 'auto',
+    maxWidth: 'none',
+    margin: '0 auto'
+  } : {
+    top: Math.max(20, Math.min(window.innerHeight - 200, top)), // Keep in view vertically
+    left: Math.min(window.innerWidth - 340, left), // Keep in view horizontally
+  };
 
   return createPortal(
     <div className="fixed inset-0 z-[100] pointer-events-none">
@@ -47,10 +60,7 @@ export function TourOverlay() {
       {/* Tooltip Card */}
       <div 
         className="absolute bg-white p-6 rounded-xl shadow-2xl max-w-sm pointer-events-auto animate-in fade-in zoom-in-95 duration-300"
-        style={{
-          top: Math.max(20, Math.min(window.innerHeight - 200, top)), // Keep in view vertically
-          left: Math.min(window.innerWidth - 340, left), // Keep in view horizontally
-        }}
+        style={tooltipStyle}
       >
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-bold text-lg">{currentStep.title}</h3>

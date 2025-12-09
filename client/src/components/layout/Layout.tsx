@@ -43,7 +43,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background font-sans">
       <WelcomeModal />
       <TourOverlay />
-      <Sidebar />
+      <Sidebar className="hidden md:flex fixed left-0 top-0 z-30 shadow-xl shadow-slate-200/50" />
       
       <main className="md:ml-64 min-h-screen flex flex-col transition-all duration-300">
         {/* Header */}
@@ -53,10 +53,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon"><Menu className="h-5 w-5" /></Button>
               </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-64">
-                <Sidebar /> 
-                {/* Note: Sidebar needs a bit of refactoring to be used here directly without layout issues, 
-                    but for mockup speed I'll rely on the hidden class in Sidebar being overridden or just standard nav */}
+              <SheetContent side="left" className="p-0 w-64 border-r-[#1e293b]">
+                <Sidebar className="w-full h-full border-none shadow-none" /> 
               </SheetContent>
             </Sheet>
              <span className="font-serif font-bold text-lg">GestãoBelleza</span>

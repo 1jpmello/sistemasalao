@@ -35,13 +35,13 @@ const menuItems = [
   { icon: Megaphone, label: "Marketing", href: "/marketing", id: "nav-marketing" },
 ];
 
-export function Sidebar() {
+export function Sidebar({ className }: { className?: string }) {
   const [location] = useLocation();
   const { openWelcome } = useTour();
   const [supportModal, setSupportModal] = useState(false);
 
   return (
-    <aside className="w-64 border-r bg-sidebar h-screen flex flex-col fixed left-0 top-0 z-30 hidden md:flex shadow-xl shadow-slate-200/50">
+    <aside className={cn("w-64 border-r bg-sidebar h-screen flex flex-col bg-[#0B0F19]", className)}>
       <PremiumModal
         open={supportModal}
         onOpenChange={setSupportModal}
