@@ -21,7 +21,7 @@ import {
   Users,
   Coins
 } from "lucide-react";
-import andromedaLogo from "@/assets/andromeda_logo.png";
+import andromedaLogo from "@/assets/andromeda_logo_new.png";
 import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
 import demoCapture from "@assets/capture_251208_234213_1765248145218.png";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
