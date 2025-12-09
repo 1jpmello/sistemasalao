@@ -67,10 +67,10 @@ export default function Landing() {
           {/* Menu Center */}
           <div className="hidden lg:flex items-center gap-1">
              {[
-               { name: "Resultados", icon: TrendingUp, id: "beneficios" },
-               { name: "Recursos", icon: Zap, id: "ia" },
-               { name: "Agenda", icon: Calendar, id: "agenda" },
-               { name: "Fidelização", icon: MessageSquare, id: "fidelizacao" }
+               { name: "Benefícios", icon: TrendingUp, id: "comparativo" },
+               { name: "Recursos", icon: Zap, id: "recursos" },
+               { name: "Antes e depois", icon: Sparkles, id: "transformacao" },
+               { name: "Oferta", icon: Coins, id: "oferta" }
              ].map((item) => (
                <button 
                  key={item.name} 
@@ -174,8 +174,59 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 2. Antes vs Depois Section */}
-      <section className="py-20 bg-[#0D121F] border-y border-white/5">
+      {/* 2. Comparativo "Por que seu salão precisa disso agora" - MOVED HERE */}
+      <section id="comparativo" className="py-20 bg-[#0D121F] border-y border-white/5">
+        <div className="container mx-auto px-6">
+           <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Por que seu salão precisa disso agora?</h2>
+            <p className="text-slate-400">A diferença entre sobreviver e crescer.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-0 max-w-4xl mx-auto rounded-3xl overflow-hidden border border-white/10">
+            {/* Sem o sistema */}
+            <div className="bg-slate-900/50 p-10 border-b md:border-b-0 md:border-r border-white/10">
+              <h3 className="text-xl font-bold text-slate-400 mb-6 text-center">Sem o sistema</h3>
+              <ul className="space-y-4">
+                {[
+                  "Faltas semanais",
+                  "Profissionais ociosos",
+                  "Clientes esquecendo horários",
+                  "Sem controle real do caixa"
+                ].map((item, i) => (
+                   <li key={i} className="flex items-center gap-3 text-slate-500">
+                    <XCircle className="h-5 w-5 text-slate-600 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Com o sistema */}
+            <div className="bg-cyan-950/10 p-10 relative">
+               <div className="absolute inset-0 bg-cyan-500/5" />
+               <div className="relative z-10">
+                <h3 className="text-xl font-bold text-white mb-6 text-center">Com Andromeda</h3>
+                <ul className="space-y-4">
+                  {[
+                    "Rotina fluindo",
+                    "Agenda cheia",
+                    "Clientes mais fiéis",
+                    "Mais faturamento"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-white">
+                      <CheckCircle2 className="h-5 w-5 text-cyan-400 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Antes vs Depois Section */}
+      <section id="transformacao" className="py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">A transformação que seu salão precisa</h2>
@@ -237,7 +288,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 3. Demonstração Visual Rápida - NEW LAYOUT */}
+      {/* 4. Demonstração Visual Rápida - NEW LAYOUT */}
       <section id="demo" className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-12">
@@ -269,15 +320,15 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 5. Benefícios do Sistema - MOVED UP */}
-      <section id="beneficios" className="py-24">
+      {/* 5. Benefícios do Sistema */}
+      <section id="recursos" className="py-24">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Tudo que você precisa em um só lugar</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div id="ia" className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
               <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
                 <MessageSquare className="h-6 w-6" />
               </div>
@@ -285,7 +336,7 @@ export default function Landing() {
               <p className="text-slate-400 text-sm">Confirmações e lembretes sem você tocar no celular.</p>
             </div>
 
-            <div id="agenda" className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
               <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
                 <Calendar className="h-6 w-6" />
               </div>
@@ -309,7 +360,7 @@ export default function Landing() {
               <p className="text-slate-400 text-sm">Preencha horários vagos automaticamente.</p>
             </div>
 
-            <div id="fidelizacao" className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
               <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
                 <Users className="h-6 w-6" />
               </div>
@@ -341,7 +392,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 4. Prova Social Forte */}
+      {/* 6. Prova Social Forte */}
       <section id="depoimentos" className="py-20 bg-[#0D121F] border-y border-white/5">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -379,57 +430,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 6. Comparativo "Por que seu salão precisa disso agora" */}
-      <section className="py-20 bg-[#0D121F] border-y border-white/5">
-        <div className="container mx-auto px-6">
-           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Por que seu salão precisa disso agora?</h2>
-            <p className="text-slate-400">A diferença entre sobreviver e crescer.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-0 max-w-4xl mx-auto rounded-3xl overflow-hidden border border-white/10">
-            {/* Sem o sistema */}
-            <div className="bg-slate-900/50 p-10 border-b md:border-b-0 md:border-r border-white/10">
-              <h3 className="text-xl font-bold text-slate-400 mb-6 text-center">Sem o sistema</h3>
-              <ul className="space-y-4">
-                {[
-                  "Faltas semanais",
-                  "Profissionais ociosos",
-                  "Clientes esquecendo horários",
-                  "Sem controle real do caixa"
-                ].map((item, i) => (
-                   <li key={i} className="flex items-center gap-3 text-slate-500">
-                    <XCircle className="h-5 w-5 text-slate-600 flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Com o sistema */}
-            <div className="bg-cyan-950/10 p-10 relative">
-               <div className="absolute inset-0 bg-cyan-500/5" />
-               <div className="relative z-10">
-                <h3 className="text-xl font-bold text-white mb-6 text-center">Com Andromeda</h3>
-                <ul className="space-y-4">
-                  {[
-                    "Rotina fluindo",
-                    "Agenda cheia",
-                    "Clientes mais fiéis",
-                    "Mais faturamento"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-white">
-                      <CheckCircle2 className="h-5 w-5 text-cyan-400 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* 7. Diferenciais da Marca */}
       <section className="py-20">
         <div className="container mx-auto px-6 text-center">
@@ -448,7 +448,7 @@ export default function Landing() {
       </section>
 
       {/* 8. Oferta Imediata & 9. Garantia */}
-      <section className="py-32 relative overflow-hidden">
+      <section id="oferta" className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] to-cyan-950/20 z-0" />
         
         <div className="container mx-auto px-6 relative z-10 text-center">
