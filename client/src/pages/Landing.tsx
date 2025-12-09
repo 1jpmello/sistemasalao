@@ -23,7 +23,7 @@ import {
   Phone
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo_new.png";
-import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
+import heroImage from "@assets/generated_images/premium_multi-device_mockup_of_salon_software_on_desktop_and_mobile_with_dark_tech_aesthetic.png";
 import demoCapture from "@assets/capture_251209_000149_1765249335459.png";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import stylist2 from "@assets/generated_images/portrait_of_a_male_hair_stylist.png";
