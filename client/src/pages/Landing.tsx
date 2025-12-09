@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import { 
   ArrowRight, 
   CheckCircle2, 
@@ -20,7 +21,14 @@ import {
   HelpCircle,
   Users,
   Coins,
-  Phone
+  Phone,
+  ChevronDown,
+  HeartHandshake,
+  Shield,
+  Award,
+  Timer,
+  Gift,
+  MessageCircle
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo_new.png";
 import heroImage from "@assets/generated_images/premium_multi-device_mockup_of_salon_software_on_desktop_and_mobile_with_dark_tech_aesthetic.png";
@@ -39,6 +47,13 @@ import {
 import { analytics } from "@/lib/analytics";
 
 export default function Landing() {
+  const [showWhatsAppTooltip, setShowWhatsAppTooltip] = useState(false);
+
+  useEffect(() => {
+    const tooltipTimer = setTimeout(() => setShowWhatsAppTooltip(true), 5000);
+    return () => clearTimeout(tooltipTimer);
+  }, []);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -152,6 +167,17 @@ export default function Landing() {
                 <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                 <span>Resultados em menos de 7 dias</span>
               </div>
+
+              <div className="flex items-center gap-6 pt-4">
+                <div className="flex items-center gap-2 text-sm text-slate-500">
+                  <Shield className="h-4 w-4 text-cyan-500" />
+                  <span>100% Seguro</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-slate-500">
+                  <HeartHandshake className="h-4 w-4 text-cyan-500" />
+                  <span>Suporte Humanizado</span>
+                </div>
+              </div>
             </div>
 
             <div className="relative animate-in slide-in-from-right duration-1000 fade-in delay-200">
@@ -197,6 +223,17 @@ export default function Landing() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Scroll Indicator Arrow */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+          <span className="text-xs text-slate-500 uppercase tracking-wider">Descubra mais</span>
+          <button 
+            onClick={() => scrollToSection('comparativo')}
+            className="h-10 w-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all"
+          >
+            <ChevronDown className="h-5 w-5" />
+          </button>
         </div>
       </section>
 
@@ -415,6 +452,18 @@ export default function Landing() {
               </Button>
             </Link>
           </div>
+
+          {/* Micro-CTA para Oferta */}
+          <div className="mt-16 text-center">
+            <button 
+              onClick={() => scrollToSection('oferta')}
+              className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors group"
+            >
+              <Gift className="h-4 w-4" />
+              <span className="text-sm font-medium">Ver oferta especial por tempo limitado</span>
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       </section>
 
@@ -473,14 +522,96 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* NOVA SEÇÃO: Fale Conosco - Criar Confiança */}
+      <section id="contato" className="py-20 bg-[#0B0F19]">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-sm font-medium border border-green-500/20 mb-6">
+              <HeartHandshake className="h-4 w-4" />
+              Atendimento Humanizado
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Quer conversar antes de testar?
+            </h2>
+            <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+              Fale diretamente com nossa equipe pelo WhatsApp. Tiramos todas as suas dúvidas sem compromisso.
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-10">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:border-green-500/30 transition-all">
+                <div className="h-12 w-12 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+                  <MessageCircle className="h-6 w-6 text-green-400" />
+                </div>
+                <h3 className="text-white font-bold mb-2">Resposta Rápida</h3>
+                <p className="text-slate-400 text-sm">Respondemos em até 5 minutos durante horário comercial</p>
+              </div>
+              
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:border-green-500/30 transition-all">
+                <div className="h-12 w-12 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+                  <HeartHandshake className="h-6 w-6 text-green-400" />
+                </div>
+                <h3 className="text-white font-bold mb-2">Sem Robôs</h3>
+                <p className="text-slate-400 text-sm">Você fala com pessoas reais que entendem seu negócio</p>
+              </div>
+              
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:border-green-500/30 transition-all">
+                <div className="h-12 w-12 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-6 w-6 text-green-400" />
+                </div>
+                <h3 className="text-white font-bold mb-2">Sem Pressão</h3>
+                <p className="text-slate-400 text-sm">Tire suas dúvidas sem nenhum compromisso de compra</p>
+              </div>
+            </div>
+
+            <a 
+              href="https://wa.me/5511999999999?text=Oi!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20o%20sistema." 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={() => analytics.clickWhatsApp()}
+            >
+              <Button size="lg" className="h-14 px-10 rounded-full bg-green-500 hover:bg-green-600 text-white font-bold shadow-lg shadow-green-900/30 hover:scale-105 transition-all">
+                <Phone className="h-5 w-5 mr-2" />
+                Conversar no WhatsApp
+              </Button>
+            </a>
+            
+            <p className="text-slate-500 text-sm mt-4">
+              Ou continue rolando para ver nossa oferta especial 👇
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* 8. Oferta Imediata & 9. Garantia */}
       <section id="oferta" className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19] to-cyan-950/20 z-0" />
         
         <div className="container mx-auto px-6 relative z-10 text-center">
           <div className="max-w-3xl mx-auto bg-slate-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-3xl p-12 shadow-2xl shadow-cyan-900/20">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/20 text-cyan-300 text-sm font-bold mb-6">
-              OFERTA POR TEMPO LIMITADO
+            
+            {/* Urgência Visual - Sem Timer Fake */}
+            <div className="mb-8">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-white text-sm font-bold border border-cyan-500/30">
+                <Gift className="h-4 w-4 text-cyan-400" />
+                OFERTA ESPECIAL DE LANÇAMENTO
+              </div>
+            </div>
+
+            {/* Benefícios da Oferta */}
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                <CheckCircle2 className="h-4 w-4" />
+                Acesso completo
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">
+                <HeartHandshake className="h-4 w-4" />
+                Suporte incluso
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">
+                <Zap className="h-4 w-4" />
+                Início imediato
+              </div>
             </div>
             
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -501,16 +632,38 @@ export default function Landing() {
             </div>
 
             <Link href="/dashboard">
-              <Button size="lg" className="w-full md:w-auto h-16 px-12 rounded-full text-xl bg-white text-slate-950 hover:bg-cyan-50 shadow-lg hover:scale-105 transition-all font-bold mb-8">
-                Quero testar gratuitamente
-                <ArrowRight className="ml-2 h-6 w-6" />
+              <Button 
+                size="lg" 
+                onClick={() => analytics.clickCTA('oferta', 'Quero testar gratuitamente')}
+                className="w-full md:w-auto h-16 px-12 rounded-full text-xl bg-white text-slate-950 hover:bg-cyan-50 shadow-lg hover:scale-105 transition-all font-bold mb-6 relative overflow-hidden group"
+              >
+                <span className="relative z-10 flex items-center">
+                  Quero testar gratuitamente
+                  <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-200/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </Button>
             </Link>
             
-            <div className="flex items-center justify-center gap-2 text-slate-400 text-sm">
-              <Lock className="h-4 w-4" />
-              <span>Teste seguro — Cancele quando quiser.</span>
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-6 mb-6">
+              <div className="flex items-center gap-2 text-slate-400 text-sm">
+                <Lock className="h-4 w-4 text-green-400" />
+                <span>Teste seguro</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-400 text-sm">
+                <Shield className="h-4 w-4 text-green-400" />
+                <span>Dados protegidos</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-400 text-sm">
+                <Award className="h-4 w-4 text-green-400" />
+                <span>Cancele quando quiser</span>
+              </div>
             </div>
+
+            <p className="text-slate-500 text-sm">
+              Prefere tirar dúvidas primeiro? <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 underline">Fale conosco no WhatsApp</a>
+            </p>
           </div>
         </div>
       </section>
@@ -544,12 +697,39 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* WhatsApp Floating CTA */}
-      <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50">
-         <Button className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 shadow-lg shadow-green-900/30 flex items-center justify-center animate-bounce duration-[3000ms]">
-           <Phone className="h-6 w-6 text-white fill-current" />
-         </Button>
-      </a>
+      {/* WhatsApp Floating CTA with Tooltip */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {/* Tooltip */}
+        <div 
+          className={`absolute bottom-full right-0 mb-3 transition-all duration-500 ${showWhatsAppTooltip ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}
+        >
+          <div className="bg-white rounded-2xl shadow-xl p-4 max-w-[220px] relative">
+            <button 
+              onClick={() => setShowWhatsAppTooltip(false)}
+              className="absolute -top-2 -right-2 h-6 w-6 bg-slate-200 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-300 text-xs"
+            >
+              ✕
+            </button>
+            <p className="text-slate-800 text-sm font-medium mb-1">👋 Oi! Posso ajudar?</p>
+            <p className="text-slate-500 text-xs">Tire suas dúvidas sem compromisso</p>
+            <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white rotate-45 shadow-lg" />
+          </div>
+        </div>
+
+        <a 
+          href="https://wa.me/5511999999999?text=Oi!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20o%20sistema." 
+          target="_blank" 
+          rel="noopener noreferrer"
+          onClick={() => analytics.clickWhatsApp()}
+          className="block"
+        >
+          <Button className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 shadow-lg shadow-green-900/30 flex items-center justify-center hover:scale-110 transition-transform">
+            <Phone className="h-6 w-6 text-white fill-current" />
+          </Button>
+          <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full animate-ping" />
+          <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full" />
+        </a>
+      </div>
 
       {/* Footer */}
       <footer className="py-12 bg-[#05080F] border-t border-white/5">
