@@ -18,10 +18,12 @@ import {
   Play,
   Lock,
   HelpCircle,
-  Users
+  Users,
+  Coins
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo.png";
 import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
+import demoCapture from "@assets/capture_251208_234213_1765248145218.png";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import stylist2 from "@assets/generated_images/portrait_of_a_male_hair_stylist.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,36 +37,56 @@ import {
 export default function Landing() {
   return (
     <div className="min-h-screen bg-[#0B0F19] font-sans selection:bg-cyan-500/30 text-slate-100">
-      {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-[#0B0F19]/80 backdrop-blur-md border-b border-white/5">
+      {/* Navigation - Premium Header */}
+      <nav className="fixed w-full z-50 bg-[#0B0F19]/90 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
         <div className="container mx-auto px-6 h-24 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="h-12 w-12 rounded-xl overflow-hidden shadow-lg shadow-cyan-500/20 border border-white/10 p-1 bg-gradient-to-br from-slate-800 to-slate-950">
-               <img src={andromedaLogo} alt="Andromeda Solutions" className="h-full w-full object-contain" />
+          {/* Logo Left */}
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="relative h-12 w-12 rounded-xl overflow-hidden border border-white/10 p-1 bg-gradient-to-br from-slate-800 to-slate-950 group-hover:border-cyan-500/50 transition-all duration-500 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
+               <img src={andromedaLogo} alt="Andromeda Solutions" className="h-full w-full object-contain relative z-10" />
+               <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-white leading-none">
+              <span className="text-xl font-bold tracking-tight text-white leading-none header-glow-text group-hover:text-cyan-50 transition-colors">
                 ANDROMEDA
               </span>
-              <span className="text-xs font-medium text-cyan-400 tracking-[0.2em] uppercase">
+              <span className="text-[10px] font-medium text-cyan-400 tracking-[0.3em] uppercase opacity-80 group-hover:opacity-100 transition-opacity">
                 Solutions
               </span>
             </div>
           </div>
-          
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#beneficios" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">Benefícios</a>
-            <a href="#demo" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">Como Funciona</a>
-            <a href="#depoimentos" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">Depoimentos</a>
-            <a href="#faq" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">FAQ</a>
+
+          {/* Menu Center */}
+          <div className="hidden lg:flex items-center gap-1">
+             {[
+               { name: "Benefícios", icon: Sparkles, id: "beneficios" },
+               { name: "Agenda", icon: Calendar, id: "agenda" },
+               { name: "Fidelização", icon: MessageSquare, id: "fidelizacao" },
+               { name: "IA", icon: Zap, id: "ia" },
+               { name: "Preços", icon: Coins, id: "precos" }
+             ].map((item) => (
+               <a key={item.name} href={`#${item.id}`} className="px-5 py-2.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300 flex items-center gap-2 group relative overflow-hidden">
+                 <item.icon className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors stroke-[1.5]" />
+                 <span className="relative z-10">{item.name}</span>
+                 <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+               </a>
+             ))}
+          </div>
+
+          {/* CTA Right */}
+          <div className="hidden md:flex items-center gap-4">
             <Link href="/dashboard">
-              <Button className="rounded-full px-8 bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 border-none shadow-lg shadow-cyan-900/20 transition-all hover:scale-105">
-                Área do Cliente
+              <Button className="h-12 px-8 rounded-full bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 text-white font-semibold tracking-wide hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.4)] hover:scale-105 transition-all duration-300 border border-white/10 relative overflow-hidden group">
+                  <span className="relative z-10 flex items-center gap-2">
+                    Experimentar Agora
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </Button>
             </Link>
           </div>
           
-          <Button variant="ghost" size="icon" className="md:hidden text-white">
+          <Button variant="ghost" size="icon" className="lg:hidden text-white">
             <Menu className="h-6 w-6" />
           </Button>
         </div>
@@ -204,7 +226,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 3. Demonstração Visual Rápida */}
+      {/* 3. Demonstração Visual Rápida - NEW LAYOUT */}
       <section id="demo" className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-12">
@@ -212,21 +234,25 @@ export default function Landing() {
             <p className="text-slate-400">10 segundos para entender como sua vida vai mudar.</p>
           </div>
 
-          <div className="max-w-4xl mx-auto bg-slate-900 border border-white/10 rounded-3xl aspect-video relative flex items-center justify-center shadow-2xl overflow-hidden group cursor-pointer">
-            {/* Placeholder for Video/GIF */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 opacity-90" />
+          <div className="max-w-5xl mx-auto relative group">
+            <div className="absolute inset-0 bg-cyan-500/20 blur-[100px] -z-10 opacity-50" />
             
-            <img 
-              src={heroImage} 
-              className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" 
-              alt="Demo Background"
-            />
-
-            <div className="relative z-10 flex flex-col items-center gap-4">
-              <div className="h-20 w-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Play className="h-8 w-8 text-white fill-white ml-1" />
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 aspect-video bg-[#05080F]">
+              <img 
+                src={demoCapture} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" 
+                alt="Andromeda Dashboard Demo"
+              />
+              
+              {/* Overlay Button */}
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                 <Link href="/dashboard">
+                   <Button size="lg" variant="outline" className="h-16 px-10 rounded-full text-lg border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 hover:border-white/50 hover:scale-105 transition-all duration-300">
+                     <Play className="mr-3 h-5 w-5 fill-current" />
+                     Testar Demo
+                   </Button>
+                 </Link>
               </div>
-              <span className="text-white font-medium tracking-wide text-sm uppercase">Assistir Demo (20s)</span>
             </div>
           </div>
         </div>
