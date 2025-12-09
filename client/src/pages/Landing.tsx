@@ -19,7 +19,8 @@ import {
   Lock,
   HelpCircle,
   Users,
-  Coins
+  Coins,
+  Phone
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo_new.png";
 import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
@@ -35,6 +36,13 @@ import {
 } from "@/components/ui/accordion";
 
 export default function Landing() {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0B0F19] font-sans selection:bg-cyan-500/30 text-slate-100">
       {/* Navigation - Premium Header */}
@@ -62,14 +70,17 @@ export default function Landing() {
                { name: "Benefícios", icon: Sparkles, id: "beneficios" },
                { name: "Agenda", icon: Calendar, id: "agenda" },
                { name: "Fidelização", icon: MessageSquare, id: "fidelizacao" },
-               { name: "IA", icon: Zap, id: "ia" },
-               { name: "Preços", icon: Coins, id: "precos" }
+               { name: "IA", icon: Zap, id: "ia" }
              ].map((item) => (
-               <a key={item.name} href={`#${item.id}`} className="px-5 py-2.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300 flex items-center gap-2 group relative overflow-hidden">
+               <button 
+                 key={item.name} 
+                 onClick={() => scrollToSection(item.id)}
+                 className="px-5 py-2.5 rounded-full text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300 flex items-center gap-2 group relative overflow-hidden"
+               >
                  <item.icon className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors stroke-[1.5]" />
                  <span className="relative z-10">{item.name}</span>
                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
-               </a>
+               </button>
              ))}
           </div>
 
@@ -258,6 +269,78 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* 5. Benefícios do Sistema - MOVED UP */}
+      <section id="beneficios" className="py-24">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Tudo que você precisa em um só lugar</h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="ia" className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+              <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                <MessageSquare className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Automação via WhatsApp</h3>
+              <p className="text-slate-400 text-sm">Confirmações e lembretes sem você tocar no celular.</p>
+            </div>
+
+            <div id="agenda" className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+              <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                <Calendar className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Agenda Inteligente</h3>
+              <p className="text-slate-400 text-sm">Organização visual e simples para toda a equipe.</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+              <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                <CheckCircle2 className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Confirmação Automática</h3>
+              <p className="text-slate-400 text-sm">O sistema garante que seu cliente venha.</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+              <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                <Clock className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Lista de Espera</h3>
+              <p className="text-slate-400 text-sm">Preencha horários vagos automaticamente.</p>
+            </div>
+
+            <div id="fidelizacao" className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+              <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                <Users className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Ficha de Clientes</h3>
+              <p className="text-slate-400 text-sm">Histórico completo e preferências de cada um.</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
+              <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                <BarChart3 className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Relatórios e Faturamento</h3>
+              <p className="text-slate-400 text-sm">Controle total do caixa e comissões.</p>
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-4 mt-12">
+             <Link href="/dashboard">
+              <Button size="lg" className="rounded-full px-8 bg-cyan-600 hover:bg-cyan-500 text-white font-bold">
+                Ver demonstração funcionando
+              </Button>
+            </Link>
+             <Link href="/dashboard">
+              <Button size="lg" variant="outline" className="rounded-full px-8 border-white/10 text-white hover:bg-white/5">
+                Testar agora
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* 4. Prova Social Forte */}
       <section id="depoimentos" className="py-20 bg-[#0D121F] border-y border-white/5">
         <div className="container mx-auto px-6">
@@ -292,47 +375,6 @@ export default function Landing() {
               <h3 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">2x</h3>
               <p className="text-slate-400 mt-2">mais organização</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Benefícios do Sistema */}
-      <section id="beneficios" className="py-24">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Tudo que você precisa em um só lugar</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: MessageSquare, title: "Automação via WhatsApp", desc: "Confirmações e lembretes sem você tocar no celular." },
-              { icon: Calendar, title: "Agenda Inteligente", desc: "Organização visual e simples para toda a equipe." },
-              { icon: CheckCircle2, title: "Confirmação Automática", desc: "O sistema garante que seu cliente venha." },
-              { icon: Clock, title: "Lista de Espera", desc: "Preencha horários vagos automaticamente." },
-              { icon: Users, title: "Ficha de Clientes", desc: "Histórico completo e preferências de cada um." },
-              { icon: BarChart3, title: "Relatórios e Faturamento", desc: "Controle total do caixa e comissões." },
-            ].map((feature, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-white/10 group">
-                <div className="h-12 w-12 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
-                  <feature.icon className="h-6 w-6" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
-                <p className="text-slate-400 text-sm">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex justify-center gap-4 mt-12">
-             <Link href="/dashboard">
-              <Button size="lg" className="rounded-full px-8 bg-cyan-600 hover:bg-cyan-500 text-white font-bold">
-                Ver demonstração funcionando
-              </Button>
-            </Link>
-             <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="rounded-full px-8 border-white/10 text-white hover:bg-white/5">
-                Testar agora
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
@@ -422,6 +464,16 @@ export default function Landing() {
               Demo gratuita disponível. Sem cartão de crédito. Sem compromisso.
             </p>
             
+            <div className="mb-8 p-4 rounded-xl bg-cyan-900/20 border border-cyan-500/20 max-w-xl mx-auto">
+               <div className="flex items-center gap-3 justify-center mb-2">
+                 <Zap className="h-5 w-5 text-yellow-400" />
+                 <span className="text-white font-bold">Acesso Imediato + Suporte 24/7</span>
+               </div>
+               <p className="text-sm text-slate-400">
+                 Faça o pagamento hoje e ganhe acesso automático com todo suporte para a implementação no seu negócio.
+               </p>
+            </div>
+
             <Link href="/dashboard">
               <Button size="lg" className="w-full md:w-auto h-16 px-12 rounded-full text-xl bg-white text-slate-950 hover:bg-cyan-50 shadow-lg hover:scale-105 transition-all font-bold mb-8">
                 Quero testar gratuitamente
@@ -465,6 +517,13 @@ export default function Landing() {
           </Accordion>
         </div>
       </section>
+
+      {/* WhatsApp Floating CTA */}
+      <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50">
+         <Button className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 shadow-lg shadow-green-900/30 flex items-center justify-center animate-bounce duration-[3000ms]">
+           <Phone className="h-6 w-6 text-white fill-current" />
+         </Button>
+      </a>
 
       {/* Footer */}
       <footer className="py-12 bg-[#05080F] border-t border-white/5">
