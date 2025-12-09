@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo_new.png";
 import heroImage from "@assets/generated_images/modern_beauty_salon_reception_with_tablet.png";
-import demoCapture from "@assets/capture_251208_234213_1765248145218.png";
+import demoCapture from "@assets/capture_251209_000149_1765249335459.png";
 import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import stylist2 from "@assets/generated_images/portrait_of_a_male_hair_stylist.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
