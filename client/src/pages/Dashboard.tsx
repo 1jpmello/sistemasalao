@@ -12,20 +12,9 @@ import {
   ArrowDownRight,
   MoreHorizontal
 } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { staff, appointments, stats } from "@/lib/mockData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-
-const chartData = [
-  { time: "08h", clients: 2 },
-  { time: "10h", clients: 5 },
-  { time: "12h", clients: 8 },
-  { time: "14h", clients: 6 },
-  { time: "16h", clients: 9 },
-  { time: "18h", clients: 7 },
-  { time: "20h", clients: 3 },
-];
 
 export default function Dashboard() {
   const [reportModal, setReportModal] = useState(false);
@@ -33,7 +22,7 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="space-y-8">
+      <div className="space-y-8 animate-in fade-in duration-500">
         <PremiumModal
           open={reportModal}
           onOpenChange={setReportModal}
@@ -63,12 +52,12 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h2 className="text-3xl font-serif font-bold text-foreground">Visão Geral</h2>
-            <p className="text-muted-foreground">Controle total do seu salão em um lugar só.</p>
+            <h2 className="text-4xl font-sans font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:via-slate-200 dark:to-slate-400">Visão Geral</h2>
+            <p className="text-slate-500 font-medium text-lg mt-1">Controle total do seu salão em um lugar só.</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="bg-white" onClick={() => setReportModal(true)}>Exportar Relatório</Button>
-            <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20">
+            <Button variant="outline" className="bg-white/50 backdrop-blur-sm border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 font-semibold" onClick={() => setReportModal(true)}>Exportar Relatório</Button>
+            <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 font-bold tracking-wide transition-all hover:scale-105">
               + Novo Agendamento
             </Button>
           </div>
@@ -83,6 +72,7 @@ export default function Dashboard() {
             trend="+12%" 
             trendUp={true}
             sub="vs. ontem"
+            color="cyan"
           />
           <KpiCard 
             title="Agendamentos" 
@@ -91,6 +81,7 @@ export default function Dashboard() {
             trend="+5%" 
             trendUp={true}
             sub="vs. ontem"
+            color="purple"
           />
           <KpiCard 
             title="Ticket Médio" 
@@ -99,57 +90,64 @@ export default function Dashboard() {
             trend="+8%" 
             trendUp={true}
             sub="vs. semana passada"
+            color="emerald"
           />
           <KpiCard 
             title="Tempo Espera" 
             value={`${stats.avgWaitTime} min`} 
             icon={Clock} 
             trend="-2%" 
-            trendUp={false} // Green because lower is better for wait time? Logic usually red for down, but let's stick to visual arrows
+            trendUp={false} 
             sub="Média do dia"
+            color="blue"
           />
         </div>
 
         {/* Main Content Split */}
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Appointments List (Replacing Chart) */}
-          <Card className="lg:col-span-2 border-none shadow-sm glass-card cursor-pointer hover:shadow-md transition-all" onClick={() => setDashboardModal(true)}>
-            <CardHeader className="flex flex-row items-center justify-between">
+          {/* Appointments List */}
+          <Card className="lg:col-span-2 border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50 backdrop-blur-xl cursor-pointer hover:shadow-2xl transition-all duration-300" onClick={() => setDashboardModal(true)}>
+            <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 pb-6">
               <div>
-                <CardTitle>Próximos Compromissos</CardTitle>
-                <CardDescription>Sua agenda para as próximas horas</CardDescription>
+                <CardTitle className="text-xl font-bold text-slate-900">Próximos Compromissos</CardTitle>
+                <CardDescription className="text-slate-500 font-medium">Sua agenda para as próximas horas</CardDescription>
               </div>
-              <Button variant="ghost" size="icon">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="text-slate-400 hover:text-cyan-600 hover:bg-cyan-50">
+                <MoreHorizontal className="h-5 w-5" />
               </Button>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="space-y-4">
                 {appointments.slice(0, 4).map((apt) => {
                   const staffMember = staff.find(s => s.id === apt.staffId);
                   return (
-                    <div key={apt.id} className="flex items-center justify-between p-3 hover:bg-muted/50 rounded-xl transition-colors border border-transparent hover:border-border/50">
-                      <div className="flex items-center gap-4">
-                        <div className="flex flex-col items-center justify-center h-12 w-12 rounded-xl bg-primary/10 text-primary font-bold">
-                          <span className="text-sm">{apt.time}</span>
+                    <div key={apt.id} className="flex items-center justify-between p-4 hover:bg-white rounded-2xl transition-all duration-300 border border-transparent hover:border-slate-100 hover:shadow-lg hover:shadow-slate-200/50 group">
+                      <div className="flex items-center gap-5">
+                        <div className="flex flex-col items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-slate-100 to-white border border-slate-200 text-slate-900 font-bold shadow-sm group-hover:from-cyan-50 group-hover:to-white group-hover:border-cyan-200 group-hover:text-cyan-700 transition-all">
+                          <span className="text-base">{apt.time}</span>
                         </div>
                         <div>
-                          <p className="font-semibold text-foreground">{apt.client}</p>
-                          <p className="text-sm text-muted-foreground">{apt.service} • com {staffMember?.name.split(' ')[0]}</p>
+                          <p className="font-bold text-lg text-slate-900 mb-1">{apt.client}</p>
+                          <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
+                             <span className="text-cyan-600">{apt.service}</span>
+                             <span className="h-1 w-1 rounded-full bg-slate-300" />
+                             <span>com {staffMember?.name.split(' ')[0]}</span>
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
                         <Badge variant="secondary" className={`
-                          ${apt.status === 'Concluído' ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}
-                          ${apt.status === 'Em andamento' ? 'bg-blue-100 text-blue-700 hover:bg-blue-100' : ''}
-                          ${apt.status === 'Aguardando' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100' : ''}
-                          ${apt.status === 'Agendado' ? 'bg-purple-100 text-purple-700 hover:bg-purple-100' : ''}
+                          px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-lg border-0
+                          ${apt.status === 'Concluído' ? 'bg-emerald-100 text-emerald-700' : ''}
+                          ${apt.status === 'Em andamento' ? 'bg-blue-100 text-blue-700' : ''}
+                          ${apt.status === 'Aguardando' ? 'bg-amber-100 text-amber-700' : ''}
+                          ${apt.status === 'Agendado' ? 'bg-purple-100 text-purple-700' : ''}
                         `}>
                           {apt.status}
                         </Badge>
-                        <Avatar className="h-8 w-8 border-2 border-white shadow-sm">
+                        <Avatar className="h-10 w-10 border-2 border-white shadow-md ring-2 ring-transparent group-hover:ring-cyan-100 transition-all">
                           <AvatarImage src={staffMember?.avatar} />
-                          <AvatarFallback>{staffMember?.name[0]}</AvatarFallback>
+                          <AvatarFallback className="bg-slate-900 text-white font-bold">{staffMember?.name[0]}</AvatarFallback>
                         </Avatar>
                       </div>
                     </div>
@@ -159,28 +157,28 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Top Services / Stats */}
-          <Card className="border-none shadow-sm glass-card">
-            <CardHeader>
-              <CardTitle>Serviços em Alta</CardTitle>
-              <CardDescription>Mais solicitados hoje</CardDescription>
+          {/* Top Services */}
+          <Card className="border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50 backdrop-blur-xl">
+            <CardHeader className="border-b border-slate-100 pb-6">
+              <CardTitle className="text-xl font-bold text-slate-900">Serviços em Alta</CardTitle>
+              <CardDescription className="text-slate-500 font-medium">Mais solicitados hoje</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
+            <CardContent className="pt-6">
+              <div className="space-y-8">
                 {[
-                  { name: "Alongamento Gel", count: 15, val: 85 },
-                  { name: "Mechas", count: 10, val: 65 },
-                  { name: "Microblading", count: 4, val: 40 },
-                  { name: "Spa dos Pés", count: 8, val: 30 },
+                  { name: "Alongamento Gel", count: 15, val: 85, color: "bg-purple-500" },
+                  { name: "Mechas", count: 10, val: 65, color: "bg-pink-500" },
+                  { name: "Microblading", count: 4, val: 40, color: "bg-cyan-500" },
+                  { name: "Spa dos Pés", count: 8, val: 30, color: "bg-emerald-500" },
                 ].map((item, i) => (
-                  <div key={i} className="space-y-2">
-                    <div className="flex justify-between text-sm font-medium">
-                      <span>{item.name}</span>
-                      <span className="text-muted-foreground">{item.count} atendimentos</span>
+                  <div key={i} className="space-y-3 group">
+                    <div className="flex justify-between text-sm font-bold">
+                      <span className="text-slate-700 group-hover:text-slate-900 transition-colors">{item.name}</span>
+                      <span className="text-slate-400 group-hover:text-cyan-600 transition-colors">{item.count} atendimentos</span>
                     </div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                    <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
                       <div 
-                        className="h-full bg-primary/80 rounded-full" 
+                        className={`h-full ${item.color} rounded-full shadow-sm transition-all duration-1000 ease-out group-hover:brightness-110`} 
                         style={{ width: `${item.val}%` }}
                       />
                     </div>
@@ -190,79 +188,46 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Recent Appointments List (Removed - Merged into top section) */}
-        {/*
-        <Card className="border-none shadow-sm glass-card">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>Próximos Agendamentos</CardTitle>
-              <CardDescription>Fila de espera e agendados</CardDescription>
-            </div>
-            <Button variant="ghost" size="icon">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {appointments.map((apt) => {
-                const staffMember = staff.find(s => s.id === apt.staffId);
-                return (
-                  <div key={apt.id} className="flex items-center justify-between p-3 hover:bg-muted/50 rounded-xl transition-colors border border-transparent hover:border-border/50">
-                    <div className="flex items-center gap-4">
-                      <div className="flex flex-col items-center justify-center h-12 w-12 rounded-xl bg-primary/10 text-primary font-bold">
-                        <span className="text-sm">{apt.time}</span>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">{apt.client}</p>
-                        <p className="text-sm text-muted-foreground">{apt.service} • com {staffMember?.name.split(' ')[0]}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <Badge variant="secondary" className={`
-                        ${apt.status === 'Concluído' ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}
-                        ${apt.status === 'Em andamento' ? 'bg-blue-100 text-blue-700 hover:bg-blue-100' : ''}
-                        ${apt.status === 'Aguardando' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100' : ''}
-                        ${apt.status === 'Agendado' ? 'bg-purple-100 text-purple-700 hover:bg-purple-100' : ''}
-                      `}>
-                        {apt.status}
-                      </Badge>
-                      <Avatar className="h-8 w-8 border-2 border-white shadow-sm">
-                        <AvatarImage src={staffMember?.avatar} />
-                        <AvatarFallback>{staffMember?.name[0]}</AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-        */}
       </div>
     </Layout>
   );
 }
 
-function KpiCard({ title, value, icon: Icon, trend, trendUp, sub }: any) {
+function KpiCard({ title, value, icon: Icon, trend, trendUp, sub, color }: any) {
+  const colors: any = {
+    cyan: "from-cyan-500 to-blue-500 text-cyan-50",
+    purple: "from-purple-500 to-pink-500 text-purple-50",
+    emerald: "from-emerald-500 to-teal-500 text-emerald-50",
+    blue: "from-blue-500 to-indigo-500 text-blue-50",
+  };
+
+  const iconColors: any = {
+    cyan: "text-cyan-600 bg-cyan-50",
+    purple: "text-purple-600 bg-purple-50",
+    emerald: "text-emerald-600 bg-emerald-50",
+    blue: "text-blue-600 bg-blue-50",
+  };
+
   return (
-    <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 glass-card group">
+    <Card className="border-none shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-slate-300/40 transition-all duration-500 bg-white group hover:-translate-y-1 overflow-hidden relative">
+      <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${colors[color].split(' ')[0]} ${colors[color].split(' ')[2]} opacity-50 group-hover:opacity-100 transition-opacity`} />
+      
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-4">
-          <div className="p-3 rounded-xl bg-primary/5 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-            <Icon className="h-5 w-5" />
+          <div className={`p-3.5 rounded-2xl ${iconColors[color]} transition-transform duration-300 group-hover:scale-110 shadow-sm`}>
+            <Icon className="h-6 w-6" />
           </div>
           {trend && (
-            <div className={`flex items-center text-xs font-medium px-2 py-1 rounded-full ${trendUp ? 'text-emerald-600 bg-emerald-100' : 'text-rose-600 bg-rose-100'}`}>
-              {trendUp ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
+            <div className={`flex items-center text-xs font-bold px-2.5 py-1 rounded-lg ${trendUp ? 'text-emerald-700 bg-emerald-100' : 'text-rose-700 bg-rose-100'}`}>
+              {trendUp ? <ArrowUpRight className="h-3.5 w-3.5 mr-1 stroke-[3]" /> : <ArrowDownRight className="h-3.5 w-3.5 mr-1 stroke-[3]" />}
               {trend}
             </div>
           )}
         </div>
         <div>
-          <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
-          <h3 className="text-2xl font-serif font-bold text-foreground">{value}</h3>
-          {sub && <p className="text-xs text-muted-foreground mt-1">{sub}</p>}
+          <p className="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wider">{title}</p>
+          <h3 className="text-3xl font-sans font-extrabold text-slate-900 tracking-tight">{value}</h3>
+          {sub && <p className="text-xs font-medium text-slate-400 mt-2">{sub}</p>}
         </div>
       </CardContent>
     </Card>

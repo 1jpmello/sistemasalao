@@ -67,10 +67,10 @@ export default function Landing() {
           {/* Menu Center */}
           <div className="hidden lg:flex items-center gap-1">
              {[
-               { name: "Benefícios", icon: Sparkles, id: "beneficios" },
+               { name: "Resultados", icon: TrendingUp, id: "beneficios" },
+               { name: "Recursos", icon: Zap, id: "ia" },
                { name: "Agenda", icon: Calendar, id: "agenda" },
-               { name: "Fidelização", icon: MessageSquare, id: "fidelizacao" },
-               { name: "IA", icon: Zap, id: "ia" }
+               { name: "Fidelização", icon: MessageSquare, id: "fidelizacao" }
              ].map((item) => (
                <button 
                  key={item.name} 
