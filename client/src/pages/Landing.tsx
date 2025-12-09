@@ -153,9 +153,6 @@ export default function Landing() {
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
                 />
                 
-                {/* Tech Overlay Lines */}
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay" />
-
                 {/* Floating Cards */}
                 <div className="absolute top-8 right-8 bg-[#0B0F19]/90 backdrop-blur-md p-4 rounded-xl shadow-2xl border border-cyan-500/30 animate-bounce duration-[3000ms]">
                    <div className="flex items-center gap-4">
