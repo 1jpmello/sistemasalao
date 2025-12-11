@@ -57,7 +57,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <Sidebar className="w-full h-full border-none shadow-none" /> 
               </SheetContent>
             </Sheet>
-             <span className="font-serif font-bold text-lg">GestãoBelleza</span>
           </div>
 
           <div className="hidden md:flex items-center gap-4 flex-1 max-w-md">

@@ -130,6 +130,17 @@ export default function Landing() {
           </div>
           
           <div className="flex items-center gap-2 md:hidden">
+            <Link href="/login">
+              <Button 
+                size="sm"
+                variant="ghost"
+                className="h-9 px-3 text-slate-300 text-xs"
+                data-testid="button-login-mobile"
+              >
+                <Lock className="w-3 h-3 mr-1" />
+                Login
+              </Button>
+            </Link>
             <Link href="/dashboard">
               <Button 
                 size="sm"
