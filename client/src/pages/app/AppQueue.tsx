@@ -1,33 +1,37 @@
 import AppLayout from "@/components/layout/AppLayout";
-import { queue as initialQueue, staff } from "@/lib/mockData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Clock, CheckCircle2, User, MoreVertical, Play, Pause, DollarSign } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Clock, CheckCircle2, User, MoreVertical, Play, Pause, DollarSign, Plus, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+interface QueueItem {
+  id: number;
+  client: string;
+  service: string;
+  staff: string;
+  timeIn: string;
+  status: 'waiting' | 'in-service' | 'finished';
+}
+
 export default function AppQueue() {
   const { toast } = useToast();
-  const [queue, setQueue] = useState([
-    ...initialQueue,
-    { id: 99, client: "Ana Paula", service: "Avaliação", staff: "Qualquer", timeIn: "10:45", status: 'waiting' },
-    { id: 98, client: "Carla Dias", service: "Manicure", staff: "Júlia Costa", timeIn: "10:00", status: 'in-service' }
-  ]);
+  const [queue, setQueue] = useState<QueueItem[]>([]);
 
   const waiting = queue.filter(q => q.status === 'waiting');
   const inService = queue.filter(q => q.status === 'in-service');
   const finished = queue.filter(q => q.status === 'finished');
 
   const handleStartService = (id: number) => {
-    setQueue(prev => prev.map(q => q.id === id ? { ...q, status: 'in-service' } : q));
+    setQueue(prev => prev.map(q => q.id === id ? { ...q, status: 'in-service' as const } : q));
     toast({ title: "Atendimento iniciado!" });
   };
 
   const handleFinishService = (id: number) => {
-    setQueue(prev => prev.map(q => q.id === id ? { ...q, status: 'finished' } : q));
+    setQueue(prev => prev.map(q => q.id === id ? { ...q, status: 'finished' as const } : q));
     toast({ title: "Atendimento finalizado!" });
   };
 
@@ -36,51 +40,95 @@ export default function AppQueue() {
     toast({ title: "Pagamento registrado!" });
   };
 
+  const addToQueue = () => {
+    const newItem: QueueItem = {
+      id: Date.now(),
+      client: "Novo Cliente",
+      service: "Atendimento",
+      staff: "Disponível",
+      timeIn: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+      status: 'waiting'
+    };
+    setQueue(prev => [...prev, newItem]);
+    toast({ title: "Cliente adicionado à fila!" });
+  };
+
   return (
     <AppLayout>
       <div className="space-y-8 h-[calc(100vh-8rem)] flex flex-col">
-        <div>
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600">Fluxo de Atendimento</h2>
-          <p className="text-slate-500">Acompanhe o status dos clientes em tempo real.</p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600">Fluxo de Atendimento</h2>
+            <p className="text-slate-500">Acompanhe o status dos clientes em tempo real.</p>
+          </div>
+          <Button 
+            onClick={addToQueue}
+            className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 font-bold"
+            data-testid="button-add-queue"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Adicionar Cliente
+          </Button>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 flex-1 overflow-hidden">
           <Column title="Aguardando" count={waiting.length} color="bg-amber-50 border-amber-200">
-            {waiting.map((item) => (
-               <QueueCard 
-                 key={item.id} 
-                 item={item} 
-                 color="border-l-amber-500" 
-                 onStart={() => handleStartService(item.id)}
-               />
-            ))}
+            {waiting.length === 0 ? (
+              <EmptyState text="Nenhum cliente aguardando" />
+            ) : (
+              waiting.map((item) => (
+                <QueueCard 
+                  key={item.id} 
+                  item={item} 
+                  color="border-l-amber-500" 
+                  onStart={() => handleStartService(item.id)}
+                />
+              ))
+            )}
           </Column>
 
           <Column title="Em Atendimento" count={inService.length} color="bg-cyan-50 border-cyan-200">
-             {inService.map((item) => (
-               <QueueCard 
-                 key={item.id} 
-                 item={item} 
-                 color="border-l-cyan-500" 
-                 active 
-                 onFinish={() => handleFinishService(item.id)}
-               />
-            ))}
+            {inService.length === 0 ? (
+              <EmptyState text="Nenhum atendimento em andamento" />
+            ) : (
+              inService.map((item) => (
+                <QueueCard 
+                  key={item.id} 
+                  item={item} 
+                  color="border-l-cyan-500" 
+                  active 
+                  onFinish={() => handleFinishService(item.id)}
+                />
+              ))
+            )}
           </Column>
 
           <Column title="Finalizado / Pagamento" count={finished.length} color="bg-emerald-50 border-emerald-200">
-             {finished.map((item) => (
-               <QueueCard 
-                 key={item.id} 
-                 item={item} 
-                 color="border-l-emerald-500" 
-                 onPayment={() => handlePayment(item.id)}
-               />
-            ))}
+            {finished.length === 0 ? (
+              <EmptyState text="Nenhum atendimento finalizado" />
+            ) : (
+              finished.map((item) => (
+                <QueueCard 
+                  key={item.id} 
+                  item={item} 
+                  color="border-l-emerald-500" 
+                  onPayment={() => handlePayment(item.id)}
+                />
+              ))
+            )}
           </Column>
         </div>
       </div>
     </AppLayout>
+  );
+}
+
+function EmptyState({ text }: { text: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-8 text-slate-400">
+      <Users className="h-10 w-10 mb-2 opacity-30" />
+      <p className="text-sm text-center">{text}</p>
+    </div>
   );
 }
 
@@ -98,9 +146,14 @@ function Column({ title, count, children, color }: any) {
   );
 }
 
-function QueueCard({ item, color, active, onStart, onFinish, onPayment }: { item: any, color: string, active?: boolean, onStart?: () => void, onFinish?: () => void, onPayment?: () => void }) {
-  const staffMember = staff.find(s => s.name === item.staff);
-
+function QueueCard({ item, color, active, onStart, onFinish, onPayment }: { 
+  item: QueueItem, 
+  color: string, 
+  active?: boolean, 
+  onStart?: () => void, 
+  onFinish?: () => void, 
+  onPayment?: () => void 
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}

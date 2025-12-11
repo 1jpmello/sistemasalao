@@ -26,6 +26,7 @@ import AppMarketing from "@/pages/app/AppMarketing";
 import AppFinance from "@/pages/app/AppFinance";
 import AppClients from "@/pages/app/AppClients";
 import AppMiniSite from "@/pages/app/AppMiniSite";
+import AppSupport from "@/pages/app/AppSupport";
 import Login from "@/pages/Login";
 import Onboarding from "@/pages/Onboarding";
 
@@ -56,6 +57,7 @@ function Router() {
       <Route path="/app/financeiro" component={AppFinance} />
       <Route path="/app/clientes" component={AppClients} />
       <Route path="/app/mini-site" component={AppMiniSite} />
+      <Route path="/app/suporte" component={AppSupport} />
 
       <Route component={NotFound} />
     </Switch>

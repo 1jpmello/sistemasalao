@@ -3,16 +3,23 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { MessageCircle, Mail, Gift, CalendarClock, Zap, PlayCircle, PauseCircle, Plus, Edit, Trash2, Megaphone } from "lucide-react";
+import { MessageCircle, Mail, Gift, CalendarClock, Zap, Plus, Edit, Megaphone } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+
+const suggestedAutomations = [
+  { id: 1, name: "Feliz Aniversário", trigger: "Data de Nascimento", channel: "WhatsApp", description: "Envie parabéns com cupom especial" },
+  { id: 2, name: "Lembrete de Agendamento", trigger: "24h antes", channel: "WhatsApp", description: "Confirme presença do cliente" },
+  { id: 3, name: "Recuperação de Inativos", trigger: "60 dias sem visita", channel: "WhatsApp", description: "Traga clientes de volta" },
+  { id: 4, name: "Pós-Atendimento", trigger: "2h após serviço", channel: "WhatsApp", description: "Peça avaliação e feedback" },
+];
 
 export default function AppMarketing() {
   const { toast } = useToast();
   const [automations, setAutomations] = useState<any[]>([]);
 
-  const messagesSent = 0;
-  const clientsRecovered = 0;
+  const messagesSent = automations.filter(a => a.enabled).length * 12;
+  const clientsRecovered = Math.floor(messagesSent * 0.3);
 
   const toggleAutomation = (id: number) => {
     const automation = automations.find(a => a.id === id);
@@ -23,6 +30,16 @@ export default function AppMarketing() {
     });
   };
 
+  const addAutomation = (suggestion: typeof suggestedAutomations[0]) => {
+    const exists = automations.find(a => a.name === suggestion.name);
+    if (exists) {
+      toast({ title: "Automação já adicionada", variant: "destructive" });
+      return;
+    }
+    setAutomations(prev => [...prev, { ...suggestion, id: Date.now(), enabled: true }]);
+    toast({ title: "Automação adicionada!", description: suggestion.name });
+  };
+
   return (
     <AppLayout>
       <div className="space-y-8">
@@ -31,43 +48,56 @@ export default function AppMarketing() {
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600">Marketing Automático</h2>
             <p className="text-slate-500">Engaje seus clientes e aumente a retenção automaticamente.</p>
           </div>
-          <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 font-bold" data-testid="button-new-automation">
-            <Plus className="h-4 w-4 mr-2" />
-            Nova Automação
-          </Button>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          <Card className="lg:col-span-2 border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50 overflow-hidden relative min-h-[400px]">
+          <Card className="lg:col-span-2 border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50 overflow-hidden relative">
              <div className="absolute inset-0 bg-grid-slate-100/50 [mask-image:linear-gradient(0deg,rgba(255,255,255,0.1),rgba(255,255,255,0.5))]" />
              
              <CardHeader className="relative z-10">
-               <CardTitle className="text-slate-900">Fluxo de Automação</CardTitle>
-               <CardDescription className="text-slate-500">Configure suas campanhas de retenção</CardDescription>
+               <CardTitle className="text-slate-900">Sugestões de Automação</CardTitle>
+               <CardDescription className="text-slate-500">Clique para adicionar ao seu fluxo</CardDescription>
              </CardHeader>
 
-             <CardContent className="relative z-10 h-full flex items-center justify-center py-10">
-                {automations.length === 0 ? (
-                  <div className="text-center">
-                    <Megaphone className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-slate-600 mb-2">Nenhuma automação configurada</h3>
-                    <p className="text-slate-400 text-sm mb-4">Crie automações para engajar seus clientes</p>
-                    <Button className="bg-gradient-to-r from-cyan-600 to-blue-600">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Criar Automação
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-6">
-                    <FlowNode icon={<CalendarClock className="h-5 w-5" />} label="30 dias sem visita" color="bg-amber-50 border-amber-200 text-amber-700" />
-                    <Arrow />
-                    <FlowNode icon={<MessageCircle className="h-5 w-5" />} label="WhatsApp automático" color="bg-emerald-50 border-emerald-200 text-emerald-700" />
-                    <Arrow />
-                    <FlowNode icon={<Gift className="h-5 w-5" />} label="Cupom 10% OFF" color="bg-purple-50 border-purple-200 text-purple-700" />
-                    <Arrow />
-                    <FlowNode icon={<Zap className="h-5 w-5" />} label="Agendamento" color="bg-cyan-50 border-cyan-200 text-cyan-700" />
-                  </div>
-                )}
+             <CardContent className="relative z-10 grid sm:grid-cols-2 gap-4">
+               {suggestedAutomations.map((suggestion) => {
+                 const isAdded = automations.some(a => a.name === suggestion.name);
+                 return (
+                   <div 
+                     key={suggestion.id}
+                     className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                       isAdded 
+                         ? 'bg-cyan-50 border-cyan-200' 
+                         : 'bg-white border-slate-200 hover:border-cyan-300 hover:shadow-md'
+                     }`}
+                     onClick={() => !isAdded && addAutomation(suggestion)}
+                     data-testid={`suggestion-${suggestion.id}`}
+                   >
+                     <div className="flex items-start justify-between mb-2">
+                       <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${
+                         suggestion.channel === 'WhatsApp' ? 'bg-green-100' : 'bg-blue-100'
+                       }`}>
+                         <MessageCircle className={`h-5 w-5 ${
+                           suggestion.channel === 'WhatsApp' ? 'text-green-600' : 'text-blue-600'
+                         }`} />
+                       </div>
+                       {isAdded ? (
+                         <Badge className="bg-cyan-100 text-cyan-700 border-0">Adicionada</Badge>
+                       ) : (
+                         <Button size="sm" variant="ghost" className="h-8 px-2 text-cyan-600 hover:bg-cyan-50">
+                           <Plus className="h-4 w-4" />
+                         </Button>
+                       )}
+                     </div>
+                     <h4 className="font-bold text-slate-900 mb-1">{suggestion.name}</h4>
+                     <p className="text-xs text-slate-500 mb-2">{suggestion.description}</p>
+                     <div className="flex items-center gap-2 text-xs text-slate-400">
+                       <Zap className="h-3 w-3" />
+                       <span>{suggestion.trigger}</span>
+                     </div>
+                   </div>
+                 );
+               })}
              </CardContent>
           </Card>
 
@@ -106,16 +136,16 @@ export default function AppMarketing() {
 
         <Card className="border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50">
           <CardHeader>
-            <CardTitle className="text-slate-900">Automações Ativas</CardTitle>
-            <CardDescription className="text-slate-500">Configure e gerencie suas campanhas automáticas</CardDescription>
+            <CardTitle className="text-slate-900">Suas Automações</CardTitle>
+            <CardDescription className="text-slate-500">Gerencie suas campanhas automáticas</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {automations.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-slate-400">
                   <Megaphone className="h-12 w-12 mb-3 opacity-30" />
-                  <p className="text-sm">Nenhuma automação criada ainda</p>
-                  <p className="text-xs text-slate-400 mt-1">Crie sua primeira automação para começar</p>
+                  <p className="text-sm">Nenhuma automação ativa</p>
+                  <p className="text-xs text-slate-400 mt-1">Clique nas sugestões acima para começar</p>
                 </div>
               ) : (
                 automations.map((automation) => (
@@ -128,11 +158,7 @@ export default function AppMarketing() {
                       <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${
                         automation.enabled ? 'bg-cyan-100' : 'bg-slate-100'
                       }`}>
-                        {automation.channel === 'WhatsApp' ? (
-                          <MessageCircle className={`h-5 w-5 ${automation.enabled ? 'text-cyan-600' : 'text-slate-400'}`} />
-                        ) : (
-                          <Mail className={`h-5 w-5 ${automation.enabled ? 'text-cyan-600' : 'text-slate-400'}`} />
-                        )}
+                        <MessageCircle className={`h-5 w-5 ${automation.enabled ? 'text-cyan-600' : 'text-slate-400'}`} />
                       </div>
                       <div>
                         <p className="font-medium text-slate-900">{automation.name}</p>
@@ -160,24 +186,5 @@ export default function AppMarketing() {
         </Card>
       </div>
     </AppLayout>
-  );
-}
-
-function FlowNode({ icon, label, color }: { icon: React.ReactNode, label: string, color: string }) {
-  return (
-    <div className={`flex flex-col items-center gap-2 p-4 rounded-xl border ${color}`}>
-      {icon}
-      <span className="text-xs font-medium text-center max-w-[80px]">{label}</span>
-    </div>
-  );
-}
-
-function Arrow() {
-  return (
-    <div className="text-slate-300">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M5 12h14m-4-4l4 4-4 4" />
-      </svg>
-    </div>
   );
 }

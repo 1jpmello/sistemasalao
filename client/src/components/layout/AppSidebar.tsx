@@ -7,7 +7,6 @@ import {
   Scissors,
   GitPullRequest,
   Megaphone,
-  Settings,
   LogOut,
   DollarSign,
   Smartphone,
@@ -94,15 +93,6 @@ export function AppSidebar({ className }: { className?: string }) {
         >
           <Smartphone className="h-4 w-4 text-slate-400" />
           Mini Site
-        </Link>
-
-        <Link 
-          href="/app/configuracoes"
-          data-testid="nav-settings"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
-        >
-          <Settings className="h-4 w-4 text-slate-400" />
-          Configurações
         </Link>
 
         <Link 
