@@ -11,7 +11,8 @@ import {
   LogOut,
   DollarSign,
   Smartphone,
-  HeadphonesIcon
+  HeadphonesIcon,
+  Home
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo.png";
 
@@ -27,25 +28,30 @@ const menuItems = [
 ];
 
 export function AppSidebar({ className }: { className?: string }) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    setLocation("/login");
+  };
 
   return (
-    <aside className={cn("w-64 border-r bg-sidebar h-screen flex flex-col bg-[#0B0F19]", className)}>
-      <div className="p-6 flex items-center gap-3 border-b border-sidebar-border/50 bg-[#0B0F19]">
+    <aside className={cn("w-64 border-r border-slate-200 h-screen flex flex-col bg-gradient-to-b from-white to-slate-50", className)}>
+      <div className="p-6 flex items-center gap-3 border-b border-slate-100 bg-white">
         <Link href="/app">
-           <div className="h-10 w-10 rounded-lg overflow-hidden border border-white/10 p-1 bg-gradient-to-br from-slate-800 to-slate-950 cursor-pointer hover:scale-105 transition-transform">
+           <div className="h-10 w-10 rounded-lg overflow-hidden border border-slate-200 p-1 bg-gradient-to-br from-slate-100 to-white cursor-pointer hover:scale-105 transition-transform shadow-sm">
             <img src={andromedaLogo} alt="Logo" className="h-full w-full object-contain" />
            </div>
         </Link>
         <Link href="/app">
           <div className="flex flex-col cursor-pointer">
-             <span className="text-lg font-bold text-white leading-none tracking-tight">ANDROMEDA</span>
-             <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em]">Solutions</span>
+             <span className="text-lg font-bold text-slate-900 leading-none tracking-tight">ANDROMEDA</span>
+             <span className="text-[10px] text-cyan-600 font-bold uppercase tracking-[0.2em]">Solutions</span>
           </div>
         </Link>
       </div>
 
-      <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto no-scrollbar">
+      <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto no-scrollbar bg-gradient-to-b from-white to-slate-50/50">
         <div className="mb-4 px-2 text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
           Gestão
         </div>
@@ -59,13 +65,13 @@ export function AppSidebar({ className }: { className?: string }) {
                  className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group cursor-pointer",
                   isActive
-                    ? "bg-cyan-500/10 text-white shadow-md shadow-slate-900/10"
-                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                    ? "bg-gradient-to-r from-cyan-50 to-blue-50 text-cyan-700 shadow-sm border border-cyan-100"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 )}>
                 <item.icon
                   className={cn(
                     "h-4 w-4 transition-colors",
-                    isActive ? "text-cyan-400" : "text-slate-500 group-hover:text-cyan-400"
+                    isActive ? "text-cyan-600" : "text-slate-400 group-hover:text-slate-600"
                   )}
                 />
                 {item.label}
@@ -81,9 +87,9 @@ export function AppSidebar({ className }: { className?: string }) {
         <Link href="/app/mini-site">
            <a 
              data-testid="nav-minisite"
-             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all cursor-pointer"
+             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
            >
-            <Smartphone className="h-4 w-4 text-slate-500" />
+            <Smartphone className="h-4 w-4 text-slate-400" />
             Mini Site
           </a>
         </Link>
@@ -91,9 +97,9 @@ export function AppSidebar({ className }: { className?: string }) {
         <Link href="/app/configuracoes">
            <a 
              data-testid="nav-settings"
-             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all cursor-pointer"
+             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
            >
-            <Settings className="h-4 w-4 text-slate-500" />
+            <Settings className="h-4 w-4 text-slate-400" />
             Configurações
           </a>
         </Link>
@@ -101,30 +107,38 @@ export function AppSidebar({ className }: { className?: string }) {
         <Link href="/app/suporte">
            <a 
              data-testid="nav-support"
-             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all cursor-pointer"
+             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
            >
-            <HeadphonesIcon className="h-4 w-4 text-slate-500" />
+            <HeadphonesIcon className="h-4 w-4 text-slate-400" />
             Suporte
+          </a>
+        </Link>
+
+        <Link href="/">
+           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer">
+            <Home className="h-4 w-4 text-slate-400" />
+            Voltar ao Site
           </a>
         </Link>
       </nav>
 
-      <div className="p-4 border-t border-slate-800 space-y-4 bg-[#0B0F19]">
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+      <div className="p-4 border-t border-slate-100 space-y-4 bg-slate-50">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-8 w-8 rounded-full overflow-hidden bg-cyan-500/20 flex items-center justify-center border border-cyan-500/30">
-              <Users className="h-4 w-4 text-cyan-400" />
+            <div className="h-8 w-8 rounded-full overflow-hidden bg-cyan-50 flex items-center justify-center border border-cyan-100">
+              <Users className="h-4 w-4 text-cyan-600" />
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Seu Salão</p>
-              <p className="text-xs text-cyan-400">Plano Profissional</p>
+              <p className="text-sm font-bold text-slate-800">Seu Salão</p>
+              <p className="text-xs text-cyan-600 font-medium">Plano Profissional</p>
             </div>
           </div>
         </div>
         
         <button 
-          data-testid="button-logout"
-          className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all cursor-pointer"
+          onClick={handleLogout}
+          data-testid="button-sidebar-logout"
+          className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg text-sm font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
         >
           <LogOut className="h-4 w-4" />
           Sair
