@@ -9,6 +9,8 @@ import { Link } from "wouter";
 import { useAuth } from "@/context/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 export default function Login() {
   const [, setLocation] = useLocation();
   const { login } = useAuth();
@@ -54,7 +56,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
