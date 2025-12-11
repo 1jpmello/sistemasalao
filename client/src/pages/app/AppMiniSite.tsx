@@ -19,17 +19,28 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AppMiniSite() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [copied, setCopied] = useState(false);
-  const siteUrl = "https://seusalao.andromeda.app";
+  
+  const salonSlug = user?.salonName ? user.salonName.toLowerCase().replace(/\s+/g, '-') : 'seusalao';
+  const siteUrl = `https://${salonSlug}.andromeda.app`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(siteUrl);
     setCopied(true);
     toast({ title: "Link copiado!", description: siteUrl });
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const stats = {
+    visitsToday: 0,
+    visitsWeek: 0,
+    appointments: 0,
+    conversionRate: "0%"
   };
 
   return (
@@ -177,10 +188,10 @@ export default function AppMiniSite() {
           <CardContent>
             <div className="grid sm:grid-cols-4 gap-6">
               {[
-                { label: "Visitas Hoje", value: "47", color: "text-cyan-600" },
-                { label: "Visitas Semana", value: "312", color: "text-blue-600" },
-                { label: "Agendamentos", value: "28", color: "text-emerald-600" },
-                { label: "Taxa Conversão", value: "8.9%", color: "text-purple-600" },
+                { label: "Visitas Hoje", value: stats.visitsToday.toString(), color: "text-cyan-600" },
+                { label: "Visitas Semana", value: stats.visitsWeek.toString(), color: "text-blue-600" },
+                { label: "Agendamentos", value: stats.appointments.toString(), color: "text-emerald-600" },
+                { label: "Taxa Conversão", value: stats.conversionRate, color: "text-purple-600" },
               ].map((stat, index) => (
                 <div key={index} className="text-center p-4 rounded-lg bg-slate-50 border border-slate-100">
                   <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>

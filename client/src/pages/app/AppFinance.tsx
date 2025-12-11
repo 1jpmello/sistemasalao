@@ -12,7 +12,8 @@ import {
   Download,
   Plus,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  BarChart3
 } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell } from "recharts";
 import { Badge } from "@/components/ui/badge";
@@ -35,33 +36,29 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
-const data = [
-  { name: "Seg", total: 1200 },
-  { name: "Ter", total: 900 },
-  { name: "Qua", total: 1600 },
-  { name: "Qui", total: 1400 },
-  { name: "Sex", total: 2400 },
-  { name: "Sáb", total: 3100 },
-  { name: "Dom", total: 0 },
-];
-
-const initialTransactions = [
-  { id: 1, type: "income", description: "Corte + Escova - Maria Silva", amount: 150, time: "14:30" },
-  { id: 2, type: "income", description: "Manicure + Pedicure - Ana Paula", amount: 80, time: "13:00" },
-  { id: 3, type: "expense", description: "Compra de produtos", amount: -320, time: "11:45" },
-  { id: 4, type: "income", description: "Coloração - Fernanda Lima", amount: 280, time: "10:30" },
-  { id: 5, type: "income", description: "Tratamento Capilar - Juliana", amount: 200, time: "09:00" },
-];
-
 export default function AppFinance() {
   const { toast } = useToast();
-  const [transactions, setTransactions] = useState(initialTransactions);
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newTransaction, setNewTransaction] = useState({
     type: "",
     description: "",
     amount: "",
   });
+
+  const totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + Math.abs(t.amount), 0);
+  const totalExpense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + Math.abs(t.amount), 0);
+  const netProfit = totalIncome - totalExpense;
+
+  const chartData = [
+    { name: "Seg", total: 0 },
+    { name: "Ter", total: 0 },
+    { name: "Qua", total: 0 },
+    { name: "Qui", total: 0 },
+    { name: "Sex", total: 0 },
+    { name: "Sáb", total: 0 },
+    { name: "Dom", total: 0 },
+  ];
 
   const handleAddTransaction = () => {
     if (!newTransaction.type || !newTransaction.description || !newTransaction.amount) {
@@ -169,10 +166,10 @@ export default function AppFinance() {
 
         <div className="grid md:grid-cols-4 gap-6">
           {[
-            { title: "Faturamento Hoje", value: "R$ 1.840", change: "+18%", positive: true, icon: DollarSign, color: "cyan" },
-            { title: "Faturamento Semana", value: "R$ 10.600", change: "+12%", positive: true, icon: TrendingUp, color: "purple" },
-            { title: "Despesas Mês", value: "R$ 3.200", change: "-8%", positive: true, icon: CreditCard, color: "emerald" },
-            { title: "Lucro Líquido", value: "R$ 7.400", change: "+15%", positive: true, icon: Wallet, color: "blue" },
+            { title: "Faturamento Hoje", value: `R$ ${totalIncome}`, change: transactions.length > 0 ? "+0%" : null, positive: true, icon: DollarSign, color: "cyan" },
+            { title: "Faturamento Semana", value: `R$ ${totalIncome}`, change: transactions.length > 0 ? "+0%" : null, positive: true, icon: TrendingUp, color: "purple" },
+            { title: "Despesas Mês", value: `R$ ${totalExpense}`, change: transactions.length > 0 ? "-0%" : null, positive: true, icon: CreditCard, color: "emerald" },
+            { title: "Lucro Líquido", value: `R$ ${netProfit}`, change: transactions.length > 0 ? "+0%" : null, positive: true, icon: Wallet, color: "blue" },
           ].map((stat, index) => (
             <Card key={index} className="border-none shadow-xl shadow-slate-200/40 bg-white" data-testid={`card-finance-stat-${index}`}>
               <CardContent className="p-6">
@@ -185,10 +182,12 @@ export default function AppFinance() {
                   }`}>
                     <stat.icon className="h-6 w-6" />
                   </div>
-                  <Badge className={stat.positive ? "bg-emerald-100 text-emerald-700 border-0" : "bg-red-100 text-red-700 border-0"}>
-                    {stat.positive ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
-                    {stat.change}
-                  </Badge>
+                  {stat.change && (
+                    <Badge className={stat.positive ? "bg-emerald-100 text-emerald-700 border-0" : "bg-red-100 text-red-700 border-0"}>
+                      {stat.positive ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
+                      {stat.change}
+                    </Badge>
+                  )}
                 </div>
                 <div className="mt-4">
                   <p className="text-sm text-slate-500">{stat.title}</p>
@@ -206,22 +205,30 @@ export default function AppFinance() {
               <CardDescription className="text-slate-500">Receita por dia da semana</CardDescription>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={data}>
-                  <XAxis dataKey="name" stroke="#94a3b8" />
-                  <YAxis stroke="#94a3b8" tickFormatter={(value) => `R$${value}`} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px' }}
-                    labelStyle={{ color: '#0f172a' }}
-                    formatter={(value: number) => [`R$ ${value}`, 'Faturamento']}
-                  />
-                  <Bar dataKey="total" radius={[4, 4, 0, 0]}>
-                    {data.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.total > 0 ? '#0891b2' : '#e2e8f0'} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+              {transactions.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-[300px] text-slate-400">
+                  <BarChart3 className="h-16 w-16 mb-4 opacity-30" />
+                  <p className="text-lg font-medium">Nenhuma transação registrada</p>
+                  <p className="text-sm">Adicione transações para ver o gráfico</p>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={chartData}>
+                    <XAxis dataKey="name" stroke="#94a3b8" />
+                    <YAxis stroke="#94a3b8" tickFormatter={(value) => `R$${value}`} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px' }}
+                      labelStyle={{ color: '#0f172a' }}
+                      formatter={(value: number) => [`R$ ${value}`, 'Faturamento']}
+                    />
+                    <Bar dataKey="total" radius={[4, 4, 0, 0]}>
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.total > 0 ? '#0891b2' : '#e2e8f0'} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </CardContent>
           </Card>
 
@@ -232,28 +239,35 @@ export default function AppFinance() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {transactions.slice(0, 5).map((tx) => (
-                  <div key={tx.id} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100" data-testid={`row-transaction-${tx.id}`}>
-                    <div className="flex items-center gap-3">
-                      <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                        tx.type === 'income' ? 'bg-emerald-100' : 'bg-red-100'
-                      }`}>
-                        {tx.type === 'income' ? (
-                          <ArrowUpRight className="h-4 w-4 text-emerald-600" />
-                        ) : (
-                          <ArrowDownRight className="h-4 w-4 text-red-600" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-slate-900 truncate max-w-[150px]">{tx.description}</p>
-                        <p className="text-xs text-slate-500">{tx.time}</p>
-                      </div>
-                    </div>
-                    <p className={`font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-red-600'}`}>
-                      {tx.type === 'income' ? '+' : ''}R$ {Math.abs(tx.amount)}
-                    </p>
+                {transactions.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-slate-400">
+                    <DollarSign className="h-12 w-12 mb-3 opacity-30" />
+                    <p className="text-sm">Nenhuma transação ainda</p>
                   </div>
-                ))}
+                ) : (
+                  transactions.slice(0, 5).map((tx) => (
+                    <div key={tx.id} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100" data-testid={`row-transaction-${tx.id}`}>
+                      <div className="flex items-center gap-3">
+                        <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
+                          tx.type === 'income' ? 'bg-emerald-100' : 'bg-red-100'
+                        }`}>
+                          {tx.type === 'income' ? (
+                            <ArrowUpRight className="h-4 w-4 text-emerald-600" />
+                          ) : (
+                            <ArrowDownRight className="h-4 w-4 text-red-600" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-slate-900 truncate max-w-[150px]">{tx.description}</p>
+                          <p className="text-xs text-slate-500">{tx.time}</p>
+                        </div>
+                      </div>
+                      <p className={`font-bold ${tx.type === 'income' ? 'text-emerald-600' : 'text-red-600'}`}>
+                        {tx.type === 'income' ? '+' : ''}R$ {Math.abs(tx.amount)}
+                      </p>
+                    </div>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>

@@ -73,3 +73,13 @@ export async function deleteService(id: string) {
   if (!response.ok) throw new Error("Failed to delete service");
   return response.json();
 }
+
+export async function createClient(data: any) {
+  const response = await fetch("/api/clients", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Failed to create client");
+  return response.json();
+}
