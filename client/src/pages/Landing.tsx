@@ -582,7 +582,7 @@ export default function Landing() {
             </div>
 
             <a 
-              href="https://wa.me/5511999999999?text=Oi!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20o%20sistema." 
+              href="https://wa.me/5511958548349?text=Oi!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20o%20sistema." 
               target="_blank" 
               rel="noopener noreferrer"
               onClick={() => analytics.clickWhatsApp()}
@@ -679,7 +679,7 @@ export default function Landing() {
             </div>
 
             <p className="text-slate-500 text-sm">
-              Prefere tirar dúvidas primeiro? <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 underline">Fale conosco no WhatsApp</a>
+              Prefere tirar dúvidas primeiro? <a href="https://wa.me/5511958548349" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 underline">Fale conosco no WhatsApp</a>
             </p>
           </div>
         </div>
@@ -734,7 +734,7 @@ export default function Landing() {
         </div>
 
         <a 
-          href="https://wa.me/5511999999999?text=Oi!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20o%20sistema." 
+          href="https://wa.me/5511958548349?text=Oi!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20o%20sistema." 
           target="_blank" 
           rel="noopener noreferrer"
           onClick={() => analytics.clickWhatsApp()}
