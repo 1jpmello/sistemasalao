@@ -3,12 +3,12 @@ import { AppSidebar } from "./AppSidebar";
 import { Bell, Search, MessageSquare, Menu, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
-import stylist1 from "@assets/generated_images/portrait_of_a_female_hair_stylist.png";
 import { useLocation } from "wouter";
+import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +20,7 @@ import {
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [, setLocation] = useLocation();
+  const { user, logout } = useAuth();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [messages, setMessages] = useState<{id: number, text: string, time: string, sender: 'bot' | 'user'}[]>([
     { id: 1, text: "Olá! Como posso ajudar o salão hoje?", time: "08:00", sender: "bot" }
@@ -47,7 +48,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
+    logout();
     setLocation("/login");
   };
 
@@ -69,7 +70,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
              <span className="font-bold text-lg">Andromeda</span>
           </div>
 
-          <div className="hidden md:flex items-center gap-4 flex-1 max-w-md">
+          <div className="hidden lg:flex items-center gap-4 flex-1 max-w-md">
             <div className="relative w-full">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input 
@@ -80,34 +81,35 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-2">
             <Button 
               variant="ghost" 
               size="icon" 
-              className="relative text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-full"
+              className="hidden sm:relative sm:flex text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-full h-8 w-8 sm:h-9 sm:w-9"
               onClick={() => setIsChatOpen(true)}
               data-testid="button-chat"
             >
-              <MessageSquare className="h-5 w-5" />
-              <span className="absolute top-2 right-2 h-2 w-2 bg-primary rounded-full ring-2 ring-white animate-pulse" />
+              <MessageSquare className="h-4 w-4" />
+              <span className="absolute top-1 right-1 h-2 w-2 bg-primary rounded-full ring-2 ring-white animate-pulse" />
             </Button>
             
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-full" data-testid="button-notifications">
-              <Bell className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="hidden md:flex text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-full h-8 w-8 sm:h-9 sm:w-9" data-testid="button-notifications">
+              <Bell className="h-4 w-4" />
             </Button>
 
-            <div className="h-8 w-px bg-border mx-1" />
+            <div className="hidden sm:block h-6 w-px bg-border mx-1" />
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center gap-2 pl-1 cursor-pointer hover:opacity-80 transition-opacity">
                   <Avatar className="h-8 w-8 border border-primary/20">
-                    <AvatarImage src={stylist1} />
-                    <AvatarFallback>AD</AvatarFallback>
+                    <AvatarFallback className="bg-gradient-to-br from-cyan-500 to-blue-600 text-white font-bold">
+                      {user?.adminName?.charAt(0)?.toUpperCase() || user?.salonName?.charAt(0)?.toUpperCase() || "U"}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="hidden sm:block text-xs">
-                    <p className="font-medium">Admin</p>
-                    <p className="text-muted-foreground">Gerente</p>
+                    <p className="font-medium">{user?.adminName || "Usuário"}</p>
+                    <p className="text-muted-foreground">{user?.salonName || "Meu Salão"}</p>
                   </div>
                 </div>
               </DropdownMenuTrigger>

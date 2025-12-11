@@ -66,18 +66,18 @@ export default function Landing() {
     <div className="min-h-screen bg-[#0B0F19] font-sans selection:bg-cyan-500/30 text-slate-100">
       {/* Navigation - Premium Header */}
       <nav className="fixed w-full z-50 bg-[#0B0F19]/90 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
-        <div className="container mx-auto px-6 h-24 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-24 flex items-center justify-between">
           {/* Logo Left */}
-          <div className="flex items-center gap-4 group cursor-pointer">
-            <div className="relative h-12 w-12 rounded-xl overflow-hidden border border-white/10 p-1 bg-gradient-to-br from-slate-800 to-slate-950 group-hover:border-cyan-500/50 transition-all duration-500 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
+          <div className="flex items-center gap-2 sm:gap-4 group cursor-pointer">
+            <div className="relative h-9 w-9 sm:h-12 sm:w-12 rounded-xl overflow-hidden border border-white/10 p-1 bg-gradient-to-br from-slate-800 to-slate-950 group-hover:border-cyan-500/50 transition-all duration-500 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
                <img src={andromedaLogo} alt="Andromeda Solutions" className="h-full w-full object-contain relative z-10" />
                <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-white leading-none header-glow-text group-hover:text-cyan-50 transition-colors">
+              <span className="text-base sm:text-xl font-bold tracking-tight text-white leading-none header-glow-text group-hover:text-cyan-50 transition-colors">
                 ANDROMEDA
               </span>
-              <span className="text-[10px] font-medium text-cyan-400 tracking-[0.3em] uppercase opacity-80 group-hover:opacity-100 transition-opacity">
+              <span className="text-[8px] sm:text-[10px] font-medium text-cyan-400 tracking-[0.3em] uppercase opacity-80 group-hover:opacity-100 transition-opacity">
                 Solutions
               </span>
             </div>
@@ -129,14 +129,21 @@ export default function Landing() {
             </Link>
           </div>
           
-          <Button variant="ghost" size="icon" className="lg:hidden text-white">
-            <Menu className="h-6 w-6" />
-          </Button>
+          <div className="flex items-center gap-2 md:hidden">
+            <Link href="/dashboard">
+              <Button 
+                size="sm"
+                className="h-9 px-4 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-xs font-semibold"
+              >
+                Testar
+              </Button>
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* 1. Hero Section */}
-      <section className="relative pt-40 pb-20 lg:pt-52 lg:pb-32 overflow-hidden">
+      <section className="relative pt-24 pb-16 sm:pt-40 sm:pb-20 lg:pt-52 lg:pb-32 overflow-hidden">
         {/* Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
           <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px]" />
@@ -144,19 +151,19 @@ export default function Landing() {
           <div className="absolute top-[20%] left-[20%] w-[300px] h-[300px] bg-cyan-500/10 rounded-full blur-[80px]" />
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-24 items-center">
             <div className="space-y-8 animate-in slide-in-from-left duration-700 fade-in">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/30 text-cyan-300 text-sm font-medium border border-cyan-500/20 backdrop-blur-sm">
                 <Star className="h-3 w-3 fill-cyan-300" />
                 Mais de 100 salões testaram nossa demo
               </div>
               
-              <h1 className="text-4xl lg:text-6xl font-sans font-bold leading-[1.1] text-white tracking-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-sans font-bold leading-[1.1] text-white tracking-tight">
                 Seu salão <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">lotado, organizado</span> e sem faltas — todos os dias.
               </h1>
               
-              <p className="text-xl text-slate-400 leading-relaxed max-w-xl">
+              <p className="text-base sm:text-xl text-slate-400 leading-relaxed max-w-xl">
                 Automatize agendamentos, confirme clientes pelo WhatsApp, reduza faltas e aumente faturamento usando uma plataforma inteligente feita para salões de beleza.
               </p>
               
@@ -165,7 +172,7 @@ export default function Landing() {
                   <Button 
                     size="lg" 
                     onClick={() => analytics.clickCTA('hero', 'Testar demonstração agora')}
-                    className="h-16 px-10 rounded-full text-lg shadow-2xl shadow-cyan-500/20 bg-white text-slate-950 hover:bg-cyan-50 hover:scale-105 transition-all duration-300 font-bold"
+                    className="h-14 sm:h-16 px-6 sm:px-10 rounded-full text-base sm:text-lg shadow-2xl shadow-cyan-500/20 bg-white text-slate-950 hover:bg-cyan-50 hover:scale-105 transition-all duration-300 font-bold w-full sm:w-auto"
                   >
                     Testar demonstração agora
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -450,14 +457,14 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="flex justify-center gap-4 mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-12 px-4 sm:px-0">
              <Link href="/dashboard">
-              <Button size="lg" className="rounded-full px-8 bg-cyan-600 hover:bg-cyan-500 text-white font-bold">
+              <Button size="lg" className="rounded-full px-6 sm:px-8 bg-cyan-600 hover:bg-cyan-500 text-white font-bold w-full sm:w-auto">
                 Ver demonstração funcionando
               </Button>
             </Link>
              <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="rounded-full px-8 border-white/10 text-white hover:bg-white/5">
+              <Button size="lg" variant="outline" className="rounded-full px-6 sm:px-8 border-white/10 text-white hover:bg-white/5 w-full sm:w-auto">
                 Testar agora
               </Button>
             </Link>
@@ -480,7 +487,7 @@ export default function Landing() {
       {/* 6. Prova Social Forte */}
       <section id="depoimentos" className="py-20 bg-[#0D121F] border-y border-white/5">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-12">
              <TestimonialCard 
               image={stylist1}
               name="Mariana Souza"
@@ -776,21 +783,21 @@ export default function Landing() {
 
 function TestimonialCard({ image, name, salon, text }: any) {
   return (
-    <div className="bg-white/5 p-8 rounded-2xl shadow-none border border-white/5 hover:border-cyan-500/30 hover:bg-white/10 transition-all duration-300 group">
-      <div className="flex items-center gap-4 mb-6">
-        <Avatar className="h-14 w-14 border-2 border-cyan-500/20 group-hover:border-cyan-500 transition-colors">
+    <div className="bg-white/5 p-4 sm:p-8 rounded-2xl shadow-none border border-white/5 hover:border-cyan-500/30 hover:bg-white/10 transition-all duration-300 group">
+      <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <Avatar className="h-10 w-10 sm:h-14 sm:w-14 border-2 border-cyan-500/20 group-hover:border-cyan-500 transition-colors flex-shrink-0">
           <AvatarImage src={image} />
           <AvatarFallback>{name[0]}</AvatarFallback>
         </Avatar>
-        <div>
-          <p className="font-bold text-lg text-white">{name}</p>
-          <p className="text-sm text-cyan-400 font-medium">{salon}</p>
+        <div className="min-w-0">
+          <p className="font-bold text-base sm:text-lg text-white truncate">{name}</p>
+          <p className="text-xs sm:text-sm text-cyan-400 font-medium truncate">{salon}</p>
         </div>
       </div>
-      <div className="flex gap-1 text-cyan-500 mb-4 opacity-80">
-        {[1,2,3,4,5].map(i => <Star key={i} className="h-4 w-4 fill-current" />)}
+      <div className="flex gap-1 text-cyan-500 mb-3 sm:mb-4 opacity-80">
+        {[1,2,3,4,5].map(i => <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 fill-current" />)}
       </div>
-      <p className="text-slate-300 leading-relaxed italic">"{text}"</p>
+      <p className="text-slate-300 leading-relaxed italic text-sm sm:text-base">"{text}"</p>
     </div>
   );
 }

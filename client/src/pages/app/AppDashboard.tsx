@@ -82,8 +82,8 @@ export default function AppDashboard() {
   const stats = {
     clientsToday: todaysAppointments.length,
     appointmentsToday: todaysAppointments.length,
-    avgTicket: 145,
-    avgWaitTime: 12,
+    avgTicket: appointments.length > 0 ? 145 : 0,
+    avgWaitTime: appointments.length > 0 ? 12 : 0,
   };
 
   const handleCreateAppointment = async () => {
@@ -139,33 +139,33 @@ export default function AppDashboard() {
       <div className="space-y-8 animate-in fade-in duration-500">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h2 className="text-4xl font-sans font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600">Visão Geral</h2>
-            <p className="text-slate-500 font-medium text-lg mt-1">
+            <h2 className="text-2xl sm:text-4xl font-sans font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600">Visão Geral</h2>
+            <p className="text-slate-500 font-medium text-sm sm:text-lg mt-1">
               {user?.salonName ? `${user.salonName} - Controle total do seu salão` : "Controle total do seu salão em um lugar só."}
             </p>
           </div>
-          <div className="flex gap-3">
-            <Button variant="outline" className="bg-white/50 backdrop-blur-sm border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 font-semibold" data-testid="button-export-report">
-              <Download className="h-4 w-4 mr-2" />
-              Exportar Relatório
+          <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+            <Button variant="outline" className="bg-white/50 backdrop-blur-sm border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 font-semibold text-xs sm:text-sm flex-1 sm:flex-none" data-testid="button-export-report">
+              <Download className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Exportar Relatório</span>
             </Button>
             <Button 
               onClick={() => setIsNewAppointmentOpen(true)}
-              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 font-bold tracking-wide transition-all hover:scale-105" 
+              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 font-bold tracking-wide transition-all hover:scale-105 text-xs sm:text-sm flex-1 sm:flex-none" 
               data-testid="button-new-appointment"
             >
-              <Plus className="h-4 w-4 mr-2" />
-              Novo Agendamento
+              <Plus className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Novo Agendamento</span>
             </Button>
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
-            { title: "Clientes Hoje", value: stats.clientsToday, change: "+12%", positive: true, icon: Users, color: "cyan" },
-            { title: "Agendamentos", value: stats.appointmentsToday, change: "+5%", positive: true, icon: Calendar, color: "purple" },
-            { title: "Ticket Médio", value: `R$ ${stats.avgTicket}`, change: "+8%", positive: true, icon: TrendingUp, color: "emerald" },
-            { title: "Tempo Espera", value: `${stats.avgWaitTime} min`, change: "-2%", positive: false, icon: Clock, color: "blue" },
+            { title: "Clientes Hoje", value: stats.clientsToday, change: appointments.length > 0 ? "+12%" : null, positive: true, icon: Users, color: "cyan" },
+            { title: "Agendamentos", value: stats.appointmentsToday, change: appointments.length > 0 ? "+5%" : null, positive: true, icon: Calendar, color: "purple" },
+            { title: "Ticket Médio", value: stats.avgTicket > 0 ? `R$ ${stats.avgTicket}` : "R$ 0", change: appointments.length > 0 ? "+8%" : null, positive: true, icon: TrendingUp, color: "emerald" },
+            { title: "Tempo Espera", value: stats.avgWaitTime > 0 ? `${stats.avgWaitTime} min` : "0 min", change: appointments.length > 0 ? "-2%" : null, positive: false, icon: Clock, color: "blue" },
           ].map((stat, index) => (
             <KpiCard key={index} {...stat} />
           ))}
