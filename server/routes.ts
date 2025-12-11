@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertUserSchema, insertStaffSchema, insertServiceSchema, insertAppointmentSchema, insertClientSchema } from "@shared/schema";
+import bcrypt from "bcryptjs";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -13,7 +14,12 @@ export async function registerRoutes(
       const { username, password } = req.body;
       const user = await storage.getUserByUsername(username);
       
-      if (!user || user.password !== password) {
+      if (!user) {
+        return res.status(401).json({ error: "Login ou senha incorretos" });
+      }
+      
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
         return res.status(401).json({ error: "Login ou senha incorretos" });
       }
       
@@ -43,7 +49,11 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Usuário já existe" });
       }
       
-      const user = await storage.createUser(parsed.data);
+      const hashedPassword = await bcrypt.hash(parsed.data.password, 10);
+      const user = await storage.createUser({
+        ...parsed.data,
+        password: hashedPassword
+      });
       res.json({ 
         user: { 
           id: user.id, 

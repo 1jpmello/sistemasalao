@@ -1,13 +1,15 @@
 import { db } from "./db";
 import { users, staff, services, appointments } from "@shared/schema";
 import { addDays, format } from "date-fns";
+import bcrypt from "bcryptjs";
 
 async function seed() {
   console.log("Seeding database...");
 
+  const hashedPassword1 = await bcrypt.hash("andromedasolutions123", 10);
   const andromedaUser = await db.insert(users).values({
     username: "andromedateste123",
-    password: "andromedasolutions123",
+    password: hashedPassword1,
     salonName: "Studio Andromeda Beauty",
     adminName: "Fernanda Oliveira",
     isOnboarded: true,
@@ -127,9 +129,10 @@ async function seed() {
   await db.insert(appointments).values(appointmentData);
   console.log("Created appointments:", appointmentData.length);
 
+  const hashedPassword2 = await bcrypt.hash("gigi123", 10);
   const giovannaUser = await db.insert(users).values({
     username: "giovannakilzerteste",
-    password: "gigi123",
+    password: hashedPassword2,
     salonName: null,
     adminName: null,
     isOnboarded: false,
