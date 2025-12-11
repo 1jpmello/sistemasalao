@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Mail, Phone, HelpCircle, BookOpen, Video, ExternalLink } from "lucide-react";
 
 export default function AppSupport() {
-  const whatsappNumber = "5511999999999";
+  const whatsappNumber = "5511958548349";
   const whatsappMessage = encodeURIComponent("Olá! Preciso de ajuda com o sistema Andromeda.");
 
   return (
@@ -44,11 +44,11 @@ export default function AppSupport() {
               <Button 
                 variant="outline"
                 className="w-full border-blue-200 text-blue-600 hover:bg-blue-50"
-                onClick={() => window.location.href = 'mailto:suporte@andromeda.com.br'}
+                onClick={() => window.location.href = 'mailto:andromedasolutionscorp@gmail.com'}
                 data-testid="button-email-support"
               >
                 <Mail className="h-4 w-4 mr-2" />
-                suporte@andromeda.com.br
+                andromedasolutionscorp@gmail.com
               </Button>
             </CardContent>
           </Card>
@@ -63,10 +63,11 @@ export default function AppSupport() {
               <Button 
                 variant="outline"
                 className="w-full border-purple-200 text-purple-600 hover:bg-purple-50"
+                onClick={() => window.location.href = 'tel:+5511958548349'}
                 data-testid="button-phone-support"
               >
                 <Phone className="h-4 w-4 mr-2" />
-                (11) 9999-9999
+                (11) 95854-8349
               </Button>
             </CardContent>
           </Card>
