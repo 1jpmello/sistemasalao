@@ -105,6 +105,16 @@ export default function Landing() {
 
           {/* CTA Right */}
           <div className="hidden md:flex items-center gap-4">
+            <Link href="/login">
+              <Button 
+                variant="ghost"
+                className="h-12 px-6 rounded-full text-slate-300 hover:text-white hover:bg-white/10 font-medium transition-all duration-300"
+                data-testid="button-login-header"
+              >
+                <Lock className="w-4 h-4 mr-2" />
+                Acessar Painel
+              </Button>
+            </Link>
             <Link href="/dashboard">
               <Button 
                 onClick={() => analytics.clickCTA('header', 'Experimentar Agora')}

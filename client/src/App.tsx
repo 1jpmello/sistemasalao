@@ -25,12 +25,14 @@ import AppMarketing from "@/pages/app/AppMarketing";
 import AppFinance from "@/pages/app/AppFinance";
 import AppClients from "@/pages/app/AppClients";
 import AppMiniSite from "@/pages/app/AppMiniSite";
+import Login from "@/pages/Login";
 
 function Router() {
   return (
     <Switch>
       {/* Landing page e demo de vendas */}
       <Route path="/" component={Landing} />
+      <Route path="/login" component={Login} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/agenda" component={Agenda} />
       <Route path="/team" component={Team} />
