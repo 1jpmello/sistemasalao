@@ -27,7 +27,9 @@ Preferred communication style: Simple, everyday language (Portuguese/Brazilian).
 - **Layout**: `client/src/components/layout/AppLayout.tsx` + `AppSidebar.tsx`
 - **Features**: Full functionality, light theme with gradients (unified with demo), "Plano Profissional" badge, functional CRUD operations
 - **Purpose**: Actual product for paying customers
-- **Authentication**: Login page at `/login` with credentials: andromedateste123/andromedasolutions123
+- **Authentication**: Frontend-only login at `/login` with test accounts:
+  - `andromedateste` / `andromeda123` - Usuário antigo com dados fictícios (Salão: "Studio Beleza & Arte", Admin: "Carolina Mendes")
+  - `gigi123` / `gigikilzer` - Usuário novo sem dados (vai para onboarding)
 
 ### Frontend Architecture
 - **Framework**: React 18 with TypeScript
