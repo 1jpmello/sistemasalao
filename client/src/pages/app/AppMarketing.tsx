@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { MessageCircle, Mail, Gift, CalendarClock, Zap, Plus, Edit, Megaphone } from "lucide-react";
+import { MessageCircle, CalendarClock, Zap, Plus, Edit, Megaphone } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -18,8 +18,9 @@ export default function AppMarketing() {
   const { toast } = useToast();
   const [automations, setAutomations] = useState<any[]>([]);
 
-  const messagesSent = automations.filter(a => a.enabled).length * 12;
-  const clientsRecovered = Math.floor(messagesSent * 0.3);
+  const activeAutomations = automations.filter(a => a.enabled).length;
+  const messagesSent = 0;
+  const clientsRecovered = 0;
 
   const toggleAutomation = (id: number) => {
     const automation = automations.find(a => a.id === id);
@@ -129,6 +130,21 @@ export default function AppMarketing() {
                   </div>
                 </div>
                 <p className="text-sm text-slate-500">Últimos 30 dias</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-purple-50 flex items-center justify-center">
+                    <Zap className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-900">Automações Ativas</p>
+                    <p className="text-2xl font-bold text-purple-600">{activeAutomations}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-slate-500">Configuradas</p>
               </CardContent>
             </Card>
           </div>

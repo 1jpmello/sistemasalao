@@ -1,10 +1,14 @@
 import AppLayout from "@/components/layout/AppLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Clock, CheckCircle2, User, MoreVertical, Play, Pause, DollarSign, Plus, Users } from "lucide-react";
+import { Clock, CheckCircle2, User, MoreVertical, Play, Pause, DollarSign, Plus, Users, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,9 +21,37 @@ interface QueueItem {
   status: 'waiting' | 'in-service' | 'finished';
 }
 
+const serviceOptions = [
+  "Corte Feminino",
+  "Corte Masculino",
+  "Escova",
+  "Hidratação",
+  "Coloração",
+  "Manicure",
+  "Pedicure",
+  "Design de Sobrancelha",
+  "Alongamento",
+  "Outro"
+];
+
+const staffOptions = [
+  "Qualquer Disponível",
+  "Ana Silva",
+  "Carla Dias",
+  "Júlia Costa",
+  "Marina Rocha"
+];
+
 export default function AppQueue() {
   const { toast } = useToast();
   const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newClient, setNewClient] = useState({
+    name: "",
+    service: "",
+    staff: "",
+    time: ""
+  });
 
   const waiting = queue.filter(q => q.status === 'waiting');
   const inService = queue.filter(q => q.status === 'in-service');
@@ -40,16 +72,45 @@ export default function AppQueue() {
     toast({ title: "Pagamento registrado!" });
   };
 
+  const handleRemoveFromQueue = (id: number) => {
+    setQueue(prev => prev.filter(q => q.id !== id));
+    toast({ title: "Cliente removido da fila" });
+  };
+
+  const openAddModal = () => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    setNewClient({
+      name: "",
+      service: "",
+      staff: "",
+      time: `${hours}:${minutes}`
+    });
+    setIsModalOpen(true);
+  };
+
   const addToQueue = () => {
+    if (!newClient.name.trim()) {
+      toast({ title: "Digite o nome do cliente", variant: "destructive" });
+      return;
+    }
+    if (!newClient.service) {
+      toast({ title: "Selecione um serviço", variant: "destructive" });
+      return;
+    }
+
     const newItem: QueueItem = {
       id: Date.now(),
-      client: "Novo Cliente",
-      service: "Atendimento",
-      staff: "Disponível",
-      timeIn: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+      client: newClient.name.trim(),
+      service: newClient.service,
+      staff: newClient.staff || "Qualquer Disponível",
+      timeIn: newClient.time || new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
       status: 'waiting'
     };
+    
     setQueue(prev => [...prev, newItem]);
+    setIsModalOpen(false);
     toast({ title: "Cliente adicionado à fila!" });
   };
 
@@ -62,7 +123,7 @@ export default function AppQueue() {
             <p className="text-slate-500">Acompanhe o status dos clientes em tempo real.</p>
           </div>
           <Button 
-            onClick={addToQueue}
+            onClick={openAddModal}
             className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 font-bold"
             data-testid="button-add-queue"
           >
@@ -70,6 +131,79 @@ export default function AppQueue() {
             Adicionar Cliente
           </Button>
         </div>
+
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Adicionar Cliente à Fila</DialogTitle>
+              <DialogDescription>Preencha os dados do cliente para adicionar à fila de atendimento.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="client-name">Nome do Cliente *</Label>
+                <Input 
+                  id="client-name"
+                  placeholder="Digite o nome do cliente"
+                  value={newClient.name}
+                  onChange={(e) => setNewClient(prev => ({ ...prev, name: e.target.value }))}
+                  data-testid="input-client-name"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="service">Serviço *</Label>
+                <Select value={newClient.service} onValueChange={(value) => setNewClient(prev => ({ ...prev, service: value }))}>
+                  <SelectTrigger data-testid="select-service">
+                    <SelectValue placeholder="Selecione o serviço" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {serviceOptions.map((service) => (
+                      <SelectItem key={service} value={service}>{service}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="staff">Profissional</Label>
+                <Select value={newClient.staff} onValueChange={(value) => setNewClient(prev => ({ ...prev, staff: value }))}>
+                  <SelectTrigger data-testid="select-staff">
+                    <SelectValue placeholder="Qualquer Disponível" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {staffOptions.map((staff) => (
+                      <SelectItem key={staff} value={staff}>{staff}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="time">Horário de Chegada</Label>
+                <Input 
+                  id="time"
+                  type="time"
+                  value={newClient.time}
+                  onChange={(e) => setNewClient(prev => ({ ...prev, time: e.target.value }))}
+                  data-testid="input-time"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => setIsModalOpen(false)} data-testid="button-cancel-add">
+                Cancelar
+              </Button>
+              <Button 
+                onClick={addToQueue}
+                className="bg-gradient-to-r from-cyan-600 to-blue-600"
+                data-testid="button-confirm-add"
+              >
+                Adicionar à Fila
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <div className="grid md:grid-cols-3 gap-6 flex-1 overflow-hidden">
           <Column title="Aguardando" count={waiting.length} color="bg-amber-50 border-amber-200">
@@ -82,6 +216,7 @@ export default function AppQueue() {
                   item={item} 
                   color="border-l-amber-500" 
                   onStart={() => handleStartService(item.id)}
+                  onRemove={() => handleRemoveFromQueue(item.id)}
                 />
               ))
             )}
@@ -146,13 +281,14 @@ function Column({ title, count, children, color }: any) {
   );
 }
 
-function QueueCard({ item, color, active, onStart, onFinish, onPayment }: { 
+function QueueCard({ item, color, active, onStart, onFinish, onPayment, onRemove }: { 
   item: QueueItem, 
   color: string, 
   active?: boolean, 
   onStart?: () => void, 
   onFinish?: () => void, 
-  onPayment?: () => void 
+  onPayment?: () => void,
+  onRemove?: () => void 
 }) {
   return (
     <motion.div
@@ -171,9 +307,17 @@ function QueueCard({ item, color, active, onStart, onFinish, onPayment }: {
             <p className="text-xs text-slate-500">{item.service}</p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-slate-900 hover:bg-slate-100" data-testid={`button-more-queue-${item.id}`}>
-          <MoreVertical className="h-4 w-4" />
-        </Button>
+        {onRemove && (
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-7 w-7 text-slate-400 hover:text-red-600 hover:bg-red-50" 
+            onClick={onRemove}
+            data-testid={`button-remove-queue-${item.id}`}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
       </div>
 
       <div className="flex items-center gap-4 text-xs text-slate-500 mb-3">
