@@ -1,7 +1,7 @@
 import AppLayout from "@/components/layout/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Users, 
   Calendar, 
@@ -12,9 +12,7 @@ import {
   MoreHorizontal,
   Download,
   Plus,
-  X
 } from "lucide-react";
-import { staff, appointments as initialAppointments, stats, services } from "@/lib/mockData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -35,10 +33,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { fetchStaff, fetchServices, fetchAppointments, createAppointment } from "@/lib/api";
+import { format } from "date-fns";
 
 export default function AppDashboard() {
   const { toast } = useToast();
-  const [appointments, setAppointments] = useState(initialAppointments);
+  const { user } = useAuth();
+  const [staff, setStaff] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isNewAppointmentOpen, setIsNewAppointmentOpen] = useState(false);
   const [newAppointment, setNewAppointment] = useState({
     client: "",
@@ -48,8 +53,41 @@ export default function AppDashboard() {
     date: new Date().toISOString().split('T')[0]
   });
 
-  const handleCreateAppointment = () => {
-    if (!newAppointment.client || !newAppointment.service || !newAppointment.staffId || !newAppointment.time) {
+  useEffect(() => {
+    if (user?.id) {
+      loadData();
+    }
+  }, [user?.id]);
+
+  const loadData = async () => {
+    if (!user?.id) return;
+    try {
+      const [staffData, servicesData, appointmentsData] = await Promise.all([
+        fetchStaff(user.id),
+        fetchServices(user.id),
+        fetchAppointments(user.id),
+      ]);
+      setStaff(staffData);
+      setServices(servicesData);
+      setAppointments(appointmentsData);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const todayStr = format(new Date(), "yyyy-MM-dd");
+  const todaysAppointments = appointments.filter(apt => apt.date === todayStr);
+  const stats = {
+    clientsToday: todaysAppointments.length,
+    appointmentsToday: todaysAppointments.length,
+    avgTicket: 145,
+    avgWaitTime: 12,
+  };
+
+  const handleCreateAppointment = async () => {
+    if (!user?.id || !newAppointment.client || !newAppointment.service || !newAppointment.staffId || !newAppointment.time) {
       toast({
         title: "Erro",
         description: "Preencha todos os campos obrigatórios.",
@@ -58,24 +96,43 @@ export default function AppDashboard() {
       return;
     }
 
-    const appointment = {
-      id: Date.now(),
-      client: newAppointment.client,
-      service: newAppointment.service,
-      staffId: parseInt(newAppointment.staffId),
-      time: newAppointment.time,
-      status: "pending" as const
-    };
+    try {
+      const appointment = await createAppointment({
+        userId: user.id,
+        client: newAppointment.client,
+        service: newAppointment.service,
+        staffId: newAppointment.staffId,
+        time: newAppointment.time,
+        date: newAppointment.date,
+        status: "pending",
+      });
 
-    setAppointments(prev => [...prev, appointment]);
-    setIsNewAppointmentOpen(false);
-    setNewAppointment({ client: "", service: "", staffId: "", time: "", date: new Date().toISOString().split('T')[0] });
-    
-    toast({
-      title: "Agendamento criado!",
-      description: `${appointment.client} às ${appointment.time}`,
-    });
+      setAppointments(prev => [...prev, appointment]);
+      setIsNewAppointmentOpen(false);
+      setNewAppointment({ client: "", service: "", staffId: "", time: "", date: new Date().toISOString().split('T')[0] });
+      
+      toast({
+        title: "Agendamento criado!",
+        description: `${appointment.client} às ${appointment.time}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao criar agendamento",
+        variant: "destructive"
+      });
+    }
   };
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="h-8 w-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -83,7 +140,9 @@ export default function AppDashboard() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-4xl font-sans font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600">Visão Geral</h2>
-            <p className="text-slate-500 font-medium text-lg mt-1">Controle total do seu salão em um lugar só.</p>
+            <p className="text-slate-500 font-medium text-lg mt-1">
+              {user?.salonName ? `${user.salonName} - Controle total do seu salão` : "Controle total do seu salão em um lugar só."}
+            </p>
           </div>
           <div className="flex gap-3">
             <Button variant="outline" className="bg-white/50 backdrop-blur-sm border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 font-semibold" data-testid="button-export-report">
@@ -117,7 +176,7 @@ export default function AppDashboard() {
             <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 pb-6">
               <div>
                 <CardTitle className="text-xl font-bold text-slate-900">Próximos Compromissos</CardTitle>
-                <CardDescription className="text-slate-500 font-medium">Sua agenda para as próximas horas</CardDescription>
+                <CardDescription className="text-slate-500 font-medium">Sua agenda para hoje</CardDescription>
               </div>
               <Button variant="ghost" size="icon" className="text-slate-400 hover:text-cyan-600 hover:bg-cyan-50">
                 <MoreHorizontal className="h-5 w-5" />
@@ -125,40 +184,44 @@ export default function AppDashboard() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="space-y-4">
-                {appointments.slice(0, 5).map((apt) => {
-                  const staffMember = staff.find(s => s.id === apt.staffId);
-                  return (
-                    <div key={apt.id} className="flex items-center justify-between p-4 hover:bg-white rounded-2xl transition-all duration-300 border border-transparent hover:border-slate-100 hover:shadow-lg hover:shadow-slate-200/50 group" data-testid={`row-appointment-${apt.id}`}>
-                      <div className="flex items-center gap-5">
-                        <div className="flex flex-col items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-slate-100 to-white border border-slate-200 text-slate-900 font-bold shadow-sm group-hover:from-cyan-50 group-hover:to-white group-hover:border-cyan-200 group-hover:text-cyan-700 transition-all">
-                          <span className="text-base">{apt.time}</span>
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg text-slate-900 mb-1">{apt.client}</p>
-                          <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
-                             <span className="text-cyan-600">{apt.service}</span>
-                             <span className="h-1 w-1 rounded-full bg-slate-300" />
-                             <span>com {staffMember?.name.split(' ')[0]}</span>
+                {todaysAppointments.length === 0 ? (
+                  <p className="text-slate-500 text-center py-8">Nenhum agendamento para hoje</p>
+                ) : (
+                  todaysAppointments.slice(0, 5).map((apt) => {
+                    const staffMember = staff.find(s => s.id === apt.staffId);
+                    return (
+                      <div key={apt.id} className="flex items-center justify-between p-4 hover:bg-white rounded-2xl transition-all duration-300 border border-transparent hover:border-slate-100 hover:shadow-lg hover:shadow-slate-200/50 group" data-testid={`row-appointment-${apt.id}`}>
+                        <div className="flex items-center gap-5">
+                          <div className="flex flex-col items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-slate-100 to-white border border-slate-200 text-slate-900 font-bold shadow-sm group-hover:from-cyan-50 group-hover:to-white group-hover:border-cyan-200 group-hover:text-cyan-700 transition-all">
+                            <span className="text-base">{apt.time}</span>
+                          </div>
+                          <div>
+                            <p className="font-bold text-lg text-slate-900 mb-1">{apt.client}</p>
+                            <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
+                               <span className="text-cyan-600">{apt.service}</span>
+                               <span className="h-1 w-1 rounded-full bg-slate-300" />
+                               <span>com {staffMember?.name?.split(' ')[0] || 'N/A'}</span>
+                            </div>
                           </div>
                         </div>
+                        <div className="flex items-center gap-4">
+                          <Badge variant="secondary" className={`
+                            px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-lg border-0
+                            ${apt.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : ''}
+                            ${apt.status === 'pending' ? 'bg-amber-100 text-amber-700' : ''}
+                            ${apt.status === 'cancelled' ? 'bg-red-100 text-red-700' : ''}
+                          `}>
+                            {apt.status === 'confirmed' ? 'Confirmado' : apt.status === 'pending' ? 'Pendente' : 'Cancelado'}
+                          </Badge>
+                          <Avatar className="h-10 w-10 border-2 border-white shadow-md ring-2 ring-transparent group-hover:ring-cyan-100 transition-all">
+                            <AvatarImage src={staffMember?.avatar} />
+                            <AvatarFallback className="bg-slate-900 text-white font-bold">{staffMember?.name?.[0] || '?'}</AvatarFallback>
+                          </Avatar>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <Badge variant="secondary" className={`
-                          px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-lg border-0
-                          ${apt.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : ''}
-                          ${apt.status === 'pending' ? 'bg-amber-100 text-amber-700' : ''}
-                          ${apt.status === 'cancelled' ? 'bg-red-100 text-red-700' : ''}
-                        `}>
-                          {apt.status === 'confirmed' ? 'Confirmado' : apt.status === 'pending' ? 'Pendente' : 'Cancelado'}
-                        </Badge>
-                        <Avatar className="h-10 w-10 border-2 border-white shadow-md ring-2 ring-transparent group-hover:ring-cyan-100 transition-all">
-                          <AvatarImage src={staffMember?.avatar} />
-                          <AvatarFallback className="bg-slate-900 text-white font-bold">{staffMember?.name[0]}</AvatarFallback>
-                        </Avatar>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                )}
               </div>
             </CardContent>
           </Card>
@@ -170,19 +233,23 @@ export default function AppDashboard() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="space-y-4">
-                {staff.map((member) => (
-                  <div key={member.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-all" data-testid={`card-staff-${member.id}`}>
-                    <Avatar className="h-10 w-10 border-2 border-white shadow-md">
-                      <AvatarImage src={member.avatar} />
-                      <AvatarFallback className="bg-cyan-100 text-cyan-700">{member.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <p className="font-medium text-slate-900">{member.name}</p>
-                      <p className="text-xs text-slate-500">{member.role}</p>
+                {staff.length === 0 ? (
+                  <p className="text-slate-500 text-center py-8">Nenhum profissional cadastrado</p>
+                ) : (
+                  staff.map((member) => (
+                    <div key={member.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-all" data-testid={`card-staff-${member.id}`}>
+                      <Avatar className="h-10 w-10 border-2 border-white shadow-md">
+                        <AvatarImage src={member.avatar} />
+                        <AvatarFallback className="bg-cyan-100 text-cyan-700">{member.name?.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <p className="font-medium text-slate-900">{member.name}</p>
+                        <p className="text-xs text-slate-500">{member.role}</p>
+                      </div>
+                      <Badge className="bg-emerald-100 text-emerald-700 border-0">Disponível</Badge>
                     </div>
-                    <Badge className="bg-emerald-100 text-emerald-700 border-0">Disponível</Badge>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
@@ -229,7 +296,7 @@ export default function AppDashboard() {
                 </SelectTrigger>
                 <SelectContent>
                   {staff.map((member) => (
-                    <SelectItem key={member.id} value={member.id.toString()}>{member.name} - {member.specialty}</SelectItem>
+                    <SelectItem key={member.id} value={member.id}>{member.name} - {member.specialty}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

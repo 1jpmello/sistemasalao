@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import AppLayout from "@/components/layout/AppLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +10,6 @@ import {
   ChevronRight, 
   Calendar as CalendarIcon, 
   Clock, 
-  MoreVertical, 
   Check, 
   X, 
   MessageCircle, 
@@ -20,9 +19,8 @@ import {
   Plus,
   Filter
 } from "lucide-react";
-import { staff, appointments as initialAppointments, services } from "@/lib/mockData";
 import { cn } from "@/lib/utils";
-import { format, addDays, subDays, isSameDay, startOfDay } from "date-fns";
+import { format, addDays, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -45,6 +43,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { fetchStaff, fetchServices, fetchAppointments, createAppointment, updateAppointment } from "@/lib/api";
 
 const START_HOUR = 8;
 const END_HOUR = 20;
@@ -57,7 +57,7 @@ const getPositionFromTime = (timeStr: string) => {
   return totalMinutes * PIXELS_PER_MINUTE;
 };
 
-const getDurationHeight = (serviceName: string) => {
+const getDurationHeight = (serviceName: string, services: any[]) => {
   const service = services.find(s => s.name === serviceName);
   const duration = service ? service.duration : 60;
   return duration * PIXELS_PER_MINUTE;
@@ -65,10 +65,14 @@ const getDurationHeight = (serviceName: string) => {
 
 export default function AppAgenda() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [date, setDate] = useState<Date>(new Date());
-  const [selectedStaff, setSelectedStaff] = useState<number[]>(staff.map(s => s.id));
+  const [staff, setStaff] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedStaff, setSelectedStaff] = useState<string[]>([]);
   const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
-  const [appointments, setAppointments] = useState(initialAppointments);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isNewAppointmentOpen, setIsNewAppointmentOpen] = useState(false);
   const [newAppointment, setNewAppointment] = useState({
@@ -77,6 +81,31 @@ export default function AppAgenda() {
     staffId: "",
     time: "",
   });
+
+  useEffect(() => {
+    if (user?.id) {
+      loadData();
+    }
+  }, [user?.id]);
+
+  const loadData = async () => {
+    if (!user?.id) return;
+    try {
+      const [staffData, servicesData, appointmentsData] = await Promise.all([
+        fetchStaff(user.id),
+        fetchServices(user.id),
+        fetchAppointments(user.id),
+      ]);
+      setStaff(staffData);
+      setServices(servicesData);
+      setAppointments(appointmentsData);
+      setSelectedStaff(staffData.map((s: any) => s.id));
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const timeSlots = useMemo(() => {
     const slots = [];
@@ -88,9 +117,10 @@ export default function AppAgenda() {
   }, []);
 
   const filteredStaff = staff.filter(s => selectedStaff.includes(s.id));
+  const dateStr = format(date, "yyyy-MM-dd");
 
-  const getAppointmentsForStaff = (staffId: number) => {
-    return appointments.filter(apt => apt.staffId === staffId);
+  const getAppointmentsForStaff = (staffId: string) => {
+    return appointments.filter(apt => apt.staffId === staffId && apt.date === dateStr);
   };
 
   const handleOpenAppointment = (apt: any) => {
@@ -98,35 +128,53 @@ export default function AppAgenda() {
     setIsDrawerOpen(true);
   };
 
-  const handleConfirmAppointment = () => {
+  const handleConfirmAppointment = async () => {
     if (selectedAppointment) {
-      setAppointments(prev => prev.map(apt => 
-        apt.id === selectedAppointment.id ? { ...apt, status: 'confirmed' } : apt
-      ));
-      setSelectedAppointment({ ...selectedAppointment, status: 'confirmed' });
-      toast({
-        title: "Agendamento confirmado!",
-        description: `${selectedAppointment.client} às ${selectedAppointment.time}`,
-      });
+      try {
+        await updateAppointment(selectedAppointment.id, { status: 'confirmed' });
+        setAppointments(prev => prev.map(apt => 
+          apt.id === selectedAppointment.id ? { ...apt, status: 'confirmed' } : apt
+        ));
+        setSelectedAppointment({ ...selectedAppointment, status: 'confirmed' });
+        toast({
+          title: "Agendamento confirmado!",
+          description: `${selectedAppointment.client} às ${selectedAppointment.time}`,
+        });
+      } catch (error) {
+        toast({
+          title: "Erro",
+          description: "Erro ao confirmar agendamento",
+          variant: "destructive"
+        });
+      }
     }
   };
 
-  const handleCancelAppointment = () => {
+  const handleCancelAppointment = async () => {
     if (selectedAppointment) {
-      setAppointments(prev => prev.map(apt => 
-        apt.id === selectedAppointment.id ? { ...apt, status: 'cancelled' } : apt
-      ));
-      setIsDrawerOpen(false);
-      setSelectedAppointment(null);
-      toast({
-        title: "Agendamento cancelado",
-        variant: "destructive"
-      });
+      try {
+        await updateAppointment(selectedAppointment.id, { status: 'cancelled' });
+        setAppointments(prev => prev.map(apt => 
+          apt.id === selectedAppointment.id ? { ...apt, status: 'cancelled' } : apt
+        ));
+        setIsDrawerOpen(false);
+        setSelectedAppointment(null);
+        toast({
+          title: "Agendamento cancelado",
+          variant: "destructive"
+        });
+      } catch (error) {
+        toast({
+          title: "Erro",
+          description: "Erro ao cancelar agendamento",
+          variant: "destructive"
+        });
+      }
     }
   };
 
-  const handleCreateAppointment = () => {
-    if (!newAppointment.client || !newAppointment.service || !newAppointment.staffId || !newAppointment.time) {
+  const handleCreateAppointment = async () => {
+    if (!user?.id || !newAppointment.client || !newAppointment.service || !newAppointment.staffId || !newAppointment.time) {
       toast({
         title: "Erro",
         description: "Preencha todos os campos obrigatórios.",
@@ -135,24 +183,43 @@ export default function AppAgenda() {
       return;
     }
 
-    const appointment = {
-      id: Date.now(),
-      client: newAppointment.client,
-      service: newAppointment.service,
-      staffId: parseInt(newAppointment.staffId),
-      time: newAppointment.time,
-      status: "pending" as const
-    };
+    try {
+      const appointment = await createAppointment({
+        userId: user.id,
+        client: newAppointment.client,
+        service: newAppointment.service,
+        staffId: newAppointment.staffId,
+        time: newAppointment.time,
+        date: dateStr,
+        status: "pending",
+      });
 
-    setAppointments(prev => [...prev, appointment]);
-    setIsNewAppointmentOpen(false);
-    setNewAppointment({ client: "", service: "", staffId: "", time: "" });
-    
-    toast({
-      title: "Agendamento criado!",
-      description: `${appointment.client} às ${appointment.time}`,
-    });
+      setAppointments(prev => [...prev, appointment]);
+      setIsNewAppointmentOpen(false);
+      setNewAppointment({ client: "", service: "", staffId: "", time: "" });
+      
+      toast({
+        title: "Agendamento criado!",
+        description: `${appointment.client} às ${appointment.time}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao criar agendamento",
+        variant: "destructive"
+      });
+    }
   };
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="h-8 w-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -241,62 +308,68 @@ export default function AppAgenda() {
 
             <ScrollArea className="flex-1">
               <div className="flex min-w-max">
-                {filteredStaff.map((member) => (
-                  <div key={member.id} className="w-64 flex-shrink-0 border-r border-slate-100 last:border-r-0">
-                    <div className="h-14 p-3 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-10">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-8 w-8 border-2 border-white shadow-sm">
-                          <AvatarImage src={member.avatar} />
-                          <AvatarFallback className="bg-cyan-100 text-cyan-700">{member.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="text-sm font-medium text-slate-900">{member.name}</p>
-                          <p className="text-xs text-slate-500">{member.role}</p>
+                {filteredStaff.length === 0 ? (
+                  <div className="flex items-center justify-center w-full h-64 text-slate-500">
+                    Nenhum profissional cadastrado
+                  </div>
+                ) : (
+                  filteredStaff.map((member) => (
+                    <div key={member.id} className="w-64 flex-shrink-0 border-r border-slate-100 last:border-r-0">
+                      <div className="h-14 p-3 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-10">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-8 w-8 border-2 border-white shadow-sm">
+                            <AvatarImage src={member.avatar} />
+                            <AvatarFallback className="bg-cyan-100 text-cyan-700">{member.name?.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="text-sm font-medium text-slate-900">{member.name}</p>
+                            <p className="text-xs text-slate-500">{member.role}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="relative" style={{ height: timeSlots.length * SLOT_HEIGHT }}>
-                      {timeSlots.map((slot, index) => (
-                        <div 
-                          key={slot} 
-                          className="absolute w-full h-[60px] border-b border-slate-100/50"
-                          style={{ top: index * SLOT_HEIGHT }}
-                        />
-                      ))}
+                      <div className="relative" style={{ height: timeSlots.length * SLOT_HEIGHT }}>
+                        {timeSlots.map((slot, index) => (
+                          <div 
+                            key={slot} 
+                            className="absolute w-full h-[60px] border-b border-slate-100/50"
+                            style={{ top: index * SLOT_HEIGHT }}
+                          />
+                        ))}
 
-                      {getAppointmentsForStaff(member.id).map((apt) => {
-                        const top = getPositionFromTime(apt.time);
-                        const height = getDurationHeight(apt.service);
-                        const statusColors: Record<string, string> = {
-                          confirmed: "bg-emerald-50 border-emerald-200 text-emerald-700",
-                          pending: "bg-amber-50 border-amber-200 text-amber-700",
-                          cancelled: "bg-red-50 border-red-200 text-red-700",
-                        };
+                        {getAppointmentsForStaff(member.id).map((apt) => {
+                          const top = getPositionFromTime(apt.time);
+                          const height = getDurationHeight(apt.service, services);
+                          const statusColors: Record<string, string> = {
+                            confirmed: "bg-emerald-50 border-emerald-200 text-emerald-700",
+                            pending: "bg-amber-50 border-amber-200 text-amber-700",
+                            cancelled: "bg-red-50 border-red-200 text-red-700",
+                          };
 
-                        return (
-                          <div
-                            key={apt.id}
-                            className={cn(
-                              "absolute left-1 right-1 rounded-lg p-2 border cursor-pointer transition-all hover:shadow-lg",
-                              statusColors[apt.status] || statusColors.pending
-                            )}
-                            style={{ top, height: Math.max(height - 4, 40) }}
-                            onClick={() => handleOpenAppointment(apt)}
-                            data-testid={`appointment-${apt.id}`}
-                          >
-                            <p className="text-xs font-semibold truncate">{apt.client}</p>
-                            <p className="text-xs opacity-80 truncate">{apt.service}</p>
-                            <div className="flex items-center gap-1 mt-1">
-                              <Clock className="h-3 w-3" />
-                              <span className="text-xs">{apt.time}</span>
+                          return (
+                            <div
+                              key={apt.id}
+                              className={cn(
+                                "absolute left-1 right-1 rounded-lg p-2 border cursor-pointer transition-all hover:shadow-lg",
+                                statusColors[apt.status] || statusColors.pending
+                              )}
+                              style={{ top, height: Math.max(height - 4, 40) }}
+                              onClick={() => handleOpenAppointment(apt)}
+                              data-testid={`appointment-${apt.id}`}
+                            >
+                              <p className="text-xs font-semibold truncate">{apt.client}</p>
+                              <p className="text-xs opacity-80 truncate">{apt.service}</p>
+                              <div className="flex items-center gap-1 mt-1">
+                                <Clock className="h-3 w-3" />
+                                <span className="text-xs">{apt.time}</span>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </ScrollArea>
           </div>
@@ -315,7 +388,7 @@ export default function AppAgenda() {
               <div className="mt-6 space-y-6">
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
                   <Avatar className="h-14 w-14 border-2 border-cyan-500">
-                    <AvatarFallback className="bg-cyan-100 text-cyan-700 text-xl">{selectedAppointment.client.charAt(0)}</AvatarFallback>
+                    <AvatarFallback className="bg-cyan-100 text-cyan-700 text-xl">{selectedAppointment.client?.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-lg font-bold text-slate-900">{selectedAppointment.client}</p>
@@ -424,7 +497,7 @@ export default function AppAgenda() {
                   </SelectTrigger>
                   <SelectContent>
                     {staff.map((member) => (
-                      <SelectItem key={member.id} value={member.id.toString()}>{member.name} - {member.specialty}</SelectItem>
+                      <SelectItem key={member.id} value={member.id}>{member.name} - {member.specialty}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

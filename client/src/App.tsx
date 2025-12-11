@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TourProvider } from "@/context/TourContext";
+import { AuthProvider } from "@/context/AuthContext";
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/Dashboard";
 import Agenda from "@/pages/Calendar";
@@ -26,6 +27,7 @@ import AppFinance from "@/pages/app/AppFinance";
 import AppClients from "@/pages/app/AppClients";
 import AppMiniSite from "@/pages/app/AppMiniSite";
 import Login from "@/pages/Login";
+import Onboarding from "@/pages/Onboarding";
 
 function Router() {
   return (
@@ -33,6 +35,7 @@ function Router() {
       {/* Landing page e demo de vendas */}
       <Route path="/" component={Landing} />
       <Route path="/login" component={Login} />
+      <Route path="/onboarding" component={Onboarding} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/agenda" component={Agenda} />
       <Route path="/team" component={Team} />
@@ -63,10 +66,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <TourProvider>
-          <Toaster />
-          <Router />
-        </TourProvider>
+        <AuthProvider>
+          <TourProvider>
+            <Toaster />
+            <Router />
+          </TourProvider>
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

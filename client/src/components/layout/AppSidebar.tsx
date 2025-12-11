@@ -15,6 +15,7 @@ import {
   Home
 } from "lucide-react";
 import andromedaLogo from "@/assets/andromeda_logo.png";
+import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/app", id: "nav-dashboard" },
@@ -29,9 +30,10 @@ const menuItems = [
 
 export function AppSidebar({ className }: { className?: string }) {
   const [location, setLocation] = useLocation();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
+    logout();
     setLocation("/login");
   };
 
@@ -58,24 +60,25 @@ export function AppSidebar({ className }: { className?: string }) {
         {menuItems.map((item) => {
           const isActive = location === item.href || (item.href === "/app" && location === "/app");
           return (
-            <Link key={item.href} href={item.href}>
-               <a 
-                 id={item.id}
-                 data-testid={item.id}
-                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group cursor-pointer",
-                  isActive
-                    ? "bg-gradient-to-r from-cyan-50 to-blue-50 text-cyan-700 shadow-sm border border-cyan-100"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                )}>
-                <item.icon
-                  className={cn(
-                    "h-4 w-4 transition-colors",
-                    isActive ? "text-cyan-600" : "text-slate-400 group-hover:text-slate-600"
-                  )}
-                />
-                {item.label}
-              </a>
+            <Link 
+              key={item.href} 
+              href={item.href}
+              id={item.id}
+              data-testid={item.id}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group cursor-pointer",
+                isActive
+                  ? "bg-gradient-to-r from-cyan-50 to-blue-50 text-cyan-700 shadow-sm border border-cyan-100"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              )}
+            >
+              <item.icon
+                className={cn(
+                  "h-4 w-4 transition-colors",
+                  isActive ? "text-cyan-600" : "text-slate-400 group-hover:text-slate-600"
+                )}
+              />
+              {item.label}
             </Link>
           );
         })}
@@ -84,41 +87,39 @@ export function AppSidebar({ className }: { className?: string }) {
           Sistema
         </div>
         
-        <Link href="/app/mini-site">
-           <a 
-             data-testid="nav-minisite"
-             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
-           >
-            <Smartphone className="h-4 w-4 text-slate-400" />
-            Mini Site
-          </a>
+        <Link 
+          href="/app/mini-site"
+          data-testid="nav-minisite"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
+        >
+          <Smartphone className="h-4 w-4 text-slate-400" />
+          Mini Site
         </Link>
 
-        <Link href="/app/configuracoes">
-           <a 
-             data-testid="nav-settings"
-             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
-           >
-            <Settings className="h-4 w-4 text-slate-400" />
-            Configurações
-          </a>
+        <Link 
+          href="/app/configuracoes"
+          data-testid="nav-settings"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
+        >
+          <Settings className="h-4 w-4 text-slate-400" />
+          Configurações
         </Link>
 
-        <Link href="/app/suporte">
-           <a 
-             data-testid="nav-support"
-             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
-           >
-            <HeadphonesIcon className="h-4 w-4 text-slate-400" />
-            Suporte
-          </a>
+        <Link 
+          href="/app/suporte"
+          data-testid="nav-support"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
+        >
+          <HeadphonesIcon className="h-4 w-4 text-slate-400" />
+          Suporte
         </Link>
 
-        <Link href="/">
-           <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer">
-            <Home className="h-4 w-4 text-slate-400" />
-            Voltar ao Site
-          </a>
+        <Link 
+          href="/"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer"
+        >
+          <Home className="h-4 w-4 text-slate-400" />
+          Voltar ao Site
         </Link>
       </nav>
 
@@ -129,7 +130,7 @@ export function AppSidebar({ className }: { className?: string }) {
               <Users className="h-4 w-4 text-cyan-600" />
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-800">Seu Salão</p>
+              <p className="text-sm font-bold text-slate-800">{user?.salonName || "Seu Salão"}</p>
               <p className="text-xs text-cyan-600 font-medium">Plano Profissional</p>
             </div>
           </div>
