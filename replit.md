@@ -27,9 +27,7 @@ Preferred communication style: Simple, everyday language (Portuguese/Brazilian).
 - **Layout**: `client/src/components/layout/AppLayout.tsx` + `AppSidebar.tsx`
 - **Features**: Full functionality, light theme with gradients (unified with demo), "Plano Profissional" badge, functional CRUD operations
 - **Purpose**: Actual product for paying customers
-- **Authentication**: Frontend-only login at `/login` with test accounts:
-  - `andromedateste` / `andromeda123` - Usuário antigo com dados fictícios (Salão: "Studio Beleza & Arte", Admin: "Carolina Mendes")
-  - `gigi123` / `gigikilzer` - Usuário novo sem dados (vai para onboarding)
+- **Authentication**: Backend-connected login at `/login` with real user registration and authentication
 
 ### Frontend Architecture
 - **Framework**: React 18 with TypeScript
@@ -52,7 +50,7 @@ Preferred communication style: Simple, everyday language (Portuguese/Brazilian).
 ### Backend Architecture
 - **Server**: Express.js serving the Vite-built static files
 - **Database Schema**: Drizzle ORM with PostgreSQL schema defined
-- **Storage**: In-memory storage implementation (MemStorage class)
+- **Storage**: PostgreSQL database with Drizzle ORM queries
 
 ## External Dependencies
 
@@ -71,7 +69,7 @@ Preferred communication style: Simple, everyday language (Portuguese/Brazilian).
 ### Database
 - **ORM**: Drizzle ORM configured for PostgreSQL
 - **Schema Location**: `shared/schema.ts`
-- **Current Tables**: `users` table only (minimal implementation)
+- **Current Tables**: `users`, `staff`, `services`, `appointments`, `clients`, `automations`
 
 ### Deployment
 - **Target Platform**: Replit / Netlify for production deployment
@@ -89,4 +87,11 @@ Preferred communication style: Simple, everyday language (Portuguese/Brazilian).
 - Added functional CRUD operations with modals for: appointments, professionals, services, clients, transactions
 - Implemented queue status management (start/finish/payment)
 - Added toast notifications for user feedback on all operations
-- Login system with hardcoded credentials for accessing /app routes
+- Login system with backend authentication for accessing /app routes
+
+### December 15, 2024
+- Integrated frontend with PostgreSQL backend for real data persistence
+- Added `automations` table with client selection support (`clientIds` array, `targetAll` boolean)
+- Updated AppMarketing page to create/edit automations with option to select specific clients
+- Fixed client creation error (database was not provisioned)
+- Real user registration and login with password hashing (bcrypt)
