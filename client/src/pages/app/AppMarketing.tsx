@@ -3,43 +3,212 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { MessageCircle, CalendarClock, Zap, Plus, Edit, Megaphone } from "lucide-react";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { MessageCircle, CalendarClock, Zap, Plus, Edit, Megaphone, Users, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { fetchAutomations, createAutomation, updateAutomation, deleteAutomation, fetchClients } from "@/lib/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const suggestedAutomations = [
-  { id: 1, name: "Feliz Aniversário", trigger: "Data de Nascimento", channel: "WhatsApp", description: "Envie parabéns com cupom especial" },
-  { id: 2, name: "Lembrete de Agendamento", trigger: "24h antes", channel: "WhatsApp", description: "Confirme presença do cliente" },
-  { id: 3, name: "Recuperação de Inativos", trigger: "60 dias sem visita", channel: "WhatsApp", description: "Traga clientes de volta" },
-  { id: 4, name: "Pós-Atendimento", trigger: "2h após serviço", channel: "WhatsApp", description: "Peça avaliação e feedback" },
+  { name: "Feliz Aniversário", trigger: "Data de Nascimento", channel: "WhatsApp", description: "Envie parabéns com cupom especial" },
+  { name: "Lembrete de Agendamento", trigger: "24h antes", channel: "WhatsApp", description: "Confirme presença do cliente" },
+  { name: "Recuperação de Inativos", trigger: "60 dias sem visita", channel: "WhatsApp", description: "Traga clientes de volta" },
+  { name: "Pós-Atendimento", trigger: "2h após serviço", channel: "WhatsApp", description: "Peça avaliação e feedback" },
 ];
+
+const triggerOptions = [
+  "Data de Nascimento",
+  "24h antes",
+  "48h antes",
+  "2h após serviço",
+  "1 dia após serviço",
+  "7 dias sem visita",
+  "30 dias sem visita",
+  "60 dias sem visita",
+];
+
+const channelOptions = ["WhatsApp", "SMS", "Email"];
 
 export default function AppMarketing() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [automations, setAutomations] = useState<any[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingAutomation, setEditingAutomation] = useState<any>(null);
+  
+  const [newAutomation, setNewAutomation] = useState({
+    name: "",
+    trigger: "24h antes",
+    channel: "WhatsApp",
+    message: "",
+    targetAll: true,
+    clientIds: [] as string[],
+  });
 
-  const activeAutomations = automations.filter(a => a.enabled).length;
-  const messagesSent = 0;
-  const clientsRecovered = 0;
+  useEffect(() => {
+    if (user?.id) {
+      loadData();
+    }
+  }, [user?.id]);
 
-  const toggleAutomation = (id: number) => {
-    const automation = automations.find(a => a.id === id);
-    setAutomations(prev => prev.map(a => a.id === id ? { ...a, enabled: !a.enabled } : a));
-    toast({
-      title: automation?.enabled ? "Automação pausada" : "Automação ativada",
-      description: automation?.name
-    });
+  const loadData = async () => {
+    if (!user?.id) return;
+    try {
+      const [automationsData, clientsData] = await Promise.all([
+        fetchAutomations(user.id),
+        fetchClients(user.id)
+      ]);
+      setAutomations(automationsData);
+      setClients(clientsData);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const addAutomation = (suggestion: typeof suggestedAutomations[0]) => {
-    const exists = automations.find(a => a.name === suggestion.name);
-    if (exists) {
-      toast({ title: "Automação já adicionada", variant: "destructive" });
+  const activeAutomations = automations.filter(a => a.active).length;
+
+  const toggleAutomation = async (id: string) => {
+    const automation = automations.find(a => a.id === id);
+    if (!automation) return;
+    
+    try {
+      await updateAutomation(id, { active: !automation.active });
+      setAutomations(prev => prev.map(a => a.id === id ? { ...a, active: !a.active } : a));
+      toast({
+        title: automation.active ? "Automação pausada" : "Automação ativada",
+        description: automation.name
+      });
+    } catch (error) {
+      toast({ title: "Erro ao atualizar automação", variant: "destructive" });
+    }
+  };
+
+  const handleDeleteAutomation = async (id: string) => {
+    try {
+      await deleteAutomation(id);
+      setAutomations(prev => prev.filter(a => a.id !== id));
+      toast({ title: "Automação removida" });
+    } catch (error) {
+      toast({ title: "Erro ao remover automação", variant: "destructive" });
+    }
+  };
+
+  const openAddModal = (suggestion?: typeof suggestedAutomations[0]) => {
+    if (suggestion) {
+      setNewAutomation({
+        name: suggestion.name,
+        trigger: suggestion.trigger,
+        channel: suggestion.channel,
+        message: "",
+        targetAll: true,
+        clientIds: [],
+      });
+    } else {
+      setNewAutomation({
+        name: "",
+        trigger: "24h antes",
+        channel: "WhatsApp",
+        message: "",
+        targetAll: true,
+        clientIds: [],
+      });
+    }
+    setEditingAutomation(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (automation: any) => {
+    setNewAutomation({
+      name: automation.name,
+      trigger: automation.trigger,
+      channel: automation.channel,
+      message: automation.message || "",
+      targetAll: automation.targetAll ?? true,
+      clientIds: automation.clientIds || [],
+    });
+    setEditingAutomation(automation);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveAutomation = async () => {
+    if (!user?.id || !newAutomation.name) {
+      toast({ title: "Preencha o nome da automação", variant: "destructive" });
       return;
     }
-    setAutomations(prev => [...prev, { ...suggestion, id: Date.now(), enabled: true }]);
-    toast({ title: "Automação adicionada!", description: suggestion.name });
+
+    try {
+      if (editingAutomation) {
+        const updated = await updateAutomation(editingAutomation.id, {
+          name: newAutomation.name,
+          trigger: newAutomation.trigger,
+          channel: newAutomation.channel,
+          message: newAutomation.message || null,
+          targetAll: newAutomation.targetAll,
+          clientIds: newAutomation.targetAll ? null : newAutomation.clientIds,
+        });
+        setAutomations(prev => prev.map(a => a.id === editingAutomation.id ? updated : a));
+        toast({ title: "Automação atualizada!", description: newAutomation.name });
+      } else {
+        const automation = await createAutomation({
+          userId: user.id,
+          name: newAutomation.name,
+          trigger: newAutomation.trigger,
+          channel: newAutomation.channel,
+          message: newAutomation.message || null,
+          active: true,
+          targetAll: newAutomation.targetAll,
+          clientIds: newAutomation.targetAll ? null : newAutomation.clientIds,
+        });
+        setAutomations(prev => [...prev, automation]);
+        toast({ title: "Automação criada!", description: newAutomation.name });
+      }
+      setIsModalOpen(false);
+    } catch (error) {
+      toast({ title: "Erro ao salvar automação", variant: "destructive" });
+    }
   };
+
+  const toggleClientSelection = (clientId: string) => {
+    setNewAutomation(prev => ({
+      ...prev,
+      clientIds: prev.clientIds.includes(clientId)
+        ? prev.clientIds.filter(id => id !== clientId)
+        : [...prev.clientIds, clientId]
+    }));
+  };
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="h-8 w-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -49,7 +218,162 @@ export default function AppMarketing() {
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600">Marketing Automático</h2>
             <p className="text-slate-500">Engaje seus clientes e aumente a retenção automaticamente.</p>
           </div>
+          <Button 
+            onClick={() => openAddModal()}
+            className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 font-bold"
+            data-testid="button-add-automation"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Nova Automação
+          </Button>
         </div>
+
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>{editingAutomation ? "Editar Automação" : "Nova Automação"}</DialogTitle>
+              <DialogDescription>
+                Configure os detalhes da automação de marketing.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Nome</Label>
+                <Input
+                  id="name"
+                  placeholder="Ex: Lembrete de Agendamento"
+                  value={newAutomation.name}
+                  onChange={(e) => setNewAutomation(prev => ({ ...prev, name: e.target.value }))}
+                  data-testid="input-automation-name"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label>Gatilho</Label>
+                  <Select 
+                    value={newAutomation.trigger} 
+                    onValueChange={(value) => setNewAutomation(prev => ({ ...prev, trigger: value }))}
+                  >
+                    <SelectTrigger data-testid="select-trigger">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {triggerOptions.map(option => (
+                        <SelectItem key={option} value={option}>{option}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="grid gap-2">
+                  <Label>Canal</Label>
+                  <Select 
+                    value={newAutomation.channel} 
+                    onValueChange={(value) => setNewAutomation(prev => ({ ...prev, channel: value }))}
+                  >
+                    <SelectTrigger data-testid="select-channel">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {channelOptions.map(option => (
+                        <SelectItem key={option} value={option}>{option}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="message">Mensagem (opcional)</Label>
+                <Input
+                  id="message"
+                  placeholder="Mensagem personalizada..."
+                  value={newAutomation.message}
+                  onChange={(e) => setNewAutomation(prev => ({ ...prev, message: e.target.value }))}
+                  data-testid="input-automation-message"
+                />
+              </div>
+
+              <div className="border-t pt-4 mt-2">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-slate-500" />
+                    <Label>Destinatários</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="targetAll"
+                      checked={newAutomation.targetAll}
+                      onCheckedChange={(checked) => setNewAutomation(prev => ({ 
+                        ...prev, 
+                        targetAll: !!checked,
+                        clientIds: checked ? [] : prev.clientIds
+                      }))}
+                      data-testid="checkbox-target-all"
+                    />
+                    <Label htmlFor="targetAll" className="text-sm font-normal cursor-pointer">
+                      Todos os clientes
+                    </Label>
+                  </div>
+                </div>
+
+                {!newAutomation.targetAll && (
+                  <div className="border rounded-lg p-2">
+                    {clients.length === 0 ? (
+                      <p className="text-sm text-slate-400 text-center py-4">
+                        Nenhum cliente cadastrado. Adicione clientes primeiro.
+                      </p>
+                    ) : (
+                      <ScrollArea className="h-[150px]">
+                        <div className="space-y-2">
+                          {clients.map(client => (
+                            <div 
+                              key={client.id}
+                              className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${
+                                newAutomation.clientIds.includes(client.id) 
+                                  ? 'bg-cyan-50 border border-cyan-200' 
+                                  : 'hover:bg-slate-50'
+                              }`}
+                              onClick={() => toggleClientSelection(client.id)}
+                              data-testid={`client-option-${client.id}`}
+                            >
+                              <Checkbox
+                                checked={newAutomation.clientIds.includes(client.id)}
+                                onCheckedChange={() => toggleClientSelection(client.id)}
+                              />
+                              <div>
+                                <p className="text-sm font-medium text-slate-900">{client.name}</p>
+                                {client.phone && (
+                                  <p className="text-xs text-slate-500">{client.phone}</p>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    )}
+                    {newAutomation.clientIds.length > 0 && (
+                      <p className="text-xs text-cyan-600 mt-2 text-center">
+                        {newAutomation.clientIds.length} cliente(s) selecionado(s)
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
+              <Button 
+                onClick={handleSaveAutomation} 
+                className="bg-gradient-to-r from-cyan-600 to-blue-600"
+                data-testid="button-save-automation"
+              >
+                {editingAutomation ? "Salvar" : "Criar Automação"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <div className="grid lg:grid-cols-3 gap-8">
           <Card className="lg:col-span-2 border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50 overflow-hidden relative">
@@ -61,18 +385,18 @@ export default function AppMarketing() {
              </CardHeader>
 
              <CardContent className="relative z-10 grid sm:grid-cols-2 gap-4">
-               {suggestedAutomations.map((suggestion) => {
+               {suggestedAutomations.map((suggestion, index) => {
                  const isAdded = automations.some(a => a.name === suggestion.name);
                  return (
                    <div 
-                     key={suggestion.id}
+                     key={index}
                      className={`p-4 rounded-xl border transition-all cursor-pointer ${
                        isAdded 
                          ? 'bg-cyan-50 border-cyan-200' 
                          : 'bg-white border-slate-200 hover:border-cyan-300 hover:shadow-md'
                      }`}
-                     onClick={() => !isAdded && addAutomation(suggestion)}
-                     data-testid={`suggestion-${suggestion.id}`}
+                     onClick={() => !isAdded && openAddModal(suggestion)}
+                     data-testid={`suggestion-${index}`}
                    >
                      <div className="flex items-start justify-between mb-2">
                        <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${
@@ -110,26 +434,11 @@ export default function AppMarketing() {
                     <MessageCircle className="h-6 w-6 text-emerald-600" />
                   </div>
                   <div>
-                    <p className="font-bold text-slate-900">Mensagens Enviadas</p>
-                    <p className="text-2xl font-bold text-emerald-600">{messagesSent}</p>
+                    <p className="font-bold text-slate-900">Clientes Cadastrados</p>
+                    <p className="text-2xl font-bold text-emerald-600">{clients.length}</p>
                   </div>
                 </div>
-                <p className="text-sm text-slate-500">Este mês</p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-xl shadow-slate-200/50 bg-gradient-to-br from-white to-slate-50/50">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-12 w-12 rounded-xl bg-cyan-50 flex items-center justify-center">
-                    <CalendarClock className="h-6 w-6 text-cyan-600" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-slate-900">Clientes Recuperados</p>
-                    <p className="text-2xl font-bold text-cyan-600">{clientsRecovered}</p>
-                  </div>
-                </div>
-                <p className="text-sm text-slate-500">Últimos 30 dias</p>
+                <p className="text-sm text-slate-500">Disponíveis para automações</p>
               </CardContent>
             </Card>
 
@@ -172,26 +481,49 @@ export default function AppMarketing() {
                   >
                     <div className="flex items-center gap-4">
                       <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${
-                        automation.enabled ? 'bg-cyan-100' : 'bg-slate-100'
+                        automation.active ? 'bg-cyan-100' : 'bg-slate-100'
                       }`}>
-                        <MessageCircle className={`h-5 w-5 ${automation.enabled ? 'text-cyan-600' : 'text-slate-400'}`} />
+                        <MessageCircle className={`h-5 w-5 ${automation.active ? 'text-cyan-600' : 'text-slate-400'}`} />
                       </div>
                       <div>
                         <p className="font-medium text-slate-900">{automation.name}</p>
-                        <p className="text-sm text-slate-500">{automation.trigger} • {automation.channel}</p>
+                        <div className="flex items-center gap-2 text-sm text-slate-500">
+                          <span>{automation.trigger} • {automation.channel}</span>
+                          {!automation.targetAll && automation.clientIds?.length > 0 && (
+                            <Badge variant="outline" className="text-xs">
+                              <Users className="h-3 w-3 mr-1" />
+                              {automation.clientIds.length} cliente(s)
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
-                      <Badge className={automation.enabled ? "bg-emerald-100 text-emerald-700 border-0" : "bg-slate-100 text-slate-500 border-0"}>
-                        {automation.enabled ? 'Ativo' : 'Pausado'}
+                      <Badge className={automation.active ? "bg-emerald-100 text-emerald-700 border-0" : "bg-slate-100 text-slate-500 border-0"}>
+                        {automation.active ? 'Ativo' : 'Pausado'}
                       </Badge>
                       <Switch 
-                        checked={automation.enabled} 
+                        checked={automation.active} 
                         onCheckedChange={() => toggleAutomation(automation.id)}
                         data-testid={`switch-automation-${automation.id}`}
                       />
-                      <Button variant="ghost" size="icon" className="text-slate-400 hover:text-cyan-600 hover:bg-cyan-50" data-testid={`button-edit-automation-${automation.id}`}>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="text-slate-400 hover:text-cyan-600 hover:bg-cyan-50" 
+                        onClick={() => openEditModal(automation)}
+                        data-testid={`button-edit-automation-${automation.id}`}
+                      >
                         <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="text-slate-400 hover:text-red-600 hover:bg-red-50" 
+                        onClick={() => handleDeleteAutomation(automation.id)}
+                        data-testid={`button-delete-automation-${automation.id}`}
+                      >
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>

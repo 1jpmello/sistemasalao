@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 interface User {
   id: string;
   username: string;
@@ -11,35 +13,13 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  register: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateUser: (data: Partial<User>) => Promise<void>;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const TEST_USERS: { [key: string]: { password: string; user: User } } = {
-  "andromedateste": {
-    password: "andromeda123",
-    user: {
-      id: "user-andromeda-001",
-      username: "andromedateste",
-      salonName: "Studio Beleza & Arte",
-      adminName: "Carolina Mendes",
-      isOnboarded: true
-    }
-  },
-  "gigi123": {
-    password: "gigikilzer",
-    user: {
-      id: "user-gigi-001",
-      username: "gigi123",
-      salonName: null,
-      adminName: null,
-      isOnboarded: false
-    }
-  }
-};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -58,16 +38,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const testUser = TEST_USERS[username.toLowerCase()];
-    
-    if (!testUser || testUser.password !== password) {
-      return { success: false, error: "Login ou senha incorretos. Tente novamente." };
-    }
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
-    setUser(testUser.user);
-    localStorage.setItem("user", JSON.stringify(testUser.user));
-    localStorage.setItem("isAuthenticated", "true");
-    return { success: true };
+      if (!response.ok) {
+        const error = await response.json();
+        return { success: false, error: error.error || "Erro ao fazer login" };
+      }
+
+      const data = await response.json();
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("isAuthenticated", "true");
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: "Erro de conexão" };
+    }
+  };
+
+  const register = async (username: string, password: string) => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        return { success: false, error: error.error || "Erro ao criar conta" };
+      }
+
+      const data = await response.json();
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("isAuthenticated", "true");
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: "Erro de conexão" };
+    }
   };
 
   const logout = () => {
@@ -79,13 +92,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateUser = async (data: Partial<User>) => {
     if (!user) return;
     
-    const updatedUser = { ...user, ...data };
-    setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    try {
+      const response = await fetch(`${API_URL}/api/user/${user.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setUser(result.user);
+        localStorage.setItem("user", JSON.stringify(result.user));
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar usuário:", error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, updateUser, isLoading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, updateUser, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

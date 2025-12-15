@@ -53,6 +53,18 @@ export const clients = pgTable("clients", {
   notes: text("notes"),
 });
 
+export const automations = pgTable("automations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  name: text("name").notNull(),
+  trigger: text("trigger").notNull(),
+  channel: text("channel").notNull(),
+  message: text("message"),
+  active: boolean("active").default(true),
+  clientIds: text("client_ids").array(),
+  targetAll: boolean("target_all").default(true),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -87,6 +99,15 @@ export const insertClientSchema = createInsertSchema(clients).omit({
   id: true,
 });
 
+export const insertAutomationSchema = createInsertSchema(automations).omit({
+  id: true,
+}).partial({
+  message: true,
+  active: true,
+  clientIds: true,
+  targetAll: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertStaff = z.infer<typeof insertStaffSchema>;
@@ -97,3 +118,5 @@ export type InsertAppointment = z.infer<typeof insertAppointmentSchema>;
 export type Appointment = typeof appointments.$inferSelect;
 export type InsertClient = z.infer<typeof insertClientSchema>;
 export type Client = typeof clients.$inferSelect;
+export type InsertAutomation = z.infer<typeof insertAutomationSchema>;
+export type Automation = typeof automations.$inferSelect;

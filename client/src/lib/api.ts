@@ -85,3 +85,35 @@ export async function createClient(data: any) {
   if (!response.ok) throw new Error("Failed to create client");
   return response.json();
 }
+
+export async function fetchAutomations(userId: string) {
+  const response = await fetch(`${API_URL}/api/automations/${userId}`);
+  if (!response.ok) throw new Error("Failed to fetch automations");
+  return response.json();
+}
+
+export async function createAutomation(data: any) {
+  const response = await fetch(`${API_URL}/api/automations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Failed to create automation");
+  return response.json();
+}
+
+export async function updateAutomation(id: string, data: any) {
+  const response = await fetch(`${API_URL}/api/automations/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Failed to update automation");
+  return response.json();
+}
+
+export async function deleteAutomation(id: string) {
+  const response = await fetch(`${API_URL}/api/automations/${id}`, { method: "DELETE" });
+  if (!response.ok) throw new Error("Failed to delete automation");
+  return response.json();
+}

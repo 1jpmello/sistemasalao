@@ -4,7 +4,8 @@ import {
   type Service, type InsertService,
   type Appointment, type InsertAppointment,
   type Client, type InsertClient,
-  users, staff, services, appointments, clients 
+  type Automation, type InsertAutomation,
+  users, staff, services, appointments, clients, automations 
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -30,6 +31,11 @@ export interface IStorage {
   
   getClientsByUserId(userId: string): Promise<Client[]>;
   createClient(client: InsertClient): Promise<Client>;
+  
+  getAutomationsByUserId(userId: string): Promise<Automation[]>;
+  createAutomation(automation: InsertAutomation): Promise<Automation>;
+  updateAutomation(id: string, data: Partial<InsertAutomation>): Promise<Automation | undefined>;
+  deleteAutomation(id: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -104,6 +110,24 @@ export class DatabaseStorage implements IStorage {
   async createClient(client: InsertClient): Promise<Client> {
     const [cl] = await db.insert(clients).values(client).returning();
     return cl;
+  }
+
+  async getAutomationsByUserId(userId: string): Promise<Automation[]> {
+    return db.select().from(automations).where(eq(automations.userId, userId));
+  }
+
+  async createAutomation(automation: InsertAutomation): Promise<Automation> {
+    const [auto] = await db.insert(automations).values(automation).returning();
+    return auto;
+  }
+
+  async updateAutomation(id: string, data: Partial<InsertAutomation>): Promise<Automation | undefined> {
+    const [auto] = await db.update(automations).set(data).where(eq(automations.id, id)).returning();
+    return auto;
+  }
+
+  async deleteAutomation(id: string): Promise<void> {
+    await db.delete(automations).where(eq(automations.id, id));
   }
 }
 

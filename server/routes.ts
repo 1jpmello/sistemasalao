@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertStaffSchema, insertServiceSchema, insertAppointmentSchema, insertClientSchema } from "@shared/schema";
+import { insertUserSchema, insertStaffSchema, insertServiceSchema, insertAppointmentSchema, insertClientSchema, insertAutomationSchema } from "@shared/schema";
 import bcrypt from "bcryptjs";
 
 export async function registerRoutes(
@@ -37,6 +37,7 @@ export async function registerRoutes(
         } 
       });
     } catch (error) {
+      console.error("Login error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -68,6 +69,7 @@ export async function registerRoutes(
         } 
       });
     } catch (error) {
+      console.error("Register error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -117,6 +119,7 @@ export async function registerRoutes(
       const staffList = await storage.getStaffByUserId(req.params.userId);
       res.json(staffList);
     } catch (error) {
+      console.error("Get staff error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -125,11 +128,13 @@ export async function registerRoutes(
     try {
       const parsed = insertStaffSchema.safeParse(req.body);
       if (!parsed.success) {
+        console.error("Staff validation error:", parsed.error);
         return res.status(400).json({ error: "Dados inválidos" });
       }
       const member = await storage.createStaff(parsed.data);
       res.json(member);
     } catch (error) {
+      console.error("Create staff error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -148,6 +153,7 @@ export async function registerRoutes(
       const servicesList = await storage.getServicesByUserId(req.params.userId);
       res.json(servicesList);
     } catch (error) {
+      console.error("Get services error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -161,6 +167,7 @@ export async function registerRoutes(
       const service = await storage.createService(parsed.data);
       res.json(service);
     } catch (error) {
+      console.error("Create service error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -179,6 +186,7 @@ export async function registerRoutes(
       const appointmentsList = await storage.getAppointmentsByUserId(req.params.userId);
       res.json(appointmentsList);
     } catch (error) {
+      console.error("Get appointments error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -192,6 +200,7 @@ export async function registerRoutes(
       const appointment = await storage.createAppointment(parsed.data);
       res.json(appointment);
     } catch (error) {
+      console.error("Create appointment error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -222,6 +231,7 @@ export async function registerRoutes(
       const clientsList = await storage.getClientsByUserId(req.params.userId);
       res.json(clientsList);
     } catch (error) {
+      console.error("Get clients error:", error);
       res.status(500).json({ error: "Erro no servidor" });
     }
   });
@@ -230,10 +240,59 @@ export async function registerRoutes(
     try {
       const parsed = insertClientSchema.safeParse(req.body);
       if (!parsed.success) {
+        console.error("Client validation error:", parsed.error);
         return res.status(400).json({ error: "Dados inválidos" });
       }
       const client = await storage.createClient(parsed.data);
       res.json(client);
+    } catch (error) {
+      console.error("Create client error:", error);
+      res.status(500).json({ error: "Erro no servidor" });
+    }
+  });
+
+  app.get("/api/automations/:userId", async (req, res) => {
+    try {
+      const automationsList = await storage.getAutomationsByUserId(req.params.userId);
+      res.json(automationsList);
+    } catch (error) {
+      console.error("Get automations error:", error);
+      res.status(500).json({ error: "Erro no servidor" });
+    }
+  });
+
+  app.post("/api/automations", async (req, res) => {
+    try {
+      const parsed = insertAutomationSchema.safeParse(req.body);
+      if (!parsed.success) {
+        console.error("Automation validation error:", parsed.error);
+        return res.status(400).json({ error: "Dados inválidos" });
+      }
+      const automation = await storage.createAutomation(parsed.data);
+      res.json(automation);
+    } catch (error) {
+      console.error("Create automation error:", error);
+      res.status(500).json({ error: "Erro no servidor" });
+    }
+  });
+
+  app.patch("/api/automations/:id", async (req, res) => {
+    try {
+      const automation = await storage.updateAutomation(req.params.id, req.body);
+      if (!automation) {
+        return res.status(404).json({ error: "Automação não encontrada" });
+      }
+      res.json(automation);
+    } catch (error) {
+      console.error("Update automation error:", error);
+      res.status(500).json({ error: "Erro no servidor" });
+    }
+  });
+
+  app.delete("/api/automations/:id", async (req, res) => {
+    try {
+      await storage.deleteAutomation(req.params.id);
+      res.json({ success: true });
     } catch (error) {
       res.status(500).json({ error: "Erro no servidor" });
     }
