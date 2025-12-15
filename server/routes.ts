@@ -69,8 +69,19 @@ export async function registerRoutes(
         } 
       });
     } catch (error) {
+<<<<<<< HEAD
       console.error("Register error:", error);
       res.status(500).json({ error: "Erro no servidor" });
+=======
+      console.error("REGISTER ERROR:");
+console.error(error);
+
+res.status(500).json({
+  error: "Erro no servidor",
+  detail: error?.message || "unknown"
+});
+
+>>>>>>> 931c5599ff51647f06f373e26a4d441c8dfa80fc
     }
   });
 
