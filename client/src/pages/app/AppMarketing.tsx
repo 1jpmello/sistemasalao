@@ -167,7 +167,7 @@ export default function AppMarketing() {
           channel: newAutomation.channel,
           message: newAutomation.message || null,
           targetAll: newAutomation.targetAll,
-          clientIds: newAutomation.targetAll ? null : newAutomation.clientIds,
+          clientIds: newAutomation.targetAll ? [] : newAutomation.clientIds,
         });
         setAutomations(prev => prev.map(a => a.id === editingAutomation.id ? updated : a));
         toast({ title: "Automação atualizada!", description: newAutomation.name });
@@ -180,7 +180,7 @@ export default function AppMarketing() {
           message: newAutomation.message || null,
           active: true,
           targetAll: newAutomation.targetAll,
-          clientIds: newAutomation.targetAll ? null : newAutomation.clientIds,
+          clientIds: newAutomation.targetAll ? [] : newAutomation.clientIds,
         });
         setAutomations(prev => [...prev, automation]);
         toast({ title: "Automação criada!", description: newAutomation.name });
